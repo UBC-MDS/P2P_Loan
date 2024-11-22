@@ -13,3 +13,5 @@ dependencies:
   - tensorflow
   - notebook
   - altair
+  - vegafusion-python-embed==1.5.0
+  - vegafusion==1.5.0
