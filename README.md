@@ -29,4 +29,5 @@ matplotlib
 vegafusion
 scipy
 
+## License
 - **Code**: This project uses the MIT License. See [LICENSE.md]for details.
