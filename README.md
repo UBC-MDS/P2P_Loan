@@ -16,18 +16,32 @@ This project focuses on predicting loan defaults by analyzing historical data fr
    git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
    cd p2p-lending-risk-analysis
 
+2. **Using environment.yml**
+
+This is the recommended method to set up the environment that can allow you run the file
+  Create the Conda environment:
+
+    bash
+    conda env create -f environment.yaml
+    
+  Activate the environment:
+
+    bash
+    conda activate loan_risk522
+
 
 ## Dependencies
-python
-pandas
-jupyterlab
-conda 
-altair
-scikit-learn
-ipykernal
-matplotlib 
-vegafusion
-scipy
+  - numpy
+  - pandas
+  - python=3.11.6
+  - scikit-learn
+  - altair
+  - matplotlib
+  - vegafusion-python-embed=1.6.9
+  - vegafusion=1.6.9
+  - vl-convert-python[version='>=1.6.0']
+  - ipykernel
+  - conda-lock
 
 ## License
 - **Code**: This project uses the MIT License. See [LICENSE.md]for details.
