@@ -13,4 +13,5 @@ dependencies:
   - vl-convert-python[version='>=1.6.0']
   - ipykernel
   - conda-lock
+  - pandera=0.20.4
 prefix: /Users/yasminhassan/miniforge3/envs/loan_risk522
