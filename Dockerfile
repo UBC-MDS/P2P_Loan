@@ -10,7 +10,8 @@ RUN conda env create -f /tmp/environment.yml && \
     conda clean --all --yes
 
 # Set default environment
-ENV PATH /opt/conda/envs/environment.yml/bin:$PATH
+ENV PATH /opt/conda/envs/environment/bin:$PATH
+
 RUN echo "source activate <env-name>" > ~/.bashrc
 
 # Return to the notebook user
