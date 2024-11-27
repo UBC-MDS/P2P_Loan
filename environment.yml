@@ -2,6 +2,7 @@ name: loan_risk522
 channels:
   - conda-forge
 dependencies:
+<<<<<<< HEAD
   - numpy
   - pandas
   - python=3.11.6
