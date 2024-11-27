@@ -1,14 +1,16 @@
-name: p2p_loan_risk
+name: loan_risk522
 channels:
   - conda-forge
-  - defaults
 dependencies:
-  - python=3.9
-  - pandas
-  - numpy
-  - scikit-learn
-  - matplotlib
-  - seaborn
-  - jupyter
-  - tensorflow
-  - notebook
+  -  python=3.11.6
+  -  numpy
+  -  pandas
+  -  scikit-learn
+  -  altair
+  -  matplotlib
+  -  vegafusion-python-embed=1.6.9
+  -  vegafusion=1.6.9
+  -  vl-convert-python>=1.6.0
+  -  ipykernel
+  -  conda-lock
+  -  pandera=0.20.4
