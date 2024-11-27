@@ -2,16 +2,16 @@ name: loan_risk522
 channels:
   - conda-forge
 dependencies:
-<<<<<<< HEAD
-  - numpy
-  - pandas
-  - python=3.11.6
-  - scikit-learn
-  - altair
-  - matplotlib
-  - vegafusion-python-embed=1.6.9
-  - vegafusion=1.6.9
-  - vl-convert-python[version='>=1.6.0']
-  - ipykernel
-  - conda-lock
-prefix: /Users/yasminhassan/miniforge3/envs/loan_risk522
+  -  python=3.11.6
+  -  numpy
+  -  pandas
+  -  scikit-learn
+  -  altair
+  -  matplotlib
+  -  vegafusion-python-embed=1.6.9
+  -  vegafusion=1.6.9
+  -  vl-convert-python>=1.6.0
+  -  ipykernel
+  -  conda-lock
+  -  pandera=0.20.4
+
