@@ -1,18 +1,8 @@
-# Use the recommended base image
 FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
 
-# Switch to root user to install additional dependencies
-USER root
+COPY conda-linux-64.lock /tmp/conda-linux-64.lock
+RUN mamba update --quiet --file /tmp/conda-linux-64.lock \
+    && mamba clean --all -y -f \
+    && fix-permissions "${CONDA_DIR}" \
+    && fix-permissions "/home/${NB_USER}"
 
-# Install dependencies from the environment.yml file
-COPY environment.yml /tmp/environment.yml
-RUN conda env create -f /tmp/environment.yml && \
-    conda clean --all --yes
-
-# Set default environment
-ENV PATH /opt/conda/envs/environment/bin:$PATH
-
-RUN echo "source activate <env-name>" > ~/.bashrc
-
-# Return to the notebook user
-USER jovyan
