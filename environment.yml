@@ -12,7 +12,6 @@ dependencies:
   -  vegafusion=1.6.9
   -  vl-convert-python=1.6.0
   -  ipykernel=6.29.5
-  -  conda-lock=1.5.2
   -  pandera=0.20.4
 
   

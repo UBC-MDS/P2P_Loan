@@ -1,0 +1,12 @@
+services:
+  jupyter-notebook:
+    image: abeba/p2p_loan_risk-analysis
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/home/jovyan
+    deploy:
+      resources:
+        limits:
+          memory: 5G
+    platform: linux/amd64
