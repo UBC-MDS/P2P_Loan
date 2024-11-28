@@ -29,6 +29,17 @@ This is the recommended method to set up the environment that can allow you run 
     bash
     conda activate loan_risk522
 
+## Using the Container Image
+To use the containerized environment for this project follow this
+
+1. Pull the Latest Image Pull the latest version of the container image from Docker Hub
+(docker pull yasmin2424/p2p_loan_risk_analysis:latest)
+
+2. Run the Container Launch the container to start working on the project
+(docker run -it --rm -p 8888:8888 yasmin2424/p2p_loan_risk_analysis:latest)
+
+3. Access your project files if you want to work with your local project files, mount the project directory
+
 
 ## Dependencies
   - numpy
