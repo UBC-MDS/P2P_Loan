@@ -1,0 +1,9 @@
+**.DS_Store
+**.ipynb_checkpoints
+**.ipython
+**.jupyter
+**.local
+**.cache/
+**.config/
+**.vscode
+
