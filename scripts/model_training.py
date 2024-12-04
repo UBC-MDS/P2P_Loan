@@ -42,7 +42,7 @@ def main(data_from, preprocessor_from, data_to):
     cv_results = cv_results.T
 
    
-    cv_results.to_csv(os.path.join(data_to, "cv_results.csv"))
+    np.round(cv_results,decimals=4).to_csv(os.path.join(data_to, "cv_results.csv"))
 
 
 def model_cross_val(model, preprocessor, X_train, y_train):

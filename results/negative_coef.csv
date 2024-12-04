@@ -1,0 +1,20 @@
+,features,negative coefficient
+0,num__int.rate,0.1193
+1,num__inq.last.6mths,0.1105
+2,num__installment,0.0621
+3,num__revol.util,0.0451
+4,num__revol.bal,0.044
+5,num__pub.rec,0.0401
+6,cat__purpose_small_business,0.0349
+7,cat__purpose_home_improvement,0.0101
+8,cat__purpose_all_other,0.0088
+9,cat__purpose_educational,0.0052
+10,num__dti,0.0019
+11,num__delinq.2yrs,-0.0033
+12,cat__purpose_major_purchase,-0.0088
+13,num__days.with.cr.line,-0.0178
+14,cat__purpose_debt_consolidation,-0.0234
+15,cat__purpose_credit_card,-0.0262
+16,num__log.annual.inc,-0.0533
+17,num__credit.policy,-0.101
+18,num__fico,-0.1034

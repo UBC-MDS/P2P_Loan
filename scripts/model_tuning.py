@@ -58,9 +58,9 @@ def main(data_from, preprocessor_from,data_to, pipeline_to):
         "mean_train_score"
     ]]
 
-    cv_results.sort_values(by="rank_test_score").head(5)
+    cv_results =  np.round(cv_results, decimals=6).sort_values(by="rank_test_score").head(5)
     
-    cv_results[:5].to_csv(os.path.join(data_to, "model_results.csv"))
+    cv_results.to_csv(os.path.join(data_to, "model_results.csv"))
     
     
     
