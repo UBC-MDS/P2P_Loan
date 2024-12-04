@@ -1,11 +1,17 @@
 ---
 title: P2P Online Lending Default Prediction- A Usecase on LendingClub Default Risk
+author: Mavis Wong, Yasmin Hassan and Abeba N. Turi
 jupyter: python3
+format: 
+     html:
+      toc: true
+      toc-depth: 3
+execute:
+    echo: false
+    warning: false
+editor: source
+
 ---
-
-
-Mavis Wong, Yasmin Hassan and Abeba N. Turi
-
 
 ```{python}
 # Import 
@@ -29,26 +35,26 @@ from sklearn.metrics import accuracy_score
 from sklearn import set_config
 
 # Enable the VegaFusion data transformer
-alt.data_transformers.enable("vegafusion")
+#alt.data_transformers.enable("vegafusion")
 ```
 
-### 1. Summary<br>
+## 1. Summary<br>
 This work intends to leaverage machine learning models to predict borrower behaviour and hence probability of default. More specifically, the work focuses aszxon predicting loan defaults using historical data from the Lending Club platform. By applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model, we uncover patterns and trends in borrower risk profiles. The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included both false positives (predicting a loan default when it didn’t occur) and false negatives (failing to predict an actual default).
 While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model's accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model’s effectiveness in peer-to-peer lending platforms.
 
-### 2. Introduction <br>
+## 2. Introduction <br>
 Crowd-based business models are one of the last decade’s developments with the proliferation of platform economies and web technology applications (see Sutherland and Jarrahi, 2018). One of such developments following the 2007 financial crisis are the P2P online lending platforms. The backbone of the digital economic system built on this is that it relies on trust a currency. Like all other crowd-based business models, P2P online lending heavily relied on trustworthiness of borrowers. To help with this, online platforms like LendingClub used a number of features to define eligibility and rate of access to loan for potential borrowers.Traditional credit risk analysis often relies on rule-based systems or credit scores, which might not fully capture the complexities of borrower behavior. By applying Logistic Regression, we aim to develop a model that is both interpretable and effective in identifying high-risk loans. This analysis intends to provide a data-driven approach to improve credit decision-making in a broader context of platform based transactions through machine learning models.
 Extensive research has been conducted on borrower risk behaviour analysis and trust within P2P online lending system, highlighting the critical role trust and predictability holds in ensuring platform sustainability and mitigating default risks (Cai, et al, 2016 and Lenz, 2016). Building on this, this work focuses on developing a comprehensive risk analysis framework through machine hlearning models that will help predict borrower behaviour.
 
 
-### 3. Methods <br>
+## 3. Methods <br>
 
-#### 3.1 Data <br>
-##### Data Source
+### 3.1 Data <br>
+#### Data Source
 This analysis is based on the historic loan data from LendingClub (LendingClub. (n.d.) and Matmcreative. (n.d.).).
 It contains various borrower and loan features, such as interest rates, annual income, debt-to-income ratio (DTI), and credit history. The target variable, not.fully.paid, indicates whether the borrower defaulted on the loan (1) or successfully repaid it (0).
 
-##### Feature Description
+#### Feature Description
 The key features taken into account for this analysis are:
 
 `purpose`: The purpose of the loan
