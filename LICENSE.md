@@ -1,3 +1,9 @@
+# License
+
+## Analysis report
+
+Copyright (c) 2024 Mavis Wong, Yasmin Hassan, Abeba Nigussie Turi
+
 This report (source contained in the [`P2P_Loan_Risk-Analysis` repository](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis)) 
 is made available under the **Attribution-NonCommercial-ShareAlike 4.0 International** ([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)). 
 
