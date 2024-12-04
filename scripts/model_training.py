@@ -22,8 +22,7 @@ from joblib import dump
 
 
 def main(data_from, preprocessor_from, data_to):
-    '''Fits a Loan Default classifier to the training data 
-    and saves the pipeline object.'''
+    '''Fits a Loan Default classifier to the training data and saves the results'''
     train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
     X_train = train_df.drop(columns="not.fully.paid")
     y_train = train_df["not.fully.paid"]
