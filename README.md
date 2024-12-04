@@ -61,7 +61,7 @@ To use the containerized environment for this project follow this
 
 
 ## License
-- **Code**: This project uses the MIT License. See [LICENSE.md]for details.
+- **Code**: This project uses the MIT License. See the [license](LICENSE.md)for details.
 
 ## Reference
 1. Cai, S., Lin, X., Xu, D., & Fu, X. (2016). Judging online peer-to-peer lending behavior: A comparison of first-time and repeated borrowing requests. Information & Management, 53(7), 857-867.Consumer
