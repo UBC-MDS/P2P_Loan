@@ -1,43 +1,55 @@
 # Import 
-import os
+import click
 import numpy as np
 import pandas as pd
-import altair as alt
-import pandera as pa
-import matplotlib.pyplot as plt
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import cross_validate, train_test_split
-from sklearn.model_selection import GridSearchCV
+import os
+import pickle
+from sklearn import set_config
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
-from sklearn import set_config
-
-# Enable the VegaFusion data transformer
-alt.data_transformers.enable("vegafusion")
-
-# Define Models
-dt = DecisionTreeClassifier(random_state=123)
-knn = KNeighborsClassifier(n_jobs=-1)
-svc = SVC(random_state=123)
-log_reg = LogisticRegression(random_state=123)
-
-models = {"Decision Tree": dt, 
-          "kNN": knn,
-          "SVC": svc,
-          "Logistic Regression": log_reg}
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_validate
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import fbeta_score, make_scorer
+from joblib import dump
 
 
-def model_cross_val(model):
+@click.command()
+@click.option('--data_from', type=str, help="Path to training data")
+@click.option('--data_to', type=str, help="Path to cv results ")
+@click.option('--preprocessor_from', type=str, help="Path to preprocessor object")
+
+
+def main(data_from, preprocessor_from, data_to):
+    '''Fits a Loan Default classifier to the training data and saves the results'''
+    train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
+    X_train = train_df.drop(columns="not.fully.paid")
+    y_train = train_df["not.fully.paid"]
+    # Define Models
+    dt = DecisionTreeClassifier(random_state=123)
+    knn = KNeighborsClassifier(n_jobs=-1)
+    svc = SVC(random_state=123)
+    log_reg = LogisticRegression(random_state=123)
+
+    models = {"Decision Tree": dt, 
+            "kNN": knn,
+            "SVC": svc,
+            "Logistic Regression": log_reg}
+    cv_results = pd.DataFrame()
+    for (name, model) in models.items():
+        cv_results[name] = model_cross_val(model, preprocessor_from, X_train, y_train)
+    cv_results = cv_results.T
+
+   
+    np.round(cv_results,decimals=4).to_csv(os.path.join(data_to, "cv_results.csv"))
+
+
+def model_cross_val(model, preprocessor, X_train, y_train):
 
     '''Perform 10-fold cross-validation on the given machine learning model 
     using a preprocessing pipeline. Returns a dictionary'''
-    
+    preprocessor = pickle.load(open(preprocessor, "rb"))
     model_pipeline = Pipeline([
             ('preprocessor', preprocessor),  
             ('model', model)
@@ -55,37 +67,8 @@ def model_cross_val(model):
     
     return result_dict
 
-cv_results = pd.DataFrame()
-for (name, model) in models.items():
-    cv_results[name] = model_cross_val(model)
-cv_results = cv_results.T
 
-cv_results
 
-# Logistic Regression Tuning
-log_reg_param_dist = {
-    "LogReg__C": np.logspace(-5, 5)
-}
 
-log_reg_pipe = Pipeline(steps=[
-            ('preprocessor', preprocessor),
-            ('LogReg', LogisticRegression(random_state=123, max_iter=20000))
-])
-
-log_reg_search = GridSearchCV(
-    log_reg_pipe,
-    param_grid=log_reg_param_dist,
-    cv=10,
-    n_jobs=-1,
-    return_train_score=True
-)
-
-log_reg_search.fit(X_train, y_train)
-cv_results = pd.DataFrame(log_reg_search.cv_results_)[[
-    "rank_test_score",
-    "param_LogReg__C",
-    "mean_test_score",
-    "mean_train_score"
-]]
-
-cv_results.sort_values(by="rank_test_score").head(5)
+if __name__ == '__main__':
+    main()

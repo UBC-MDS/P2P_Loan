@@ -23,7 +23,7 @@ This is the recommended method to set up the environment that can allow you run 
   Create the Conda environment:
 
     bash
-    conda env create -f environment.yaml
+    conda env create -f environment.yml
     
   Activate the environment:
 
