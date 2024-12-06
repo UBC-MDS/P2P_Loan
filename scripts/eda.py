@@ -1,4 +1,3 @@
-
 # eda.py
 # authors: Mavis Wong, Yasmin Hassan and Abeba N. Turi
 # date: December 05, 2024
@@ -73,24 +72,36 @@ def main(input_csv, output_dir):
     categories = ['Low Risk', 'Medium Risk', 'High Risk']
     train_df['risk_category'] = np.select(conditions, categories, default='Unknown')
 
-    # Repeat for test_df if needed
-    test_df = pd.read_csv(input_csv)  # Assuming you also have a separate test set
-    test_df['risk_category'] = np.select(conditions, categories, default='Unknown')
-
     # SECTION 4: Visualization (Save to output directory)
     # Create the output directory if it does not exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Histograms for Numeric Columns
-    for feat in numeric_cols:
-        fig, ax = plt.subplots()
+    # Histograms for Numeric Columns in a Grid
+    num_plots = len(numeric_cols)
+    n_cols = 3  # Number of columns in the grid
+    n_rows = (num_plots // n_cols) + (num_plots % n_cols != 0)  # Calculate rows needed
+
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(15, 5 * n_rows))
+
+    # Flatten axes to make indexing easier (in case of multi-row grid)
+    axes = axes.flatten()
+
+    for i, feat in enumerate(numeric_cols):
+        ax = axes[i]
         train_df.groupby("not.fully.paid")[feat].plot.hist(
             bins=40, alpha=0.4, legend=True, density=True, title=f"Histogram of {feat}", ax=ax
         )
-        plt.xlabel(feat)
-        plt.savefig(os.path.join(output_dir, f"histogram_{feat}.png"))
-        plt.close(fig)
+        ax.set_xlabel(feat)
+
+    # Hide any unused subplots if the grid is larger than the number of features
+    for i in range(num_plots, len(axes)):
+        axes[i].axis('off')
+
+    # Adjust layout and save the grid of histograms
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, "histograms_grid.png"))
+    plt.close(fig)
 
     # Data distribution of selected features using Altair
     numeric_cols_hists = alt.Chart(train_df).mark_bar().encode(
