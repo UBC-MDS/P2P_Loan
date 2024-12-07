@@ -1,0 +1,15 @@
+,Column,Non-Null,Count,Dtype
+0,credit.policy,7662,non-null,int64
+1,purpose,7662,non-null,object
+2,int.rate,7662,non-null,float64
+3,installment,7662,non-null,float64
+4,log.annual.inc,7662,non-null,float64
+5,dti,7662,non-null,float64
+6,fico,7662,non-null,int64
+7,days.with.cr.line,7662,non-null,float64
+8,revol.bal,7662,non-null,int64
+9,revol.util,7662,non-null,float64
+10,inq.last.6mths,7662,non-null,int64
+11,delinq.2yrs,7662,non-null,int64
+12,pub.rec,7662,non-null,int64
+13,not.fully.paid,7662,non-null,int64
