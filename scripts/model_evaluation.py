@@ -17,9 +17,15 @@ import pickle
 
 
 def main(data_from, pipeline_from, data_to, preprocessor_from):
+    try:
+        train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
+        test_df = pd.read_csv(os.path.join(data_from, "loan_test.csv"))
+        print(f"Data loaded successfully from {data_from}")
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return
+
     log_reg_search = pickle.load(open(pipeline_from, 'rb'))
-    train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
-    test_df = pd.read_csv(os.path.join(data_from, "loan_test.csv"))
     X_train = train_df.drop(columns="not.fully.paid")
     X_test = test_df.drop(columns="not.fully.paid")
     y_test = test_df["not.fully.paid"]
@@ -63,6 +69,8 @@ def main(data_from, pipeline_from, data_to, preprocessor_from):
         "negative coefficient": np.round(coefficients,decimals=4)}
     ).sort_values(by="negative coefficient", ascending=False, ignore_index=True)
     negative_coef.to_csv(os.path.join(data_to, "negative_coef.csv"))
+
+    print(f"Results successfully saved to {data_to}")
     
 if __name__ == '__main__':
     main()

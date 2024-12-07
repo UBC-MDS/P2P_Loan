@@ -8,6 +8,7 @@ import pandas as pd
 import altair as alt
 import click
 import matplotlib.pyplot as plt
+import io
 
 # Enable the VegaFusion data transformer
 alt.data_transformers.enable("vegafusion")
@@ -27,18 +28,18 @@ def main(input_csv, output_dir):
         print(f"Error loading data: {e}")
         return
 
+    # Create the output directory if it does not exist
+
+    os.makedirs(os.path.join(output_dir, "tables"), exist_ok=True)
+    os.makedirs(os.path.join(output_dir, "figures"), exist_ok=True)
+
     # SECTION 2: Data Overview
-    print("Training Data Information:")
-    print(train_df.info())
-
-    print("\nShape of Training Data:", train_df.shape)
-
-    print("\nSummary Statistics:")
-    print(train_df.describe(include="all"))
-
-    # SECTION 3: Data Processing, Feature Engineering and Handling Missing Values
-    missing_vals_cols = train_df.columns[train_df.isna().sum() > 0].tolist()
-    print("\nColumns with Missing Values:", missing_vals_cols)
+    
+    buffer = io.StringIO()
+    train_df.info(buf=buffer)
+    info = [row.split() for row in buffer.getvalue().splitlines()[3:-2]]
+    info_df = pd.DataFrame(info[2:], columns=info[0]).drop(columns="#")
+    info_df.to_csv(os.path.join(output_dir, "tables", "info.csv"))
 
     # Define numeric columns explicitly
     numeric_cols = [
@@ -73,9 +74,6 @@ def main(input_csv, output_dir):
     train_df['risk_category'] = np.select(conditions, categories, default='Unknown')
 
     # SECTION 4: Visualization (Save to output directory)
-    # Create the output directory if it does not exist
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
     # Histograms for Numeric Columns in a Grid
     num_plots = len(numeric_cols)
@@ -90,7 +88,7 @@ def main(input_csv, output_dir):
     for i, feat in enumerate(numeric_cols):
         ax = axes[i]
         train_df.groupby("not.fully.paid")[feat].plot.hist(
-            bins=40, alpha=0.4, legend=True, density=True, title=f"Histogram of {feat}", ax=ax
+            bins=40, alpha=0.4, legend=True, density=True, title=f"{feat}", ax=ax
         )
         ax.set_xlabel(feat)
 
@@ -100,36 +98,23 @@ def main(input_csv, output_dir):
 
     # Adjust layout and save the grid of histograms
     plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, "histograms_grid.png"))
+    plt.savefig(os.path.join(output_dir, "figures", "histograms_grid.png"))
     plt.close(fig)
 
-    # Data distribution of selected features using Altair
-    numeric_cols_hists = alt.Chart(train_df).mark_bar().encode(
-        alt.X(alt.repeat(), type='quantitative', bin=alt.Bin(maxbins=20)),  
-        y='count()'
-    ).properties(
-        width=250,
-        height=175
-    ).repeat(
-        ['installment', 'dti'],  
-        columns=3
-    )
-    numeric_cols_hists.save(os.path.join(output_dir, "numeric_feature_distribution.html"))
 
     # Default Rate by Loan Purpose
     loan_purpose_data = train_df.explode('purpose')
     purpose_risk_chart = alt.Chart(loan_purpose_data).mark_circle().encode(
-        x=alt.X('loan_categories:N', title='Loan Categories', sort='-color', axis=alt.Axis(labelAngle=0)),
+        x=alt.X('loan_categories:N', title='Risk Profile Category', sort='-color', axis=alt.Axis(labelAngle=0)),
         y=alt.Y('purpose:N', title='Loan Purpose', sort='color'),
         color=alt.Color('count()', scale=alt.Scale(scheme='viridis'), title='Loan Count'),
         size=alt.Size('count()', title='Loan Count', scale=alt.Scale(range=[50, 1500])),
         tooltip=['purpose', 'loan_categories', 'count()']
     ).properties(
         width=600,
-        height=400,
-        title="Loan Category vs Loan Purpose"
+        height=400
     )
-    purpose_risk_chart.save(os.path.join(output_dir, "loan_category_vs_purpose.html"))
+    purpose_risk_chart.save(os.path.join(output_dir, "figures", "loan_category_vs_purpose.png"))
 
     # Risk Categories Distribution
     categories_hist = alt.Chart(train_df).mark_bar().encode(
@@ -137,10 +122,9 @@ def main(input_csv, output_dir):
         y=alt.Y('count()', title='Count') 
     ).properties(
         height=300,
-        width=400,
-        title="Distribution of Risk Categories"
+        width=400
     )
-    categories_hist.save(os.path.join(output_dir, "risk_categories_distribution.html"))
+    categories_hist.save(os.path.join(output_dir, "figures", "risk_categories_distribution.png"))
 
     # SECTION 5: Correlation Heatmap
     correlation_matrix = train_df[numeric_cols].corr().reset_index().melt('index')
@@ -156,7 +140,66 @@ def main(input_csv, output_dir):
         height=400,
         title="Correlation Heatmap"
     )
-    correlation_chart.save(os.path.join(output_dir, "correlation_heatmap.html"))
+    correlation_chart.save(os.path.join(output_dir, "figures", "correlation_heatmap.png"))
+
+    #fico by loan purpose
+    purpose_fico_boxplot = alt.Chart(loan_purpose_data).mark_boxplot().encode(
+        y=alt.Y('purpose:N', title='Loan Purpose', sort='-x'),  
+        x=alt.X('fico:Q', title='FICO Score', scale=alt.Scale(domain=[600, 850]),),  
+        color=alt.Color('purpose:N', legend=None),  
+        tooltip=['purpose', 'fico']
+    ).properties(
+        width=400,
+        height=200
+    )
+
+    purpose_fico_boxplot.save(os.path.join(output_dir, "figures", "boxplot_purpose.png"))
+
+    #Debt to income ratio by risk level
+    risk_dti_boxplot = alt.Chart(train_df).mark_boxplot().encode(
+        y=alt.Y('risk_category:N', title='Risk Level', sort='-x'),  
+        x=alt.X('dti:Q', title='DTI (Debt-to-Income) %', scale=alt.Scale(domain=[0, 35])),  
+        color=alt.Color('risk_category:N', legend=None),  
+        tooltip=['risk_category', 'dti']
+    ).properties(
+        width=400,
+        height=200
+    )
+
+
+    risk_dti_boxplot.save(os.path.join(output_dir, "figures", "boxplot_risk.png"))
+
+
+    # SECTION 6: Boxplots (FICO by Loan Purpose and DTI by Risk Category)
+    # FICO by loan purpose
+    purpose_fico_boxplot = alt.Chart(loan_purpose_data).mark_boxplot().encode(
+        y=alt.Y('purpose:N', title='Loan Purpose', sort='-x'),  
+        x=alt.X('fico:Q', title='FICO Score', scale=alt.Scale(domain=[600, 850])),  
+        color=alt.Color('purpose:N', legend=None),  
+        tooltip=['purpose', 'fico']
+    ).properties(
+        width=400,
+        height=200,
+        title='Boxplot of FICO Scores by Loan Purpose'
+    )
+
+    # Debt to income ratio by risk level
+    risk_dti_boxplot = alt.Chart(train_df).mark_boxplot().encode(
+        y=alt.Y('risk_category:N', title='Risk Category', sort='-x'),  
+        x=alt.X('dti:Q', title='DTI (Debt-to-Income)', scale=alt.Scale(domain=[0, 35])),  
+        color=alt.Color('risk_category:N', legend=None),  
+        tooltip=['risk_category', 'dti']
+    ).properties(
+        width=400,
+        height=200,
+        title='Boxplot of DTI by Risk Category'
+    )
+
+    # Combine both boxplots
+    combined_boxplots = purpose_fico_boxplot & risk_dti_boxplot
+
+    # Save combined boxplots
+    combined_boxplots.save(os.path.join(output_dir, "combined_boxplots.html"))
 
 if __name__ == '__main__':
     main()
