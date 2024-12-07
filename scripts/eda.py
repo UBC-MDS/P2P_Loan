@@ -158,5 +158,36 @@ def main(input_csv, output_dir):
     )
     correlation_chart.save(os.path.join(output_dir, "correlation_heatmap.html"))
 
+    # SECTION 6: Boxplots (FICO by Loan Purpose and DTI by Risk Category)
+    # FICO by loan purpose
+    purpose_fico_boxplot = alt.Chart(loan_purpose_data).mark_boxplot().encode(
+        y=alt.Y('purpose:N', title='Loan Purpose', sort='-x'),  
+        x=alt.X('fico:Q', title='FICO Score', scale=alt.Scale(domain=[600, 850])),  
+        color=alt.Color('purpose:N', legend=None),  
+        tooltip=['purpose', 'fico']
+    ).properties(
+        width=400,
+        height=200,
+        title='Boxplot of FICO Scores by Loan Purpose'
+    )
+
+    # Debt to income ratio by risk level
+    risk_dti_boxplot = alt.Chart(train_df).mark_boxplot().encode(
+        y=alt.Y('risk_category:N', title='Risk Category', sort='-x'),  
+        x=alt.X('dti:Q', title='DTI (Debt-to-Income)', scale=alt.Scale(domain=[0, 35])),  
+        color=alt.Color('risk_category:N', legend=None),  
+        tooltip=['risk_category', 'dti']
+    ).properties(
+        width=400,
+        height=200,
+        title='Boxplot of DTI by Risk Category'
+    )
+
+    # Combine both boxplots
+    combined_boxplots = purpose_fico_boxplot & risk_dti_boxplot
+
+    # Save combined boxplots
+    combined_boxplots.save(os.path.join(output_dir, "combined_boxplots.html"))
+
 if __name__ == '__main__':
     main()

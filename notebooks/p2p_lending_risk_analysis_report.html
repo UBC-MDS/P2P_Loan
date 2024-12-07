@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -51,10 +51,10 @@ div.csl-indent {
 <script src="p2p_lending_risk_analysis_report_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="p2p_lending_risk_analysis_report_files/libs/quarto-html/anchor.min.js"></script>
 <link href="p2p_lending_risk_analysis_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="p2p_lending_risk_analysis_report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="p2p_lending_risk_analysis_report_files/libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -70,7 +70,7 @@ div.csl-indent {
   <li><a href="#exploratory-data-analysis-results" id="toc-exploratory-data-analysis-results" class="nav-link active" data-scroll-target="#exploratory-data-analysis-results">Exploratory Data Analysis Results</a></li>
   <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -105,14 +105,14 @@ div.csl-indent {
 </header>
 
 
-<div id="9ad3f692" class="cell" data-execution_count="1">
+<div id="d6a03f25" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>DataTransformerRegistry.enable('vegafusion')</code></pre>
 </div>
 </div>
 <section id="summary" class="level3">
 <h3 class="anchored" data-anchor-id="summary">1. Summary<br></h3>
-<p>This work intends to leaverage machine learning models to predict borrower behaviour and hence probability of default. More specifically, the work focuses aszxon predicting loan defaults using historical data from the Lending Club platform. By applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model, we uncover patterns and trends in borrower risk profiles. The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included both false positives (predicting a loan default when it didn’t occur) and false negatives (failing to predict an actual default). While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model’s accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model’s effectiveness in peer-to-peer lending platforms.</p>
+<p>This work intends to leverage machine learning models to predict borrower behavior and, hence, the probability of default. More specifically, the work focuses on predicting loan defaults using historical data from the Lending Club platform. We uncover patterns and trends in borrower risk profiles by applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model. The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included both false positives (predicting a loan default when it didn’t occur) and false negatives (failing to predict an actual default). While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model’s accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model’s effectiveness in peer-to-peer lending platforms</p>
 </section>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">2. Introduction <br></h3>
@@ -129,19 +129,72 @@ div.csl-indent {
 <section id="feature-description" class="level5">
 <h5 class="anchored" data-anchor-id="feature-description">Feature Description</h5>
 <p>The key features taken into account for this analysis are:</p>
-<p><code>purpose</code>: The purpose of the loan</p>
-<p><code>int.rate</code>: Interest rate of the loan the applicant received</p>
-<p><code>installment</code>: Monthly payment for the loan the applicant received.</p>
-<p><code>log.annual.inc</code>: annual_income (growth rate)</p>
-<p><code>dti</code>: Debt-to-income ratio</p>
-<p><code>revol.bal</code>: Total credit revolving balance</p>
-<p><code>revol.util</code>: Revolving line utilization rate</p>
-<p><code>inq.last.6mths</code>: The number of inquiries in past 6 months</p>
-<p><code>delinq.2yrs</code>: Delinquencies on lines of credit in the last 2 years.</p>
-<p><code>pub.rec</code>: The number of derogatory public records</p>
-<p><code>fico</code>: FICO credit score</p>
-<p><code>days.with.cr.line</code>: Days with Credit Line</p>
-<p><code>not.fully.paid</code>: Binary response on weather the loan is paid or not.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>purpose</code></td>
+<td>The purpose of the loan</td>
+</tr>
+<tr class="even">
+<td><code>int.rate</code></td>
+<td>Interest rate of the loan the applicant received</td>
+</tr>
+<tr class="odd">
+<td><code>installment</code></td>
+<td>Monthly payment for the loan the applicant received</td>
+</tr>
+<tr class="even">
+<td><code>log.annual.inc</code></td>
+<td>Annual income (growth rate)</td>
+</tr>
+<tr class="odd">
+<td><code>dti</code></td>
+<td>Debt-to-income ratio</td>
+</tr>
+<tr class="even">
+<td><code>revol.bal</code></td>
+<td>Total credit revolving balance</td>
+</tr>
+<tr class="odd">
+<td><code>revol.util</code></td>
+<td>Revolving line utilization rate</td>
+</tr>
+<tr class="even">
+<td><code>inq.last.6mths</code></td>
+<td>The number of inquiries in the past 6 months</td>
+</tr>
+<tr class="odd">
+<td><code>delinq.2yrs</code></td>
+<td>Delinquencies on lines of credit in the last 2 years</td>
+</tr>
+<tr class="even">
+<td><code>pub.rec</code></td>
+<td>The number of derogatory public records</td>
+</tr>
+<tr class="odd">
+<td><code>fico</code></td>
+<td>FICO credit score</td>
+</tr>
+<tr class="even">
+<td><code>days.with.cr.line</code></td>
+<td>Days with Credit Line</td>
+</tr>
+<tr class="odd">
+<td><code>not.fully.paid</code></td>
+<td>Binary response on whether the loan is paid or not</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="data-splitting-to-training-and-testing-data" class="level5">
 <h5 class="anchored" data-anchor-id="data-splitting-to-training-and-testing-data">Data Splitting to Training and Testing Data</h5>
@@ -180,7 +233,18 @@ div.csl-indent {
 <figcaption>Distribution of Loan Amounts</figcaption>
 </figure>
 </div>
-<p>Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization <span class="citation" data-cites="cocser2019predictive">(<a href="#ref-cocser2019predictive" role="doc-biblioref">Coşer, Maer-Matei, and Albu 2019</a>)</span>.</p>
+<p>Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates.</p>
+<div id="fig-numeric_feature_distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-numeric_feature_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<embed src="../results/eda_output/numeric_feature_distribution.html" class="img-fluid" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-numeric_feature_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Distribution of numeric features
+</figcaption>
+</figure>
+</div>
+<p>This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization <span class="citation" data-cites="cocser2019predictive">(<a href="#ref-cocser2019predictive" role="doc-biblioref">Coşer, Maer-Matei, and Albu 2019</a>)</span>.</p>
 <p>Key metrix and considerations: - Debt-to-Income Ratio - Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain. - Loan Duration vs.&nbsp;Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).</p>
 <section id="loan-categories" class="level5">
 <h5 class="anchored" data-anchor-id="loan-categories">Loan categories</h5>
@@ -193,12 +257,54 @@ div.csl-indent {
 <section id="descriptive-analysis--eda" class="level4">
 <h4 class="anchored" data-anchor-id="descriptive-analysis--eda">4.3 Descriptive Analysis- EDA</h4>
 <p>To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. Categorical features like purpose also provided significant insights; loans categorized under “small business” and “credit card” showed higher default rates compared to others, such as “home improvement.”</p>
+<div id="fig-histograms_grid" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histograms_grid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/eda_output/histograms_grid.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histograms_grid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Grid of histograms for numeric features
+</figcaption>
+</figure>
+</div>
+<div id="fig-loan_category_vs_purpose" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-loan_category_vs_purpose-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<embed src="../results/eda_output/loan_category_vs_purpose.html" class="img-fluid" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loan_category_vs_purpose-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Loan Category vs Loan Purpose
+</figcaption>
+</figure>
+</div>
 <p>We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers.</p>
-<p>From the boxplot above, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
+<div id="fig-risk_categories_distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-risk_categories_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<embed src="../results/eda_output/risk_categories_distribution.html" class="img-fluid" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-risk_categories_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Risk Categories Distribution
+</figcaption>
+</figure>
+</div>
+<p>From the boxplot, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><embed src="../results/eda_output/combined_boxplots.html" class="img-fluid"></p>
+<figcaption>Combined Boxplots of FICO Scores by Loan Purpose and DTI by Risk Category</figcaption>
+</figure>
+</div>
 </section>
 <section id="correlation-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="correlation-analysis">4.4 Correlation Analysis</h4>
 <p>The EDA for most of the numerical columns produce no strong general trends. We see a higher correlation level between fico and revo.util, and that of fico and interest rate</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><embed src="../results/eda_output/correlation_heatmap.html" class="img-fluid"></p>
+<figcaption>Correlation Heatmap</figcaption>
+</figure>
+</div>
 </section>
 <section id="data-transformation-and-preprocessing" class="level4">
 <h4 class="anchored" data-anchor-id="data-transformation-and-preprocessing">4.5 Data Transformation and Preprocessing <br></h4>
@@ -216,8 +322,9 @@ div.csl-indent {
 <p>log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.</p>
 <p>int.rate: Borrowers with higher interest rates has a greater likelihood of default.</p>
 <p>inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.</p>
-<p>On the test set, the model correctly predicted 1608 cases out of 1916, with 308 errors. These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
-<p>Despite the high accuracy score, our model fails to identify any of the 306 actual defaults loan. This suggest that the accuracy score is unable to fully reflect the model performance. Though our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), the high false negative makes its real life application limited. Further steps is needed to improve the model such that it can also predict defaulted loans well.</p>
+<p>The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors. These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
+<p>Despite the high accuracy score, our model fails to identify any of the 306 actual default loans. This suggests that the accuracy score cannot fully reflect the model performance. However, our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), and the high false negative limits its real-life application. Further steps are needed to improve the model so that it can also predict defaulted loans well.</p>
+<p>Future work will focus on improving the model’s ability to predict defaults by exploring methods for handling imbalanced datasets. One approach is to experiment with machine learning models designed to manage class imbalance better: (1) Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better; and (2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling.</p>
 </section>
 <section id="limitations" class="level4">
 <h4 class="anchored" data-anchor-id="limitations">4.8 Limitations</h4>
@@ -333,8 +440,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -445,7 +550,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
