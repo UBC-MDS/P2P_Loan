@@ -9,7 +9,7 @@ import requests
 import pandas as pd
 
 
-def download_csv(url, directory, filename):
+def download_csv(url, directory):
     """
     Download a CSV file from the given URL and save it to the specified directory.
 
@@ -19,8 +19,6 @@ def download_csv(url, directory, filename):
         The URL of the CSV file to be downloaded.
     directory : str
         The directory where the CSV file will be saved.
-    filename : str
-        The name to save the file as.
 
     Returns:
     -------
@@ -43,20 +41,18 @@ def download_csv(url, directory, filename):
         os.makedirs(directory)
 
     # Save the CSV file to the specified directory
-    file_path = os.path.join(directory, filename)
-    with open(file_path, 'wb') as f:
-        f.write(response.content)
-
+    file_path = os.path.join(directory, "loan_data.csv")
+    df = pd.read_csv(url)
+    df.to_csv(file_path, index=False)
     print(f"Data successfully downloaded and saved to {file_path}")
 
 @click.command()
 @click.option('--url', type=str, help='URL of dataset to be downloaded')
 @click.option('--output_dir', type=str, help='Path to directory where the data will be saved')
-@click.option('--filename', type=str, help='Filename to save the downloaded data')
-def main(url, output_dir, filename):
+def main(url, output_dir):
     """Downloads CSV data from the web to a local filepath."""
     try:
-        download_csv(url, output_dir, filename)
+        download_csv(url, output_dir)
     except ValueError as e:
         print(f"Error: {e}")
     except Exception as e:
