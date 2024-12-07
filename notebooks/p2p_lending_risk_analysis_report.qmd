@@ -100,8 +100,10 @@ Python language was used to conduct this analysis.
 
 ### 4. Results and Discussion <br>
 
-In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.
 
+## 4.1 Exploratory Data Analysis 
+
+In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.
 
 ```{python}
 #| label: info
@@ -110,81 +112,65 @@ In order for us to draw context about the data, let us have a look at the first 
 Markdown(info.to_markdown())
 ```
 
-#### 4.1 Data splitting 
-
-Split the data into `train_df` (80%) and `test_df` (20%) with `random_state = 522`.
-
-
-## Exploratory Data Analysis Results
-
-### Distribution of Loan Amounts
-Here’s the distribution of loan amounts:
-
-![Distribution of Loan Amounts](../results/eda_output/loan_amount_distribution.png)
-
-
-Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. 
-
-![Distribution of numeric features](../results/eda_output/numeric_feature_distribution.html){#fig-numeric_feature_distribution width=100%}
-
-This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization [@cocser2019predictive].
-
-Key metrix and considerations:
-- Debt-to-Income Ratio 
-- Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain.
-- Loan Duration vs. Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).
-
-##### Loan categories
-Below, to help us create the loan categories, we are using the FICO risk profile categories [@ConsumerBureau]
-- Deep subprime (credit scores below 580)
-- Subprime (credit scores of 580-619)
-- Near-prime (credit scores of 620-659)
-- Prime (credit scores of 660-719)
-- Super-prime (credit scores of 720 or above)
-
-
-
-##### Risk categories
-Let us explore the data further with specific borrower risk profile categories 
-Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: 
-fico score of at least 720 (Low Risk), 'fico' score between 650 and 720 ('Medium Risk') and 'fico' score of 650 as 'High Risk'. 
-
-
-
-#### 4.3 Descriptive Analysis- EDA
-
-To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. Categorical features like purpose also provided significant insights; loans categorized under "small business" and "credit card" showed higher default rates compared to others, such as "home improvement."
-
+To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. (@fig-feature_dist) Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. 
 
 ![Empirical distributions of numerical features between class `Defaulted(1)` and `Fully Paid(0)`](../results/figures/histograms_grid.png){#fig-feature_dist width=100%}
 
+Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization [@cocser2019predictive].
 
+Key metrix and considerations:
+- Debt-to-Income Ratio 
 
-We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers.
+- Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain.
+
+- Loan Duration vs. Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).
+
+##### 4.1.2 Loan categories
+Below, to help us create the loan categories, we are using the FICO risk profile categories [@ConsumerBureau]
+
+- Deep subprime (credit scores below 580)
+
+- Subprime (credit scores of 580-619)
+
+- Near-prime (credit scores of 620-659)
+
+- Prime (credit scores of 660-719)
+
+- Super-prime (credit scores of 720 or above)
+
+Categorical features like purpose also provided significant insights; loans categorized under "small business" and "credit card" showed higher default rates compared to others, such as "home improvement." (@fig-purpose_risk)
 
 ![Distribution of borrower's loan purpose by their risk profile category](../results/figures/loan_category_vs_purpose.png){#fig-purpose_risk width=100%}
 
+##### 4.1.3 Risk categories
+Let us explore the data further with specific borrower risk profile categories. 
+Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: 
+fico score of at least 720 (Low Risk), 'fico' score between 650 and 720 ('Medium Risk') and 'fico' score of 650 as 'High Risk'. 
+
+We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers(@fig-risk_dist).
+
 ![Bar Chart showing the distribution of borrower's risk level](../results/figures/risk_categories_distribution.png){#fig-risk_dist width=100%}
 
-From the boxplot, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
+
+#### 4.1.3 Descriptive Analysis
+
+From the boxplot below (@fig-fico_purpose), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
 
 ![Boxplot comparing borrower's credit score by their loan purpose](../results/figures/boxplot_purpose.png){#fig-fico_purpose width=100%}
 
 ![Boxplot comparing borrower's debt-to-income ratio by their risk level](../results/figures/boxplot_risk.png){#fig-dti_risk width=100%}
 
-From the boxplot above, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
+From the boxplot above (@fig-dti_risk), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
 
 
-#### 4.4 Correlation Analysis
+#### 4.1.4 Correlation Analysis
 The EDA for most of the numerical columns produce no strong general trends. 
-We see a higher correlation level between fico and revo.util, and that of fico and interest rate
+We see a higher correlation level between fico and revo.util, and that of fico and interest rate. (@fig-corr_map)
 
 ![Heatmap showing correlation between features for the lending club data](../results/figures/correlation_heatmap.png){#fig-corr_map width=100%}
 
-####  4.5 Data Transformation and Preprocessing <br>
-Since both `risk_category` and `loan_categories` are dereived from `fico`, we decided to drop the `fico` and `risk_category` 
 
-####  4.6 Model Building <br>
+####  4.2 Model Building <br>
 
 First we performed 10-folds cross-evaluation on four classifier models: DecisionTree, kNN-neighbours, SVC and Logistic Regression. 
 
@@ -209,6 +195,18 @@ Markdown(model_results.to_markdown())
 ```
 
 
+Here, we identify the top 5 influential features for predicting each class (@tbl-positive_coef, @tbl-negative_coef,).
+The Logistic Regression's coefficients provide insights into feature importance, highlighting predictors such as:
+
+fico: Higher credit score were strongly correlated with lower default risk.
+
+loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.
+
+log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.
+
+int.rate: Borrowers with higher interest rates has a greater likelihood of default.
+
+inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.
 
 ```{python}
 #| label: tbl-positive_coef
@@ -224,34 +222,28 @@ Markdown(positive_coef[:3].to_markdown())
 Markdown(negative_coef[:3].to_markdown())
 ```
 
-Here, we identify the top 5 influential features for predicting each class.
-The Logistic Regression's coefficients provide insights into feature importance, highlighting predictors such as:
+The model achieved an test score of `{python} test_results["Accuracy Score"][0]`.
 
-fico: Higher credit score were strongly correlated with lower default risk.
+```{python}
+#| label: tbl-confusion_matrix
+#| tbl-cap: Confusion Matrix of Logistic Regression Model on Test Data
 
-loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.
+Markdown(confusion_matrix.to_markdown())
+```
 
-log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.
-
-int.rate: Borrowers with higher interest rates has a greater likelihood of default.
-
-inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.
-
-
-
-
-
-The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors. 
+The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors (@tbl-confusion_matrix). 
 These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.
 
 Despite the high accuracy score, our model fails to identify any of the 306 actual default loans. This suggests that the accuracy score cannot fully reflect the model performance. However, our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), and the high false negative limits its real-life application. Further steps are needed to improve the model so that it can also predict defaulted loans well.
 
-Future work will focus on improving the model's ability to predict defaults by exploring methods for handling imbalanced datasets. One approach is to experiment with machine learning models designed to manage class imbalance better: (1) Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better;  and (2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling. 
+Future work will focus on improving the model's ability to predict defaults by exploring methods for handling imbalanced datasets. One approach is to experiment with machine learning models designed to manage class imbalance better: 
+
+(1) Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better;  and 
+
+(2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling. 
 
 
-
-
-#### 4.8 Limitations
+#### 4.3 Limitations
 
 ```{python}
 #| label: tbl-target_dist

@@ -67,7 +67,7 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#exploratory-data-analysis-results" id="toc-exploratory-data-analysis-results" class="nav-link active" data-scroll-target="#exploratory-data-analysis-results">Exploratory Data Analysis Results</a></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link active" data-scroll-target="#exploratory-data-analysis">4.1 Exploratory Data Analysis</a></li>
   <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -211,9 +211,12 @@ div.csl-indent {
 </section>
 <section id="results-and-discussion" class="level3">
 <h3 class="anchored" data-anchor-id="results-and-discussion">4. Results and Discussion <br></h3>
+</section>
+<section id="exploratory-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis">4.1 Exploratory Data Analysis</h2>
 <p>In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.</p>
 <div class="cell" data-execution_count="3">
-<div id="info" class="cell-output cell-output-display cell-output-markdown" data-execution_count="19">
+<div id="info" class="cell-output cell-output-display cell-output-markdown" data-execution_count="46">
 <table class="caption-top table table-sm table-striped small">
 <caption>Information on all numeric columns in training data. {#cell-info}</caption>
 <thead>
@@ -313,85 +316,70 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<section id="data-splitting" class="level4">
-<h4 class="anchored" data-anchor-id="data-splitting">4.1 Data splitting</h4>
-<p>Split the data into <code>train_df</code> (80%) and <code>test_df</code> (20%) with <code>random_state = 522</code>.</p>
-</section>
-</section>
-<section id="exploratory-data-analysis-results" class="level2">
-<h2 class="anchored" data-anchor-id="exploratory-data-analysis-results">Exploratory Data Analysis Results</h2>
-<section id="distribution-of-loan-amounts" class="level3">
-<h3 class="anchored" data-anchor-id="distribution-of-loan-amounts">Distribution of Loan Amounts</h3>
-<p>Here’s the distribution of loan amounts:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../results/eda_output/loan_amount_distribution.png" class="img-fluid figure-img"></p>
-<figcaption>Distribution of Loan Amounts</figcaption>
-</figure>
-</div>
-<p>Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates.</p>
-<div id="fig-numeric_feature_distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-numeric_feature_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<embed src="../results/eda_output/numeric_feature_distribution.html" class="img-fluid" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-numeric_feature_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Distribution of numeric features
-</figcaption>
-</figure>
-</div>
-<p>This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization <span class="citation" data-cites="cocser2019predictive">(<a href="#ref-cocser2019predictive" role="doc-biblioref">Coşer, Maer-Matei, and Albu 2019</a>)</span>.</p>
-<p>Key metrix and considerations: - Debt-to-Income Ratio - Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain. - Loan Duration vs.&nbsp;Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).</p>
-<section id="loan-categories" class="level5">
-<h5 class="anchored" data-anchor-id="loan-categories">Loan categories</h5>
-<p>Below, to help us create the loan categories, we are using the FICO risk profile categories <span class="citation" data-cites="ConsumerBureau">(<a href="#ref-ConsumerBureau" role="doc-biblioref">Consumer Financial Protection Bureau 2024</a>)</span> - Deep subprime (credit scores below 580) - Subprime (credit scores of 580-619) - Near-prime (credit scores of 620-659) - Prime (credit scores of 660-719) - Super-prime (credit scores of 720 or above)</p>
-</section>
-<section id="risk-categories" class="level5">
-<h5 class="anchored" data-anchor-id="risk-categories">Risk categories</h5>
-<p>Let us explore the data further with specific borrower risk profile categories Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: fico score of at least 720 (Low Risk), ‘fico’ score between 650 and 720 (‘Medium Risk’) and ‘fico’ score of 650 as ‘High Risk’.</p>
-</section>
-<section id="descriptive-analysis--eda" class="level4">
-<h4 class="anchored" data-anchor-id="descriptive-analysis--eda">4.3 Descriptive Analysis- EDA</h4>
-<p>To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. Categorical features like purpose also provided significant insights; loans categorized under “small business” and “credit card” showed higher default rates compared to others, such as “home improvement.”</p>
+<p>To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. (<a href="#fig-feature_dist" class="quarto-xref">Figure&nbsp;1</a>) Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default.</p>
 <div id="fig-feature_dist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-feature_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../results/figures/histograms_grid.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-feature_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Empirical distributions of numerical features between class <code>Defaulted(1)</code> and <code>Fully Paid(0)</code>
+Figure&nbsp;1: Empirical distributions of numerical features between class <code>Defaulted(1)</code> and <code>Fully Paid(0)</code>
 </figcaption>
 </figure>
 </div>
-<p>We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers.</p>
+<p>Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization <span class="citation" data-cites="cocser2019predictive">(<a href="#ref-cocser2019predictive" role="doc-biblioref">Coşer, Maer-Matei, and Albu 2019</a>)</span>.</p>
+<p>Key metrix and considerations: - Debt-to-Income Ratio</p>
+<ul>
+<li><p>Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain.</p></li>
+<li><p>Loan Duration vs.&nbsp;Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).</p></li>
+</ul>
+<section id="loan-categories" class="level5">
+<h5 class="anchored" data-anchor-id="loan-categories">4.1.2 Loan categories</h5>
+<p>Below, to help us create the loan categories, we are using the FICO risk profile categories <span class="citation" data-cites="ConsumerBureau">(<a href="#ref-ConsumerBureau" role="doc-biblioref">Consumer Financial Protection Bureau 2024</a>)</span></p>
+<ul>
+<li><p>Deep subprime (credit scores below 580)</p></li>
+<li><p>Subprime (credit scores of 580-619)</p></li>
+<li><p>Near-prime (credit scores of 620-659)</p></li>
+<li><p>Prime (credit scores of 660-719)</p></li>
+<li><p>Super-prime (credit scores of 720 or above)</p></li>
+</ul>
+<p>Categorical features like purpose also provided significant insights; loans categorized under “small business” and “credit card” showed higher default rates compared to others, such as “home improvement.” (<a href="#fig-purpose_risk" class="quarto-xref">Figure&nbsp;2</a>)</p>
 <div id="fig-purpose_risk" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-purpose_risk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../results/figures/loan_category_vs_purpose.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-purpose_risk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Distribution of borrower’s loan purpose by their risk profile category
+Figure&nbsp;2: Distribution of borrower’s loan purpose by their risk profile category
 </figcaption>
 </figure>
 </div>
+</section>
+<section id="risk-categories" class="level5">
+<h5 class="anchored" data-anchor-id="risk-categories">4.1.3 Risk categories</h5>
+<p>Let us explore the data further with specific borrower risk profile categories. Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: fico score of at least 720 (Low Risk), ‘fico’ score between 650 and 720 (‘Medium Risk’) and ‘fico’ score of 650 as ‘High Risk’.</p>
+<p>We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers(<a href="#fig-risk_dist" class="quarto-xref">Figure&nbsp;3</a>).</p>
 <div id="fig-risk_dist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-risk_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../results/figures/risk_categories_distribution.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-risk_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Bar Chart showing the distribution of borrower’s risk level
+Figure&nbsp;3: Bar Chart showing the distribution of borrower’s risk level
 </figcaption>
 </figure>
 </div>
-<p>From the boxplot, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
+</section>
+<section id="descriptive-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="descriptive-analysis">4.1.3 Descriptive Analysis</h4>
+<p>From the boxplot below (<a href="#fig-fico_purpose" class="quarto-xref">Figure&nbsp;4</a>), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
 <div id="fig-fico_purpose" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fico_purpose-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../results/figures/boxplot_purpose.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fico_purpose-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Boxplot comparing borrower’s credit score by their loan purpose
+Figure&nbsp;4: Boxplot comparing borrower’s credit score by their loan purpose
 </figcaption>
 </figure>
 </div>
@@ -401,32 +389,28 @@ Figure&nbsp;5: Boxplot comparing borrower’s credit score by their loan purpose
 <img src="../results/figures/boxplot_risk.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dti_risk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Boxplot comparing borrower’s debt-to-income ratio by their risk level
+Figure&nbsp;5: Boxplot comparing borrower’s debt-to-income ratio by their risk level
 </figcaption>
 </figure>
 </div>
-<p>From the boxplot above, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
+<p>From the boxplot above (<a href="#fig-dti_risk" class="quarto-xref">Figure&nbsp;5</a>), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
 </section>
 <section id="correlation-analysis" class="level4">
-<h4 class="anchored" data-anchor-id="correlation-analysis">4.4 Correlation Analysis</h4>
-<p>The EDA for most of the numerical columns produce no strong general trends. We see a higher correlation level between fico and revo.util, and that of fico and interest rate</p>
+<h4 class="anchored" data-anchor-id="correlation-analysis">4.1.4 Correlation Analysis</h4>
+<p>The EDA for most of the numerical columns produce no strong general trends. We see a higher correlation level between fico and revo.util, and that of fico and interest rate. (<a href="#fig-corr_map" class="quarto-xref">Figure&nbsp;6</a>)</p>
 <div id="fig-corr_map" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-corr_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../results/figures/correlation_heatmap.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-corr_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Heatmap showing correlation between features for the lending club data
+Figure&nbsp;6: Heatmap showing correlation between features for the lending club data
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="data-transformation-and-preprocessing" class="level4">
-<h4 class="anchored" data-anchor-id="data-transformation-and-preprocessing">4.5 Data Transformation and Preprocessing <br></h4>
-<p>Since both <code>risk_category</code> and <code>loan_categories</code> are dereived from <code>fico</code>, we decided to drop the <code>fico</code> and <code>risk_category</code></p>
-</section>
 <section id="model-building" class="level4">
-<h4 class="anchored" data-anchor-id="model-building">4.6 Model Building <br></h4>
+<h4 class="anchored" data-anchor-id="model-building">4.2 Model Building <br></h4>
 <p>First we performed 10-folds cross-evaluation on four classifier models: DecisionTree, kNN-neighbours, SVC and Logistic Regression.</p>
 <div class="cell" data-execution_count="4">
 <div id="tbl-cv_results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
@@ -435,7 +419,7 @@ Figure&nbsp;7: Heatmap showing correlation between features for the lending club
 Table&nbsp;1: Cross-validation results of various classification model.
 </figcaption>
 <div aria-describedby="tbl-cv_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="20">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="47">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 23%">
@@ -498,7 +482,7 @@ Table&nbsp;1: Cross-validation results of various classification model.
 <img src="../results/figures/param_C_tuning.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-C_tuning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: 10-folds cross-validation results for hyperparameter C tuning. Accuracy score was used as the classification metric.
+Figure&nbsp;7: 10-folds cross-validation results for hyperparameter C tuning. Accuracy score was used as the classification metric.
 </figcaption>
 </figure>
 </div>
@@ -509,7 +493,7 @@ Figure&nbsp;8: 10-folds cross-validation results for hyperparameter C tuning. Ac
 Table&nbsp;2: Best Logistic Regression Model after Hyperparameter Tuning
 </figcaption>
 <div aria-describedby="tbl-model_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="21">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="48">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -533,6 +517,12 @@ Table&nbsp;2: Best Logistic Regression Model after Hyperparameter Tuning
 </figure>
 </div>
 </div>
+<p>Here, we identify the top 5 influential features for predicting each class (<a href="#tbl-positive_coef" class="quarto-xref">Table&nbsp;3</a>, <a href="#tbl-negative_coef" class="quarto-xref">Table&nbsp;4</a>,). The Logistic Regression’s coefficients provide insights into feature importance, highlighting predictors such as:</p>
+<p>fico: Higher credit score were strongly correlated with lower default risk.</p>
+<p>loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.</p>
+<p>log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.</p>
+<p>int.rate: Borrowers with higher interest rates has a greater likelihood of default.</p>
+<p>inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.</p>
 <div class="cell" data-execution_count="6">
 <div id="tbl-positive_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -540,7 +530,7 @@ Table&nbsp;2: Best Logistic Regression Model after Hyperparameter Tuning
 Table&nbsp;3: Top 3 influential feature for predicting class <code>Defaulted(1)</code>
 </figcaption>
 <div aria-describedby="tbl-positive_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="22">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="49">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -579,7 +569,7 @@ Table&nbsp;3: Top 3 influential feature for predicting class <code>Defaulted(1)<
 Table&nbsp;4: Top 3 influential feature for predicting class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-negative_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="23">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="50">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -611,26 +601,68 @@ Table&nbsp;4: Top 3 influential feature for predicting class <code>Fully Paid(0)
 </figure>
 </div>
 </div>
-<p>Here, we identify the top 5 influential features for predicting each class. The Logistic Regression’s coefficients provide insights into feature importance, highlighting predictors such as:</p>
-<p>fico: Higher credit score were strongly correlated with lower default risk.</p>
-<p>loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.</p>
-<p>log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.</p>
-<p>int.rate: Borrowers with higher interest rates has a greater likelihood of default.</p>
-<p>inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.</p>
-<p>The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors. These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
+<p>The model achieved an test score of 0.8398.</p>
+<div class="cell" data-execution_count="8">
+<div id="tbl-confusion_matrix" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
+</figcaption>
+<div aria-describedby="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="51">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 28%">
+<col style="width: 32%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Predict Positive (defaulted)</th>
+<th style="text-align: right;">Predict Negative (fully paid)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True Positive (defaulted)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">306</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">True Negative (fully paid)</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1609</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors (<a href="#tbl-confusion_matrix" class="quarto-xref">Table&nbsp;5</a>). These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
 <p>Despite the high accuracy score, our model fails to identify any of the 306 actual default loans. This suggests that the accuracy score cannot fully reflect the model performance. However, our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), and the high false negative limits its real-life application. Further steps are needed to improve the model so that it can also predict defaulted loans well.</p>
-<p>Future work will focus on improving the model’s ability to predict defaults by exploring methods for handling imbalanced datasets. One approach is to experiment with machine learning models designed to manage class imbalance better: (1) Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better; and (2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling.</p>
+<p>Future work will focus on improving the model’s ability to predict defaults by exploring methods for handling imbalanced datasets. One approach is to experiment with machine learning models designed to manage class imbalance better:</p>
+<ol type="1">
+<li>Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better; and</li>
+</ol>
+<p>(2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling.</p>
 </section>
 <section id="limitations" class="level4">
 <h4 class="anchored" data-anchor-id="limitations">4.8 Limitations</h4>
-<div class="cell" data-execution_count="8">
-<div id="tbl-target_dist" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
+<div class="cell" data-execution_count="9">
+<div id="tbl-target_dist" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
+Table&nbsp;6: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="24">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="52">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -658,7 +690,6 @@ Table&nbsp;5: Target distribution showing class imbalance biased towards class <
 <p>Possible solutions to the high false negtative include adjusting the <code>class_weight</code> hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaulating model performance.</p>
 <p>Also, based on the feature importances obtained, additional feature engineering or feature selection can potentially improve model performance.</p>
 <p>To account for possible non-linear decision boundary, another alternative is to use a non-linear classification model, for example a decision tree, which can model complex non-linear decision boundaries better.</p>
-</section>
 </section>
 </section>
 <section id="reference" class="level1 unnumbered">
