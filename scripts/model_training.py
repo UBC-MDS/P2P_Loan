@@ -23,9 +23,16 @@ from joblib import dump
 
 def main(data_from, preprocessor_from, data_to):
     '''Fits a Loan Default classifier to the training data and saves the results'''
-    train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
+    try:
+        train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
+        print(f"Data loaded successfully from {data_from}")
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return
+    
     X_train = train_df.drop(columns="not.fully.paid")
     y_train = train_df["not.fully.paid"]
+
     # Define Models
     dt = DecisionTreeClassifier(random_state=123)
     knn = KNeighborsClassifier(n_jobs=-1)
@@ -43,6 +50,7 @@ def main(data_from, preprocessor_from, data_to):
 
    
     np.round(cv_results,decimals=4).to_csv(os.path.join(data_to, "cv_results.csv"))
+    print(f"Results successfully saved to {data_to}")
 
 
 def model_cross_val(model, preprocessor, X_train, y_train):
