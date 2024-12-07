@@ -88,7 +88,7 @@ def main(input_csv, output_dir):
     for i, feat in enumerate(numeric_cols):
         ax = axes[i]
         train_df.groupby("not.fully.paid")[feat].plot.hist(
-            bins=40, alpha=0.4, legend=True, density=True, title=f"Histogram of {feat}", ax=ax
+            bins=40, alpha=0.4, legend=True, density=True, title=f"{feat}", ax=ax
         )
         ax.set_xlabel(feat)
 
@@ -101,31 +101,18 @@ def main(input_csv, output_dir):
     plt.savefig(os.path.join(output_dir, "figures", "histograms_grid.png"))
     plt.close(fig)
 
-    # Data distribution of selected features using Altair
-    numeric_cols_hists = alt.Chart(train_df).mark_bar().encode(
-        alt.X(alt.repeat(), type='quantitative', bin=alt.Bin(maxbins=20)),  
-        y='count()'
-    ).properties(
-        width=250,
-        height=175
-    ).repeat(
-        ['installment', 'dti'],  
-        columns=3
-    )
-    numeric_cols_hists.save(os.path.join(output_dir, "figures", "numeric_feature_distribution.png"))
 
     # Default Rate by Loan Purpose
     loan_purpose_data = train_df.explode('purpose')
     purpose_risk_chart = alt.Chart(loan_purpose_data).mark_circle().encode(
-        x=alt.X('loan_categories:N', title='Loan Categories', sort='-color', axis=alt.Axis(labelAngle=0)),
+        x=alt.X('loan_categories:N', title='Risk Profile Category', sort='-color', axis=alt.Axis(labelAngle=0)),
         y=alt.Y('purpose:N', title='Loan Purpose', sort='color'),
         color=alt.Color('count()', scale=alt.Scale(scheme='viridis'), title='Loan Count'),
         size=alt.Size('count()', title='Loan Count', scale=alt.Scale(range=[50, 1500])),
         tooltip=['purpose', 'loan_categories', 'count()']
     ).properties(
         width=600,
-        height=400,
-        title="Loan Category vs Loan Purpose"
+        height=400
     )
     purpose_risk_chart.save(os.path.join(output_dir, "figures", "loan_category_vs_purpose.png"))
 
@@ -135,8 +122,7 @@ def main(input_csv, output_dir):
         y=alt.Y('count()', title='Count') 
     ).properties(
         height=300,
-        width=400,
-        title="Distribution of Risk Categories"
+        width=400
     )
     categories_hist.save(os.path.join(output_dir, "figures", "risk_categories_distribution.png"))
 
@@ -155,6 +141,34 @@ def main(input_csv, output_dir):
         title="Correlation Heatmap"
     )
     correlation_chart.save(os.path.join(output_dir, "figures", "correlation_heatmap.png"))
+
+    #fico by loan purpose
+    purpose_fico_boxplot = alt.Chart(loan_purpose_data).mark_boxplot().encode(
+        y=alt.Y('purpose:N', title='Loan Purpose', sort='-x'),  
+        x=alt.X('fico:Q', title='FICO Score', scale=alt.Scale(domain=[600, 850]),),  
+        color=alt.Color('purpose:N', legend=None),  
+        tooltip=['purpose', 'fico']
+    ).properties(
+        width=400,
+        height=200
+    )
+
+    purpose_fico_boxplot.save(os.path.join(output_dir, "figures", "boxplot_purpose.png"))
+
+    #Debt to income ratio by risk level
+    risk_dti_boxplot = alt.Chart(train_df).mark_boxplot().encode(
+        y=alt.Y('risk_category:N', title='Risk Level', sort='-x'),  
+        x=alt.X('dti:Q', title='DTI (Debt-to-Income) %', scale=alt.Scale(domain=[0, 35])),  
+        color=alt.Color('risk_category:N', legend=None),  
+        tooltip=['risk_category', 'dti']
+    ).properties(
+        width=400,
+        height=200
+    )
+
+
+    risk_dti_boxplot.save(os.path.join(output_dir, "figures", "boxplot_risk.png"))
+
 
 if __name__ == '__main__':
     main()

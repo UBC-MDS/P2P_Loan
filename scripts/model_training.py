@@ -75,7 +75,7 @@ def model_cross_val(model, preprocessor, X_train, y_train):
     
     return result_dict
 
-
+pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)).to_csv(os.path.join(data_to, "target_dist.csv")
 
 
 if __name__ == '__main__':

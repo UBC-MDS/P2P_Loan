@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import os
 import pickle
+import altair as alt
 from sklearn import set_config
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_validate
@@ -64,10 +65,23 @@ def main(data_from, preprocessor_from,data_to, pipeline_to):
         "mean_test_score",
         "mean_train_score"
     ]]
-
-    cv_results =  np.round(cv_results, decimals=6).sort_values(by="rank_test_score").head(5)
+    cv_graph = alt.Chart(cv_results).mark_line().encode(
+        x=alt.X('param_LogReg__C:Q', scale=alt.Scale(type='log'), title='C'), 
+        y=alt.Y('mean_test_score:Q', scale=alt.Scale(zero=False, domain=(0.839, 0.8401)), title='Accuracy Score'),  
+    ).properties(
+        width=500
+    )
+    cv_results =  np.round(cv_results, decimals=6).sort_values(by="rank_test_score").head(1)
+    cv_results = pd.DataFrame(
+    data={
+        "Best C": cv_results.iloc[:,1],
+        "Mean Test Score": cv_results.iloc[:,2],
+        "Mean Train Score": cv_results.iloc[:,3]}).reset_index(drop=True)
+    cv_graph.save(os.path.join(data_to, "..", "figures", "param_C_tuning.png"))
     cv_results.to_csv(os.path.join(data_to, "model_results.csv"))
     
+    pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)).to_csv(os.path.join(data_to, "target_dist.csv"))
+
     
 if __name__ == '__main__':
     main()
