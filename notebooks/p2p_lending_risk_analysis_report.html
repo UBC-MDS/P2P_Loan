@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Mavis Wong, Yasmin Hassan, Abeba N. Turi">
+<meta name="dcterms.date" content="2024-12-06">
+
+<title>P2P Online Lending Default Prediction- A Usecase on LendingClub Default Risk</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="p2p_lending_risk_analysis_report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="p2p_lending_risk_analysis_report_files/libs/quarto-html/quarto.js"></script>
+<script src="p2p_lending_risk_analysis_report_files/libs/quarto-html/popper.min.js"></script>
+<script src="p2p_lending_risk_analysis_report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="p2p_lending_risk_analysis_report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="p2p_lending_risk_analysis_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="p2p_lending_risk_analysis_report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#exploratory-data-analysis-results" id="toc-exploratory-data-analysis-results" class="nav-link active" data-scroll-target="#exploratory-data-analysis-results">Exploratory Data Analysis Results</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">P2P Online Lending Default Prediction- A Usecase on LendingClub Default Risk</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Mavis Wong, Yasmin Hassan, Abeba N. Turi </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 6, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="9ad3f692" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>DataTransformerRegistry.enable('vegafusion')</code></pre>
+</div>
+</div>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">1. Summary<br></h3>
+<p>This work intends to leaverage machine learning models to predict borrower behaviour and hence probability of default. More specifically, the work focuses aszxon predicting loan defaults using historical data from the Lending Club platform. By applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model, we uncover patterns and trends in borrower risk profiles. The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included both false positives (predicting a loan default when it didn’t occur) and false negatives (failing to predict an actual default). While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model’s accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model’s effectiveness in peer-to-peer lending platforms.</p>
+</section>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">2. Introduction <br></h3>
+<p>Crowd-based business models are one of the last decade’s developments with the proliferation of platform economies and web technology applications <span class="citation" data-cites="sutherland2018sharing">(<a href="#ref-sutherland2018sharing" role="doc-biblioref">Sutherland and Jarrahi 2018</a>)</span>. One of such developments following the 2007 financial crisis are the P2P online lending platforms. The backbone of the digital economic system built on this is that it relies on trust a currency. Like all other crowd-based business models, P2P online lending heavily relied on trustworthiness of borrowers. To help with this, online platforms like LendingClub used a number of features to define eligibility and rate of access to loan for potential borrowers.Traditional credit risk analysis often relies on rule-based systems or credit scores, which might not fully capture the complexities of borrower behavior. By applying Logistic Regression, we aim to develop a model that is both interpretable and effective in identifying high-risk loans. This analysis intends to provide a data-driven approach to improve credit decision-making in a broader context of platform based transactions through machine learning models. Extensive research has been conducted on borrower risk behaviour analysis and trust within P2P online lending system, highlighting the critical role trust and predictability holds in ensuring platform sustainability and mitigating default risks <span class="citation" data-cites="cai2016judging">(<a href="#ref-cai2016judging" role="doc-biblioref">Cai et al. 2016</a>)</span>. Building on this, this work focuses on developing a comprehensive risk analysis framework through machine hlearning models that will help predict borrower behaviour.</p>
+</section>
+<section id="methods" class="level3">
+<h3 class="anchored" data-anchor-id="methods">3. Methods <br></h3>
+<section id="data" class="level4">
+<h4 class="anchored" data-anchor-id="data">3.1 Data <br></h4>
+<section id="data-source" class="level5">
+<h5 class="anchored" data-anchor-id="data-source">Data Source</h5>
+<p>This analysis is based on the historic loan data from LendingClub <span class="citation" data-cites="lendingclub">(<a href="#ref-lendingclub" role="doc-biblioref">matmcreative 2024</a>)</span>. It contains various borrower and loan features, such as interest rates, annual income, debt-to-income ratio (DTI), and credit history. The target variable, not.fully.paid, indicates whether the borrower defaulted on the loan (1) or successfully repaid it (0).</p>
+</section>
+<section id="feature-description" class="level5">
+<h5 class="anchored" data-anchor-id="feature-description">Feature Description</h5>
+<p>The key features taken into account for this analysis are:</p>
+<p><code>purpose</code>: The purpose of the loan</p>
+<p><code>int.rate</code>: Interest rate of the loan the applicant received</p>
+<p><code>installment</code>: Monthly payment for the loan the applicant received.</p>
+<p><code>log.annual.inc</code>: annual_income (growth rate)</p>
+<p><code>dti</code>: Debt-to-income ratio</p>
+<p><code>revol.bal</code>: Total credit revolving balance</p>
+<p><code>revol.util</code>: Revolving line utilization rate</p>
+<p><code>inq.last.6mths</code>: The number of inquiries in past 6 months</p>
+<p><code>delinq.2yrs</code>: Delinquencies on lines of credit in the last 2 years.</p>
+<p><code>pub.rec</code>: The number of derogatory public records</p>
+<p><code>fico</code>: FICO credit score</p>
+<p><code>days.with.cr.line</code>: Days with Credit Line</p>
+<p><code>not.fully.paid</code>: Binary response on weather the loan is paid or not.</p>
+</section>
+<section id="data-splitting-to-training-and-testing-data" class="level5">
+<h5 class="anchored" data-anchor-id="data-splitting-to-training-and-testing-data">Data Splitting to Training and Testing Data</h5>
+<p>Train-Test Split:</p>
+<p>The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set. Features: The model was trained on both numeric features (e.g., int.rate, installment) and categorical features (e.g., purpose, loan_categories).</p>
+<p>Preprocessing:</p>
+<p>Numeric features were scaled using StandardScaler, while categorical features were one-hot encoded. Missing values were imputed using the median (numeric) or most frequent value (categorical).</p>
+</section>
+</section>
+<section id="analysis" class="level4">
+<h4 class="anchored" data-anchor-id="analysis">3.2 Analysis <br></h4>
+<ul>
+<li><p>Train-Test Split: The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set. <br></p></li>
+<li><p>Features: The model was trained on both numeric features (e.g., int.rate, installment) and categorical features (e.g., purpose, loan_categories).</p></li>
+<li><p>Preprocessing: Numeric features were scaled using StandardScaler, while categorical features were one-hot encoded. Missing values were imputed using the median (numeric) or most frequent value (categorical).</p></li>
+<li><p>Model: Logistic Regression was selected as the final model for its simplicity, slightly higher accuracy, and interpretability. All columns except <code>risk_category</code> were used in model fitting. <code>risk_category</code> was drop due to it being redundant to “loan_categories” (both derived from “fico” score). A grid search with 10-fold cross-validation on the hyperparameter <code>C</code> of the logistic regression model is used for optimization. Python language was used to conduct this analysis.</p></li>
+</ul>
+</section>
+</section>
+<section id="results-and-discussion" class="level3">
+<h3 class="anchored" data-anchor-id="results-and-discussion">4. Results and Discussion <br></h3>
+<p>In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.</p>
+<section id="data-splitting" class="level4">
+<h4 class="anchored" data-anchor-id="data-splitting">4.1 Data splitting</h4>
+<p>Split the data into <code>train_df</code> (80%) and <code>test_df</code> (20%) with <code>random_state = 522</code>.</p>
+</section>
+</section>
+<section id="exploratory-data-analysis-results" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis-results">Exploratory Data Analysis Results</h2>
+<section id="distribution-of-loan-amounts" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-of-loan-amounts">Distribution of Loan Amounts</h3>
+<p>Here’s the distribution of loan amounts:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../results/eda_output/loan_amount_distribution.png" class="img-fluid figure-img"></p>
+<figcaption>Distribution of Loan Amounts</figcaption>
+</figure>
+</div>
+<p>Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization <span class="citation" data-cites="cocser2019predictive">(<a href="#ref-cocser2019predictive" role="doc-biblioref">Coşer, Maer-Matei, and Albu 2019</a>)</span>.</p>
+<p>Key metrix and considerations: - Debt-to-Income Ratio - Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain. - Loan Duration vs.&nbsp;Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).</p>
+<section id="loan-categories" class="level5">
+<h5 class="anchored" data-anchor-id="loan-categories">Loan categories</h5>
+<p>Below, to help us create the loan categories, we are using the FICO risk profile categories <span class="citation" data-cites="ConsumerBureau">(<a href="#ref-ConsumerBureau" role="doc-biblioref">Consumer Financial Protection Bureau 2024</a>)</span> - Deep subprime (credit scores below 580) - Subprime (credit scores of 580-619) - Near-prime (credit scores of 620-659) - Prime (credit scores of 660-719) - Super-prime (credit scores of 720 or above)</p>
+</section>
+<section id="risk-categories" class="level5">
+<h5 class="anchored" data-anchor-id="risk-categories">Risk categories</h5>
+<p>Let us explore the data further with specific borrower risk profile categories Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: fico score of at least 720 (Low Risk), ‘fico’ score between 650 and 720 (‘Medium Risk’) and ‘fico’ score of 650 as ‘High Risk’.</p>
+</section>
+<section id="descriptive-analysis--eda" class="level4">
+<h4 class="anchored" data-anchor-id="descriptive-analysis--eda">4.3 Descriptive Analysis- EDA</h4>
+<p>To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. Categorical features like purpose also provided significant insights; loans categorized under “small business” and “credit card” showed higher default rates compared to others, such as “home improvement.”</p>
+<p>We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers.</p>
+<p>From the boxplot above, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
+</section>
+<section id="correlation-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="correlation-analysis">4.4 Correlation Analysis</h4>
+<p>The EDA for most of the numerical columns produce no strong general trends. We see a higher correlation level between fico and revo.util, and that of fico and interest rate</p>
+</section>
+<section id="data-transformation-and-preprocessing" class="level4">
+<h4 class="anchored" data-anchor-id="data-transformation-and-preprocessing">4.5 Data Transformation and Preprocessing <br></h4>
+<p>Since both <code>risk_category</code> and <code>loan_categories</code> are dereived from <code>fico</code>, we decided to drop the <code>fico</code> and <code>risk_category</code></p>
+</section>
+<section id="model-building" class="level4">
+<h4 class="anchored" data-anchor-id="model-building">4.6 Model Building<br></h4>
+<p>First we performed 10-folds cross-evaluation on four classifier models: DecisionTree, kNN-neighbours, SVC and Logistic Regression.</p>
+<p>From the mean validation score and training score, we can see that the decision tree model has a much smaller cross-validation score compared to the other three models.</p>
+<p>While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor.</p>
+<p>The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. While together with the fact that SVC has a significantly longer computation time,</p>
+<p>Here, we identify the top 5 influential features for predicting each class. The Logistic Regression’s coefficients provide insights into feature importance, highlighting predictors such as:</p>
+<p>fico: Higher credit score were strongly correlated with lower default risk.</p>
+<p>loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.</p>
+<p>log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.</p>
+<p>int.rate: Borrowers with higher interest rates has a greater likelihood of default.</p>
+<p>inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.</p>
+<p>On the test set, the model correctly predicted 1608 cases out of 1916, with 308 errors. These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
+<p>Despite the high accuracy score, our model fails to identify any of the 306 actual defaults loan. This suggest that the accuracy score is unable to fully reflect the model performance. Though our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), the high false negative makes its real life application limited. Further steps is needed to improve the model such that it can also predict defaulted loans well.</p>
+</section>
+<section id="limitations" class="level4">
+<h4 class="anchored" data-anchor-id="limitations">4.8 Limitations</h4>
+<p>As we check the distribution of the target, we can see that the proportion of borrowers that has repayed their loans is significantly higher than those who defaulted their loans. The class imbalance of the target results in the model predicting most cases as “negative” (fully paid).</p>
+<p>Possible solutions to the high false negtative include adjusting the <code>class_weight</code> hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaulating model performance.</p>
+<p>Also, based on the feature importances obtained, additional feature engineering or feature selection can potentially improve model performance.</p>
+<p>To account for possible non-linear decision boundary, another alternative is to use a non-linear classification model, for example a decision tree, which can model complex non-linear decision boundaries better.</p>
+</section>
+</section>
+</section>
+<section id="reference" class="level1 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Reference</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-cai2016judging" class="csl-entry" role="listitem">
+Cai, Shun, Xi Lin, Di Xu, and Xin Fu. 2016. <span>“Judging Online Peer-to-Peer Lending Behavior: A Comparison of First-Time and Repeated Borrowing Requests.”</span> <em>Information &amp; Management</em> 53 (7): 857–67.
+</div>
+<div id="ref-ConsumerBureau" class="csl-entry" role="listitem">
+Consumer Financial Protection Bureau. 2024. <em>Borrower Risk Profiles</em>. <a href="https://www.consumerfinance.gov/data-research/consumer-credit-trends/student-loans/borrower-risk-profiles/">https://www.consumerfinance.gov/data-research/consumer-credit-trends/student-loans/borrower-risk-profiles/</a>.
+</div>
+<div id="ref-cocser2019predictive" class="csl-entry" role="listitem">
+Coşer, Alexandru, Monica Mihaela Maer-Matei, and Crişan Albu. 2019. <span>“PREDICTIVE MODELS FOR LOAN DEFAULT RISK ASSESSMENT.”</span> <em>Economic Computation &amp; Economic Cybernetics Studies &amp; Research</em> 53 (2).
+</div>
+<div id="ref-lendingclub" class="csl-entry" role="listitem">
+matmcreative. 2024. <em>Lending-Club-Loan-Analysis</em>. <a href="https://github.com/matmcreative/Lending-Club-Loan-Analysis">https://github.com/matmcreative/Lending-Club-Loan-Analysis</a>.
+</div>
+<div id="ref-sutherland2018sharing" class="csl-entry" role="listitem">
+Sutherland, Will, and Mohammad Hossein Jarrahi. 2018. <span>“The Sharing Economy and Digital Platforms: A Review and Research Agenda.”</span> <em>International Journal of Information Management</em> 43: 328–41.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
