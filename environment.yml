@@ -13,6 +13,7 @@ dependencies:
   -  vl-convert-python=1.6.0
   -  ipykernel=6.29.5
   -  pandera=0.20.4
+  -  click=8.1.7
 
   
 
