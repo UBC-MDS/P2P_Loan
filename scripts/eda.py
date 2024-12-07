@@ -8,6 +8,7 @@ import pandas as pd
 import altair as alt
 import click
 import matplotlib.pyplot as plt
+import io
 
 # Enable the VegaFusion data transformer
 alt.data_transformers.enable("vegafusion")
@@ -27,18 +28,18 @@ def main(input_csv, output_dir):
         print(f"Error loading data: {e}")
         return
 
+    # Create the output directory if it does not exist
+
+    os.makedirs(os.path.join(output_dir, "tables"), exist_ok=True)
+    os.makedirs(os.path.join(output_dir, "figures"), exist_ok=True)
+
     # SECTION 2: Data Overview
-    print("Training Data Information:")
-    print(train_df.info())
-
-    print("\nShape of Training Data:", train_df.shape)
-
-    print("\nSummary Statistics:")
-    print(train_df.describe(include="all"))
-
-    # SECTION 3: Data Processing, Feature Engineering and Handling Missing Values
-    missing_vals_cols = train_df.columns[train_df.isna().sum() > 0].tolist()
-    print("\nColumns with Missing Values:", missing_vals_cols)
+    
+    buffer = io.StringIO()
+    train_df.info(buf=buffer)
+    info = [row.split() for row in buffer.getvalue().splitlines()[3:-2]]
+    info_df = pd.DataFrame(info[2:], columns=info[0]).drop(columns="#")
+    info_df.to_csv(os.path.join(output_dir, "tables", "info.csv"))
 
     # Define numeric columns explicitly
     numeric_cols = [
@@ -73,9 +74,6 @@ def main(input_csv, output_dir):
     train_df['risk_category'] = np.select(conditions, categories, default='Unknown')
 
     # SECTION 4: Visualization (Save to output directory)
-    # Create the output directory if it does not exist
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
     # Histograms for Numeric Columns in a Grid
     num_plots = len(numeric_cols)
@@ -100,7 +98,7 @@ def main(input_csv, output_dir):
 
     # Adjust layout and save the grid of histograms
     plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, "histograms_grid.png"))
+    plt.savefig(os.path.join(output_dir, "figures", "histograms_grid.png"))
     plt.close(fig)
 
     # Data distribution of selected features using Altair
@@ -114,7 +112,7 @@ def main(input_csv, output_dir):
         ['installment', 'dti'],  
         columns=3
     )
-    numeric_cols_hists.save(os.path.join(output_dir, "numeric_feature_distribution.html"))
+    numeric_cols_hists.save(os.path.join(output_dir, "figures", "numeric_feature_distribution.png"))
 
     # Default Rate by Loan Purpose
     loan_purpose_data = train_df.explode('purpose')
@@ -129,7 +127,7 @@ def main(input_csv, output_dir):
         height=400,
         title="Loan Category vs Loan Purpose"
     )
-    purpose_risk_chart.save(os.path.join(output_dir, "loan_category_vs_purpose.html"))
+    purpose_risk_chart.save(os.path.join(output_dir, "figures", "loan_category_vs_purpose.png"))
 
     # Risk Categories Distribution
     categories_hist = alt.Chart(train_df).mark_bar().encode(
@@ -140,7 +138,7 @@ def main(input_csv, output_dir):
         width=400,
         title="Distribution of Risk Categories"
     )
-    categories_hist.save(os.path.join(output_dir, "risk_categories_distribution.html"))
+    categories_hist.save(os.path.join(output_dir, "figures", "risk_categories_distribution.png"))
 
     # SECTION 5: Correlation Heatmap
     correlation_matrix = train_df[numeric_cols].corr().reset_index().melt('index')
@@ -156,7 +154,7 @@ def main(input_csv, output_dir):
         height=400,
         title="Correlation Heatmap"
     )
-    correlation_chart.save(os.path.join(output_dir, "correlation_heatmap.html"))
+    correlation_chart.save(os.path.join(output_dir, "figures", "correlation_heatmap.png"))
 
 if __name__ == '__main__':
     main()
