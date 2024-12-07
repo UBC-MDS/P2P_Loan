@@ -3,14 +3,26 @@ import os
 import pandas as pd
 import pandera as pa
 import click
+import math
 from sklearn.model_selection import train_test_split
 
 @click.command()
 @click.option('--data_from', type=str, help="Path to raw data")
 @click.option('--data_to', type=str, help="Path to directory where processed data will be written to")
 def main(data_from, data_to):
-    
-    p2ploan_df = pd.read_csv(data_from)    
+    try:
+        p2ploan_df = pd.read_csv(data_from)
+        print(f"Data loaded successfully from {data_from}")
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return
+
+    p2ploan_df = pd.read_csv(data_from)   
+
+    # Ensure directory exists
+    if not os.path.isdir(data_to):
+        os.makedirs(data_to)
+
     # Data Validation
     check_prop = pa.Check(lambda s: s.isna().mean() <= 0.05,
                     element_wise=False,
@@ -61,22 +73,35 @@ def main(data_from, data_to):
     # Save train data and test data to csv
     train_df.to_csv(os.path.join(data_to, "loan_train.csv"), index=False)
     test_df.to_csv(os.path.join(data_to, "loan_test.csv"), index=False)
+    print(f"Train/Test Data successfully saved to {data_to}")
 
-# Data Validation: Anomalous Correlations
-# train_corr = train_df.corr(numeric_only=True)
-# pd.DataFrame(train_corr).style.format(
-# precision=2
-# ).background_gradient(
-#     cmap="coolwarm", vmin=-1, vmax=1
-# ).highlight_between(
-#     left=0.8,right=1, color="black"
-# ).highlight_between(
-#     left=-1,right=-0.8, color="black"
-# )
+    # Data Validation: Anomalous Correlations
+    train_corr = train_df.corr(numeric_only=True)
+    neg = train_corr.apply(
+        pd.Series.between, axis=1, left=-1, right=-0.9, inclusive="neither"
+    ).any().any()
 
-# # Data Validation: Target Distribution
-# print(train_df["not.fully.paid"].value_counts(normalize=True))
-# print(test_df["not.fully.paid"].value_counts(normalize=True))
+    pos = train_corr.apply(
+        pd.Series.between, axis=1, left=0.9, right=1, inclusive="neither"
+    ).any().any()
+
+
+    # Data Validation: Target Distribution
+
+    train_dist = train_df["not.fully.paid"].value_counts(normalize=True)[0]
+    test_dist = test_df["not.fully.paid"].value_counts(normalize=True)[0]
+
+    if pos == False and neg == False and math.isclose(train_dist, test_dist, abs_tol=0.05):
+        print("All data validation checks pass!")
+    elif pos == True or neg == True:
+        if math.isclose(train_dist, test_dist, abs_tol=0.05):
+            print("Feature/Target correlation exceed maximum acceptable threshold")
+        else:
+            print("Feature/Target correlation exceed maximum acceptable threshold")
+            print("Train/Test Target Distribution Mismatch")
+    else:
+        print("Train/Test Target Distribution Mismatch")
+
 
 if __name__ == '__main__':
     main()
