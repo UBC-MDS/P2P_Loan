@@ -2,17 +2,7 @@
 title: P2P Online Lending Default Prediction- A Usecase on LendingClub Default Risk
 author: Mavis Wong, Yasmin Hassan, Abeba N. Turi
 date: 2024/12/06
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .qmd
-      format_name: quarto
-      format_version: '1.0'
-      jupytext_version: 1.16.4
-  kernelspec:
-    display_name: Python (loan_risk522)
-    language: python
-    name: loan_risk522
+jupyter: python3
 format:
   html:
     toc: true
