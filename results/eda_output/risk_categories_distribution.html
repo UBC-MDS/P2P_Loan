@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"$schema": "https://vega.github.io/schema/vega/v5.json", "data": [{"name": "source_0", "values": [{"__count": 3622, "risk_category": "Low Risk"}, {"__count": 5725, "risk_category": "Medium Risk"}, {"__count": 231, "risk_category": "High Risk"}]}, {"name": "source_0_x_domain_risk_category", "values": [{"risk_category": "Low Risk"}, {"risk_category": "Medium Risk"}, {"risk_category": "High Risk"}]}, {"name": "source_0_y_domain___count", "values": [{"min": 231, "max": 5725}]}], "marks": [{"type": "rect", "name": "marks", "from": {"data": "source_0"}, "encode": {"update": {"x": {"field": "risk_category", "scale": "x"}, "y": {"field": "__count", "scale": "y"}, "y2": {"value": 0, "scale": "y"}, "fill": {"value": "#4c78a8"}, "width": {"signal": "max(0.25, bandwidth('x'))"}}}, "style": ["bar"]}], "scales": [{"name": "x", "type": "band", "domain": {"data": "source_0_x_domain_risk_category", "field": "risk_category", "sort": true}, "range": [0, {"signal": "width"}], "paddingOuter": 0.05, "paddingInner": 0.1}, {"name": "y", "type": "linear", "domain": [{"signal": "(data(\"source_0_y_domain___count\")[0] || {}).min"}, {"signal": "(data(\"source_0_y_domain___count\")[0] || {}).max"}], "range": [{"signal": "height"}, 0], "zero": true, "nice": true}], "axes": [{"scale": "y", "tickCount": {"signal": "ceil(height/40)"}, "gridScale": "x", "orient": "left", "aria": false, "labels": false, "minExtent": 0, "maxExtent": 0, "ticks": false, "zindex": 0, "grid": true, "domain": false}, {"scale": "x", "zindex": 0, "orient": "bottom", "labelBaseline": "top", "grid": false, "labelAngle": 0, "title": "Risk Categories"}, {"scale": "y", "title": "Count", "orient": "left", "labelOverlap": true, "tickCount": {"signal": "ceil(height/40)"}, "zindex": 0, "grid": false}], "title": {"text": "Distribution of Risk Categories", "frame": "group"}, "padding": 5, "width": 400, "height": 300, "background": "white", "style": "cell"};
+      var embedOpt = {"mode": "vega"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

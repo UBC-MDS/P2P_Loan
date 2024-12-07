@@ -1,11 +1,17 @@
 ---
 title: P2P Online Lending Default Prediction- A Usecase on LendingClub Default Risk
-jupyter: python3
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.4
+  kernelspec:
+    display_name: Python (loan_risk522)
+    language: python
+    name: loan_risk522
 ---
-
-
-Mavis Wong, Yasmin Hassan and Abeba N. Turi
-
 
 ```{python}
 # Import 
@@ -120,10 +126,6 @@ p2ploan_df.head()
 ```
 
 ```{python}
-p2ploan_df.info()
-```
-
-```{python}
 # Data Validation
 check_prop = pa.Check(lambda s: s.isna().mean() <= 0.05,
                       element_wise=False,
@@ -202,30 +204,15 @@ print(train_df["not.fully.paid"].value_counts(normalize=True))
 print(test_df["not.fully.paid"].value_counts(normalize=True))
 ```
 
-```{python}
-train_df.shape
-```
+## Exploratory Data Analysis Results
+
+### Distribution of Loan Amounts
+Here’s the distribution of loan amounts:
+
+![Distribution of Loan Amounts](results/eda_output/loan_amount_distribution.png)
 
 ```{python}
-# Summary Statistics
-train_df.describe(include="all")
-```
-
-```{python}
-# Let us store the column names of the columns with missing values as a list in a variable called missing_vals_cols.
-missing_vals_cols = train_df.columns[train_df.isna().sum() > 0].tolist()
-
-# Define numeric columns explicitly
-numeric_cols = ['int.rate', 'installment', 'log.annual.inc', 'dti', 'fico', 
-    'days.with.cr.line', 'revol.bal', 'revol.util', 'inq.last.6mths', 'annual.inc']
-```
-
 ### 4.2 Feature Engineering
-
-```{python}
-# income- level data
-train_df['annual.inc'] = np.exp(train_df['log.annual.inc'])
-test_df['annual.inc'] = np.exp(test_df['log.annual.inc'])
 ```
 
 Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. 
@@ -344,7 +331,6 @@ purpose_risk_chart
 We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers.
 
 ```{python}
-
 categories_hist = alt.Chart(train_df).mark_bar().encode(
     x=alt.X('risk_category:N', title='Risk Categories', axis=alt.Axis(labelAngle=0)),  
     y=alt.Y('count()', title='Count') 
@@ -385,7 +371,6 @@ risk_dti_boxplot = alt.Chart(train_df).mark_boxplot().encode(
 
 
 purpose_fico_boxplot & risk_dti_boxplot
-
 ```
 
 From the boxplot above, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
@@ -393,7 +378,6 @@ From the boxplot above, we see that the low risk borrowers have lower average de
 #### 4.4 Correlation Analysis
 The EDA for most of the numerical columns produce no strong general trends. 
 We see a higher correlation level between fico and revo.util, and that of fico and interest rate
-
 
 ```{python}
 # Select only numeric columns
@@ -642,6 +626,3 @@ To account for possible non-linear decision boundary, another alternative is to 
 5. Khandani, A. E., Kim, A. J., & Lo, A. W. (2010). Consumer credit-risk models via machine-learning algorithms. Journal of Banking & Finance, 34(11), 2767-2787.
 8. Lenz, R. (2016). Peer-to-peer lending: Opportunities and risks. European Journal of Risk Regulation, 7(4), 688-700
 9. myFICO. (n.d.). *What's in my FICO® Scores?* Retrieved November 20, 2024, from [https://www.myfico.com/credit-education/whats-in-your-credit-score](https://www.myfico.com/credit-education/whats-in-your-credit-score#:~:text=FICO%20Scores%20are%20calculated%20using,and%20credit%20mix%20(10%25)
-   
-
-
