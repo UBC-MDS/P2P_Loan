@@ -25,7 +25,13 @@ from sklearn.model_selection import GridSearchCV
 def main(data_from, preprocessor_from,data_to, pipeline_to):
     '''hyper parameter tuning for logistic model 
     and saves the pipeline object.'''
-    train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
+    try:
+        train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
+        print(f"Data loaded successfully from {data_from}")
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return
+    
     X_train = train_df.drop(columns="not.fully.paid")
     y_train = train_df["not.fully.paid"]
     
@@ -49,6 +55,7 @@ def main(data_from, preprocessor_from,data_to, pipeline_to):
     )
 
     log_reg_search.fit(X_train, y_train)
+
     pickle.dump(log_reg_search, open(os.path.join(pipeline_to, "pipeline.pickle"), "wb"))
     
     cv_results = pd.DataFrame(log_reg_search.cv_results_)[[
@@ -59,10 +66,7 @@ def main(data_from, preprocessor_from,data_to, pipeline_to):
     ]]
 
     cv_results =  np.round(cv_results, decimals=6).sort_values(by="rank_test_score").head(5)
-    
     cv_results.to_csv(os.path.join(data_to, "model_results.csv"))
-    
-    
     
     
 if __name__ == '__main__':
