@@ -15,9 +15,16 @@ from sklearn import set_config
 @click.option('--preprocessor_to', type=str, help="Path to preprocessor")
 
 def main(data_from, data_to, preprocessor_to):
-    train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
-    test_df = pd.read_csv(os.path.join(data_from, "loan_test.csv"))
 
+    # Load Data
+    try:
+        train_df = pd.read_csv(os.path.join(data_from, "loan_train.csv"))
+        test_df = pd.read_csv(os.path.join(data_from, "loan_test.csv"))
+        print(f"Data loaded successfully from {data_from}")
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return
+    
     # Split into training and testing sets
     # Features
     X_train = train_df.drop(columns=['not.fully.paid'])  
@@ -52,6 +59,7 @@ def main(data_from, data_to, preprocessor_to):
             ('cat', categorical_transformer, categorical_features)
         ]
     )
+    os.makedirs(preprocessor_to, exist_ok=True)
     pickle.dump(preprocessor, open(os.path.join(preprocessor_to, "preprocessor.pickle"), "wb"))
 
     # Save transformed data to csv
@@ -60,8 +68,12 @@ def main(data_from, data_to, preprocessor_to):
     scale_train = preprocessor.transform(train_df)
     scale_test = preprocessor.transform(test_df)
 
+    os.makedirs(os.path.join(data_to), exist_ok=True)
     scale_train.to_csv(os.path.join(data_to, "scaled_loan_train.csv"), index=False)
     scale_test.to_csv(os.path.join(data_to, "scaled_loan_test.csv"), index=False)
+
+    print(f"Preprocessor successfully saved to {preprocessor_to}")
+    print(f"Scaled data successfully saved to {data_to}")
 
 if __name__ == '__main__':
     main()
