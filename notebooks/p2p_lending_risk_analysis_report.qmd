@@ -22,24 +22,18 @@ editor: source
 import os
 import numpy as np
 import pandas as pd
-import altair as alt
-import pandera as pa
-import matplotlib.pyplot as plt
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import cross_validate, train_test_split
-from sklearn.model_selection import GridSearchCV
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
-from sklearn import set_config
-
-# Enable the VegaFusion data transformer
-alt.data_transformers.enable("vegafusion")
+from IPython.display import Markdown, display
+```
+```{python}
+info = pd.read_csv("../results/tables/info.csv", index_col=0)
+info = info.rename({"Non-Null": "Non-Null Count"}).drop(columns="Count")
+confusion_matrix = pd.read_csv("../results/tables/confusion_matrix.csv", index_col=0)
+cv_results = pd.read_csv("../results/tables/cv_results.csv", index_col=0)
+model_results = pd.read_csv("../results/tables/model_results.csv", index_col=0)
+negative_coef = pd.read_csv("../results/tables/negative_coef.csv", index_col=0)
+positive_coef = pd.read_csv("../results/tables/positive_coef.csv", index_col=0)
+test_results = pd.read_csv("../results/tables/test_results.csv", index_col=0)
+target_dist = pd.read_csv("../results/tables/target_dist.csv", index_col=0)
 ```
 
 ### 1. Summary<br>
@@ -119,12 +113,16 @@ Python language was used to conduct this analysis.
 In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.
 
 
+```{python}
+#| label: info
+#| tbl-cap: Information on all numeric columns in training data.
 
+Markdown(info.to_markdown())
+```
 
 #### 4.1 Data splitting 
 
 Split the data into `train_df` (80%) and `test_df` (20%) with `random_state = 522`.
-
 
 
 ## Exploratory Data Analysis Results
@@ -166,7 +164,7 @@ fico score of at least 720 (Low Risk), 'fico' score between 650 and 720 ('Medium
 To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. Categorical features like purpose also provided significant insights; loans categorized under "small business" and "credit card" showed higher default rates compared to others, such as "home improvement."
 
 
-
+![Empirical distributions of numerical features between class `Defaulted(1)` and `Fully Paid(0)`](../results/figures/histograms_grid.png){#fig-feature_dist width=100%}
 
 
 
@@ -174,8 +172,13 @@ To evaluate the usefulness of predictors for identifying loan defaults, we condu
 We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers.
 
 
+![Distribution of borrower's loan purpose by their risk profile category](../results/figures/loan_category_vs_purpose.png){#fig-purpose_risk width=100%}
 
+![Bar Chart showing the distribution of borrower's risk level](../results/figures/risk_categories_distribution.png){#fig-risk_dist width=100%}
 
+![Boxplot comparing borrower's credit score by their loan purpose](../results/figures/boxplot_purpose.png){#fig-fico_purpose width=100%}
+
+![Boxplot comparing borrower's debt-to-income ratio by their risk level](../results/figures/boxplot_risk.png){#fig-dti_risk width=100%}
 
 From the boxplot above, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
 
@@ -183,33 +186,50 @@ From the boxplot above, we see that the low risk borrowers have lower average de
 The EDA for most of the numerical columns produce no strong general trends. 
 We see a higher correlation level between fico and revo.util, and that of fico and interest rate
 
-
+![Heatmap showing correlation between features for the lending club data](../results/figures/correlation_heatmap.png){#fig-corr_map width=100%}
 
 ####  4.5 Data Transformation and Preprocessing <br>
 Since both `risk_category` and `loan_categories` are dereived from `fico`, we decided to drop the `fico` and `risk_category` 
 
-
-
-
-####  4.6 Model Building<br>
+####  4.6 Model Building <br>
 
 First we performed 10-folds cross-evaluation on four classifier models: DecisionTree, kNN-neighbours, SVC and Logistic Regression. 
 
+```{python}
+#| label: tbl-cv_results
+#| tbl-cap: Cross-validation results of various classification model.
 
-
+Markdown(cv_results.to_markdown())
+```
 From the mean validation score and training score, we can see that the decision tree model has a much smaller cross-validation score compared to the other three models. 
 
 While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor. 
 
 The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. While together with the fact that SVC has a significantly longer computation time,
 
+![10-folds cross-validation results for hyperparameter C tuning. Accuracy score was used as the classification metric.](../results/figures/param_C_tuning.png){#fig-C_tuning width=100%}
+```{python}
+#| label: tbl-model_results
+#| tbl-cap: Best Logistic Regression Model after Hyperparameter Tuning
+
+Markdown(model_results.to_markdown())
+```
 
 
 
+```{python}
+#| label: tbl-positive_coef
+#| tbl-cap: Top 3 influential feature for predicting class `Defaulted(1)`
 
+Markdown(positive_coef[:3].to_markdown())
+```
 
+```{python}
+#| label: tbl-negative_coef
+#| tbl-cap: Top 3 influential feature for predicting class `Fully Paid(0)`
 
-
+Markdown(negative_coef[:3].to_markdown())
+```
 
 Here, we identify the top 5 influential features for predicting each class.
 The Logistic Regression's coefficients provide insights into feature importance, highlighting predictors such as:
@@ -237,7 +257,12 @@ Despite the high accuracy score, our model fails to identify any of the 306 actu
 
 #### 4.8 Limitations
 
+```{python}
+#| label: tbl-target_dist
+#| tbl-cap: Target distribution showing class imbalance biased towards class `Fully Paid(0)`
 
+Markdown(target_dist.to_markdown())
+```
 
 As we check the distribution of the target, we can see that the proportion of borrowers that has repayed their loans is significantly higher than those who defaulted their loans. 
 The class imbalance of the target results in the model predicting most cases as "negative" (fully paid). 
