@@ -48,10 +48,10 @@ To use the containerized environment for this project follow this steps if it is
    cd p2p-lending-risk-analysis)
 2. Clone this repository and navigate to the root directory. [here](git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
    cd p2p-lending-risk-analysis)
-3. Run: ```bash
+3. Run: 
+```bash
    docker-compose up
    ```
-
 4. Access the Jupyter Notebook interface at http://localhost:8888.
 
 5. To run the analysis, open a terminal on jupyterlab and run the following commands:
