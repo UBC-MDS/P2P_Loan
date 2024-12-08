@@ -22,19 +22,19 @@ You can acces the final report at [here](https://github.com/UBC-MDS/P2P_Loan_Ris
    cd p2p-lending-risk-analysis
    ```
 ## OPTION 1
-2. **Using environment.yml option**
+**Using environment.yml option**
 
 This is the recommended method to set up the environment that can allow you run the file
-  Create the Conda environment:
+  1. Create the Conda environment:
    ```bash
     conda env create -f environment.yml
    ```
-  Activate the environment:
+  2. Activate the environment:
 
     ```bash
     conda activate loan_risk522
     ```
- Verify the environment setup using this.
+ 3. Verify the environment setup using this.
 
 `python -c "import pandas as pd; print('Environment set up successfully!')"`
 
