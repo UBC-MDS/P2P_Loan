@@ -2,24 +2,14 @@
 title: P2P Online Lending Default Prediction- A Usecase on LendingClub Default Risk
 author: Mavis Wong, Yasmin Hassan, Abeba N. Turi
 date: 2024/12/06
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .qmd
-      format_name: quarto
-      format_version: '1.0'
-      jupytext_version: 1.16.4
-  kernelspec:
-    display_name: Python [conda env:loan_risk522]
-    language: python
-    name: conda-env-loan_risk522-py
+jupyter: python3
 format:
   html:
     toc: true
-    toc-depth: 4
+    toc-depth: 6
   pdf:
     toc: true
-    toc-depth: 4
+    toc-depth: 6
 bibliography: references.bib
 execute:
   echo: false
@@ -83,32 +73,18 @@ The key features taken into account for this analysis are:
 | `not.fully.paid`     | Binary response on whether the loan is paid or not                           |
 
 
-## Data Splitting to Training and Testing Data
 
-Train-Test Split: 
-
+# 4. Analysis <br>
 The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set.
-Features: The model was trained on both numeric features (e.g., int.rate, installment) and categorical features (e.g., purpose, loan_categories).
+Logistic Regression Model was selected as the final model to predict loan default risk due to its simplicity, slightly higher accuracy, and interpretability. All variables included in the original data set were used in model fitting. 
 
-Preprocessing: 
+We decided to use accuracy score as the classification metrics. In financial decision-making, while false negative impose greater financial risk to the platform, false positive  can impose great financial strain on the borrower. Therefore, it is important to correctly identifying both defaulted and fully paid loans. 
+ 
+ We have choosen the hyperparameter `C` using a 10-fold cross-validation. The regularization strength C is a hyperparameter that controls the trade-off between bias and variance. A high value of C corresponds to weaker regularization (less penalty on large coefficients), which might lead to overfitting, while a low value of C increases regularization and might underfit the model. We conduct GridSearch on a logarithmic range from $10^{-5}$ to $10^{5}$. With the range spanning over a few orders of magnitude, this will ensure the model neither overfits nor underfits.
 
-Numeric features were scaled using StandardScaler, while categorical features were one-hot encoded. Missing values were imputed using the median (numeric) or most frequent value (categorical).
+All numeric features were standardized using standardscaler, while categorical features were preprocessed using one-hot encoding before model fitting. Any missing values were imputed using the median for numeric features or most frequent value for categorical features.
 
-## 4. Analysis <br>
-- Train-Test Split:
-The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set. <br>
-
-- Features: 
-The model was trained on both numeric features (e.g., int.rate, installment) and categorical features (e.g., purpose, loan_categories).
-
-- Preprocessing: 
-Numeric features were scaled using StandardScaler, while categorical features were one-hot encoded. Missing values were imputed using the median (numeric) or most frequent value (categorical).
-
-- Model:
-Logistic Regression was selected as the final model for its simplicity, slightly higher accuracy, and interpretability. 
-All columns except `risk_category` were used in model fitting. `risk_category` was drop due to it being redundant to "loan_categories" (both derived from "fico" score).
-A grid search with 10-fold cross-validation on the hyperparameter `C` of the logistic regression model is used for optimization. 
-Python language was used to conduct this analysis.
+Python [@Python] language was used to conduct this analysis as well as the following packages: pandas[@pandas], numpy[@numpy], matplotlib[@matplotlib], altair[@altair], sklearn[@sklearn].
 
 
 ### 4.1 Exploratory Data Analysis 
@@ -180,9 +156,9 @@ We see a higher correlation level between fico and revo.util, and that of fico a
 ![Heatmap showing correlation between features for the lending club data](../results/figures/correlation_heatmap.png){#fig-corr_map width=100%}
 
 
-##### 4.2 Model Building* <br>
+##### 4.2 Model Building <br>
 
-First we performed 10-folds cross-evaluation on four classifier models: DecisionTree, kNN-neighbours, SVC and Logistic Regression. 
+To decide on the most suitable classification model to build on, we have conducted a 10 fold cross-validation on four different classification models: DecisionTree, kNN-neighbours, SVC and Logistic Regression. 
 
 ```{python}
 #| label: tbl-cv_results
@@ -191,33 +167,22 @@ First we performed 10-folds cross-evaluation on four classifier models: Decision
 Markdown(cv_results.to_markdown())
 ```
 
-From the mean validation score and training score, we can see that the decision tree model has a much smaller cross-validation score compared to the other three models. 
+@tbl-cv_results shows the mean validation score and training score for each model. We can see that the decision tree model has a much smaller cross-validation score compared to the other three models. 
 
-While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor. 
+While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor. The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. 
 
-The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. While together with the fact that SVC has a significantly longer computation time,
+*Hyperparameter Tuning*
+
+To find the optimal model for prediction, we used GridSearch to conduct 10-folds cross-validation over different values of C. The results were shown below (@fig-C_tuning), with the optimal C value is `{python} model_results["Best C"][0]`.
 
 ![10-folds cross-validation results for hyperparameter C tuning. Accuracy score was used as the classification metric.](../results/figures/param_C_tuning.png){#fig-C_tuning width=100%}
 
-```{python}
-#| label: tbl-model_results
-#| tbl-cap: Best Logistic Regression Model after Hyperparameter Tuning
 
-Markdown(model_results.to_markdown())
-```
+# 5. Discussion and Implications
 
-Here, we identify the top 5 influential features for predicting each class (@tbl-positive_coef, @tbl-negative_coef,).
-The Logistic Regression's coefficients provide insights into feature importance, highlighting predictors such as:
+Our model performs well on the test data, achieving aa test score of `{python} test_results["Accuracy Score"][0]`.
 
-fico: Higher credit score were strongly correlated with lower default risk.
-
-loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.
-
-log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.
-
-int.rate: Borrowers with higher interest rates has a greater likelihood of default.
-
-inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.
+Here, we identify the top 5 influential features for predicting each class (@tbl-positive_coef, @tbl-negative_coef,). The Logistic Regression's coefficients has provided insights into feature importance, highlighting predictors such as higher credit score (`fico`) and larger income growth(`log.annual.inc`) to be associated with lower default risk. While borrowers with higher loan-to-income ratios, interest rates, and more inquires in the past 6 months exhibited a greater likelihood of default.
 
 ```{python}
 #| label: tbl-positive_coef
@@ -233,8 +198,7 @@ Markdown(positive_coef[:3].to_markdown())
 Markdown(negative_coef[:3].to_markdown())
 ```
 
-The model achieved an test score of `{python} test_results["Accuracy Score"][0]`.
-
+The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors as shown in @tbl-confusion_matrix. 
 ```{python}
 #| label: tbl-confusion_matrix
 #| tbl-cap: Confusion Matrix of Logistic Regression Model on Test Data
@@ -242,8 +206,6 @@ The model achieved an test score of `{python} test_results["Accuracy Score"][0]`
 Markdown(confusion_matrix.to_markdown())
 ```
 
-# 5. Discussion and Implications
-The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors (@tbl-confusion_matrix). 
 These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.
 
 Despite the high accuracy score, our model fails to identify any of the 306 actual default loans. This suggests that the accuracy score cannot fully reflect the model performance. However, our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), and the high false negative limits its real-life application. Further steps are needed to improve the model so that it can also predict defaulted loans well.
@@ -252,10 +214,10 @@ Future work will focus on improving the model's ability to predict defaults by e
 
 (1) Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better;  and 
 
-(2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling. 
+(2) Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling. 
 
 
-# 6. Limitations
+##### 5.1 Limitations
 
 ```{python}
 #| label: tbl-target_dist
@@ -273,6 +235,6 @@ Also, based on the feature importances obtained, additional feature engineering 
 
 To account for possible non-linear decision boundary, another alternative is to use a non-linear classification model, for example a decision tree, which can model complex non-linear decision boundaries better.
 
-# Reference
+# 6. Reference
 
 

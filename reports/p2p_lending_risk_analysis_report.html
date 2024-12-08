@@ -3,6 +3,7 @@
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -56,6 +57,35 @@ div.csl-indent {
 <link href="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="p2p_lending_risk_analysis_report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -71,19 +101,26 @@ div.csl-indent {
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">2. Introduction <br></a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">3. Methods <br></a>
   <ul>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">3.1 Data <br></a></li>
-  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">3.2 Analysis <br></a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">3.1 Data <br></a>
+  <ul>
+  <li><a href="#data-source" id="toc-data-source" class="nav-link" data-scroll-target="#data-source">Data Source</a></li>
   </ul></li>
-  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">4. Results and Discussion <br></a></li>
+  <li><a href="#feature-description" id="toc-feature-description" class="nav-link" data-scroll-target="#feature-description">Feature Description</a></li>
+  </ul></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">4. Analysis <br></a>
+  <ul>
   <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">4.1 Exploratory Data Analysis</a>
   <ul>
-  <li><a href="#descriptive-analysis" id="toc-descriptive-analysis" class="nav-link" data-scroll-target="#descriptive-analysis">4.1.3 Descriptive Analysis</a></li>
-  <li><a href="#correlation-analysis" id="toc-correlation-analysis" class="nav-link" data-scroll-target="#correlation-analysis">4.1.4 Correlation Analysis</a></li>
   <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">4.2 Model Building <br></a></li>
-  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">4.3 Limitations</a></li>
   </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  </ul></li>
+  <li><a href="#discussion-and-implications" id="toc-discussion-and-implications" class="nav-link" data-scroll-target="#discussion-and-implications">5. Discussion and Implications</a>
+  <ul>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">5.1 Limitations</a></li>
+  </ul></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">6. Reference</a></li>
   </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
@@ -119,24 +156,25 @@ div.csl-indent {
 </header>
 
 
-<section id="summary" class="level3">
-<h3 class="anchored" data-anchor-id="summary">1. Summary<br></h3>
+<section id="summary" class="level1">
+<h1>1. Summary<br></h1>
 <p>This work intends to leverage machine learning models to predict borrower behavior and, hence, the probability of default. More specifically, the work focuses on predicting loan defaults using historical data from the Lending Club platform. We uncover patterns and trends in borrower risk profiles by applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model. The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included both false positives (predicting a loan default when it didn’t occur) and false negatives (failing to predict an actual default). While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model’s accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model’s effectiveness in peer-to-peer lending platforms</p>
 </section>
-<section id="introduction" class="level3">
-<h3 class="anchored" data-anchor-id="introduction">2. Introduction <br></h3>
-<p>Crowd-based business models are one of the last decade’s developments with the proliferation of platform economies and web technology applications <span class="citation" data-cites="sutherland2018sharing">(<a href="#ref-sutherland2018sharing" role="doc-biblioref">Sutherland and Jarrahi 2018</a>)</span>. One of such developments following the 2007 financial crisis are the P2P online lending platforms. The backbone of the digital economic system built on this is that it relies on trust a currency. Like all other crowd-based business models, P2P online lending heavily relied on trustworthiness of borrowers. To help with this, online platforms like LendingClub used a number of features to define eligibility and rate of access to loan for potential borrowers.Traditional credit risk analysis often relies on rule-based systems or credit scores, which might not fully capture the complexities of borrower behavior. By applying Logistic Regression, we aim to develop a model that is both interpretable and effective in identifying high-risk loans. This analysis intends to provide a data-driven approach to improve credit decision-making in a broader context of platform based transactions through machine learning models. Extensive research has been conducted on borrower risk behaviour analysis and trust within P2P online lending system, highlighting the critical role trust and predictability holds in ensuring platform sustainability and mitigating default risks <span class="citation" data-cites="cai2016judging">(<a href="#ref-cai2016judging" role="doc-biblioref">Cai et al. 2016</a>)</span>. Building on this, this work focuses on developing a comprehensive risk analysis framework through machine hlearning models that will help predict borrower behaviour.</p>
+<section id="introduction" class="level1">
+<h1>2. Introduction <br></h1>
+<p>Crowd-based business models are one of the last decade’s developments with the proliferation of platform economies and web technology applications <span class="citation" data-cites="sutherland2018sharing">(<a href="#ref-sutherland2018sharing" role="doc-biblioref">Sutherland and Jarrahi 2018</a>)</span>. One of such developments following the 2007 financial crisis are the P2P online lending platforms. The backbone of the digital economic system built on this is that it relies on trust a currency. Like all other crowd-based business models, P2P online lending heavily relied on trustworthiness of borrowers <span class="citation" data-cites="lenz2016peer">(<a href="#ref-lenz2016peer" role="doc-biblioref">Lenz 2016</a>)</span>. To help with this, online platforms like LendingClub used a number of features to define eligibility and rate of access to loan for potential borrowers.Traditional credit risk analysis often relies on rule-based systems or credit scores, which might not fully capture the complexities of borrower behavior. By applying Logistic Regression, we aim to develop a model that is both interpretable and effective in identifying high-risk loans, see <span class="citation" data-cites="khandani2010consumer">(<a href="#ref-khandani2010consumer" role="doc-biblioref">Khandani, Kim, and Lo 2010</a>)</span>. This analysis intends to provide a data-driven approach to improve credit decision-making in a broader context of platform based transactions through machine learning models. Extensive research has been conducted on borrower risk behaviour analysis and trust within P2P online lending system, highlighting the critical role trust and predictability holds in ensuring platform sustainability and mitigating default risks <span class="citation" data-cites="cai2016judging">(<a href="#ref-cai2016judging" role="doc-biblioref">Cai et al. 2016</a>)</span> . Building on this, this work focuses on developing a comprehensive risk analysis framework through machine hlearning models that will help predict borrower behaviour.</p>
 </section>
-<section id="methods" class="level3">
-<h3 class="anchored" data-anchor-id="methods">3. Methods <br></h3>
-<section id="data" class="level4">
-<h4 class="anchored" data-anchor-id="data">3.1 Data <br></h4>
-<section id="data-source" class="level5">
-<h5 class="anchored" data-anchor-id="data-source">Data Source</h5>
+<section id="methods" class="level1">
+<h1>3. Methods <br></h1>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">3.1 Data <br></h2>
+<section id="data-source" class="level3">
+<h3 class="anchored" data-anchor-id="data-source">Data Source</h3>
 <p>This analysis is based on the historic loan data from LendingClub <span class="citation" data-cites="lendingclub">(<a href="#ref-lendingclub" role="doc-biblioref">matmcreative 2024</a>)</span>. It contains various borrower and loan features, such as interest rates, annual income, debt-to-income ratio (DTI), and credit history. The target variable, not.fully.paid, indicates whether the borrower defaulted on the loan (1) or successfully repaid it (0).</p>
 </section>
-<section id="feature-description" class="level5">
-<h5 class="anchored" data-anchor-id="feature-description">Feature Description</h5>
+</section>
+<section id="feature-description" class="level2">
+<h2 class="anchored" data-anchor-id="feature-description">Feature Description</h2>
 <p>The key features taken into account for this analysis are:</p>
 <table class="caption-top table">
 <colgroup>
@@ -205,29 +243,16 @@ div.csl-indent {
 </tbody>
 </table>
 </section>
-<section id="data-splitting-to-training-and-testing-data" class="level5">
-<h5 class="anchored" data-anchor-id="data-splitting-to-training-and-testing-data">Data Splitting to Training and Testing Data</h5>
-<p>Train-Test Split:</p>
-<p>The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set. Features: The model was trained on both numeric features (e.g., int.rate, installment) and categorical features (e.g., purpose, loan_categories).</p>
-<p>Preprocessing:</p>
-<p>Numeric features were scaled using StandardScaler, while categorical features were one-hot encoded. Missing values were imputed using the median (numeric) or most frequent value (categorical).</p>
 </section>
-</section>
-<section id="analysis" class="level4">
-<h4 class="anchored" data-anchor-id="analysis">3.2 Analysis <br></h4>
-<ul>
-<li><p>Train-Test Split: The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set. <br></p></li>
-<li><p>Features: The model was trained on both numeric features (e.g., int.rate, installment) and categorical features (e.g., purpose, loan_categories).</p></li>
-<li><p>Preprocessing: Numeric features were scaled using StandardScaler, while categorical features were one-hot encoded. Missing values were imputed using the median (numeric) or most frequent value (categorical).</p></li>
-<li><p>Model: Logistic Regression was selected as the final model for its simplicity, slightly higher accuracy, and interpretability. All columns except <code>risk_category</code> were used in model fitting. <code>risk_category</code> was drop due to it being redundant to “loan_categories” (both derived from “fico” score). A grid search with 10-fold cross-validation on the hyperparameter <code>C</code> of the logistic regression model is used for optimization. Python language was used to conduct this analysis.</p></li>
-</ul>
-</section>
-</section>
-<section id="results-and-discussion" class="level3">
-<h3 class="anchored" data-anchor-id="results-and-discussion">4. Results and Discussion <br></h3>
-</section>
-<section id="exploratory-data-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="exploratory-data-analysis">4.1 Exploratory Data Analysis</h2>
+<section id="analysis" class="level1">
+<h1>4. Analysis <br></h1>
+<p>The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set. Logistic Regression Model was selected as the final model to predict loan default risk due to its simplicity, slightly higher accuracy, and interpretability. All variables included in the original data set were used in model fitting.</p>
+<p>We decided to use accuracy score as the classification metrics. In financial decision-making, while false negative impose greater financial risk to the platform, false positive can impose great financial strain on the borrower. Therefore, it is important to correctly identifying both defaulted and fully paid loans.</p>
+<p>We have choosen the hyperparameter <code>C</code> using a 10-fold cross-validation. The regularization strength C is a hyperparameter that controls the trade-off between bias and variance. A high value of C corresponds to weaker regularization (less penalty on large coefficients), which might lead to overfitting, while a low value of C increases regularization and might underfit the model. We conduct GridSearch on a logarithmic range from <span class="math inline">\(10^{-5}\)</span> to <span class="math inline">\(10^{5}\)</span>. With the range spanning over a few orders of magnitude, this will ensure the model neither overfits nor underfits.</p>
+<p>All numeric features were standardized using standardscaler, while categorical features were preprocessed using one-hot encoding before model fitting. Any missing values were imputed using the median for numeric features or most frequent value for categorical features.</p>
+<p>Python <span class="citation" data-cites="Python">(<a href="#ref-Python" role="doc-biblioref">Van Rossum and Drake 2009</a>)</span> language was used to conduct this analysis as well as the following packages: pandas<span class="citation" data-cites="pandas">(<a href="#ref-pandas" role="doc-biblioref">team 2020</a>)</span>, numpy<span class="citation" data-cites="numpy">(<a href="#ref-numpy" role="doc-biblioref">Harris et al. 2020</a>)</span>, matplotlib<span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter 2007</a>)</span>, altair<span class="citation" data-cites="altair">(<a href="#ref-altair" role="doc-biblioref">VanderPlas 2018</a>)</span>, sklearn<span class="citation" data-cites="sklearn">(<a href="#ref-sklearn" role="doc-biblioref">Pedregosa et al. 2011</a>)</span>.</p>
+<section id="exploratory-data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-data-analysis">4.1 Exploratory Data Analysis</h3>
 <p>In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.</p>
 <div class="cell" data-execution_count="3">
 <div id="tbl-info" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3">
@@ -236,7 +261,7 @@ div.csl-indent {
 Table&nbsp;1: Information on all numeric columns in training data.
 </figcaption>
 <div aria-describedby="tbl-info-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="3">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="11">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -355,9 +380,7 @@ Figure&nbsp;1: Empirical distributions of numerical features between class <code
 <li><p>Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain.</p></li>
 <li><p>Loan Duration vs.&nbsp;Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).</p></li>
 </ul>
-<section id="loan-categories" class="level5">
-<h5 class="anchored" data-anchor-id="loan-categories">4.1.2 Loan categories</h5>
-<p>Below, to help us create the loan categories, we are using the FICO risk profile categories <span class="citation" data-cites="ConsumerBureau">(<a href="#ref-ConsumerBureau" role="doc-biblioref">Consumer Financial Protection Bureau 2024</a>)</span></p>
+<p><em>Loan categories</em> Below, to help us create the loan categories, we are using the FICO risk profile categories <span class="citation" data-cites="ConsumerBureau">(<a href="#ref-ConsumerBureau" role="doc-biblioref">Consumer Financial Protection Bureau 2024</a>)</span> See also <span class="citation" data-cites="myFICO">(<a href="#ref-myFICO" role="doc-biblioref">myFICO 2024</a>)</span> and <span class="citation" data-cites="Equifax">(<a href="#ref-Equifax" role="doc-biblioref">Equifax 2024</a>)</span> for details on different ranges of credit.</p>
 <ul>
 <li><p>Deep subprime (credit scores below 580)</p></li>
 <li><p>Subprime (credit scores of 580-619)</p></li>
@@ -376,10 +399,9 @@ Figure&nbsp;2: Distribution of borrower’s loan purpose by their risk profile c
 </figcaption>
 </figure>
 </div>
-</section>
-<section id="risk-categories" class="level5">
-<h5 class="anchored" data-anchor-id="risk-categories">4.1.3 Risk categories</h5>
-<p>Let us explore the data further with specific borrower risk profile categories. Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: fico score of at least 720 (Low Risk), ‘fico’ score between 650 and 720 (‘Medium Risk’) and ‘fico’ score of 650 as ‘High Risk’.</p>
+<ul>
+<li>Risk categories* Let us explore the data further with specific borrower risk profile categories. Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: fico score of at least 720 (Low Risk), ‘fico’ score between 650 and 720 (‘Medium Risk’) and ‘fico’ score of 650 as ‘High Risk’.</li>
+</ul>
 <p>We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers(<a href="#fig-risk_dist" class="quarto-xref">Figure&nbsp;3</a>).</p>
 <div id="fig-risk_dist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -391,9 +413,7 @@ Figure&nbsp;3: Bar Chart showing the distribution of borrower’s risk level
 </figcaption>
 </figure>
 </div>
-</section>
-<section id="descriptive-analysis" class="level4">
-<h4 class="anchored" data-anchor-id="descriptive-analysis">4.1.3 Descriptive Analysis</h4>
+<p><em>Descriptive Analysis</em></p>
 <p>From the boxplot below (<a href="#fig-fico_purpose" class="quarto-xref">Figure&nbsp;4</a>), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
 <div id="fig-fico_purpose" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -416,10 +436,7 @@ Figure&nbsp;5: Boxplot comparing borrower’s debt-to-income ratio by their risk
 </figure>
 </div>
 <p>From the boxplot above (<a href="#fig-dti_risk" class="quarto-xref">Figure&nbsp;5</a>), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.</p>
-</section>
-<section id="correlation-analysis" class="level4">
-<h4 class="anchored" data-anchor-id="correlation-analysis">4.1.4 Correlation Analysis</h4>
-<p>The EDA for most of the numerical columns produce no strong general trends. We see a higher correlation level between fico and revo.util, and that of fico and interest rate. (<a href="#fig-corr_map" class="quarto-xref">Figure&nbsp;6</a>)</p>
+<p><em>Correlation Analysis</em> The EDA for most of the numerical columns produce no strong general trends. We see a higher correlation level between fico and revo.util, and that of fico and interest rate. (<a href="#fig-corr_map" class="quarto-xref">Figure&nbsp;6</a>)</p>
 <div id="fig-corr_map" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-corr_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -430,10 +447,9 @@ Figure&nbsp;6: Heatmap showing correlation between features for the lending club
 </figcaption>
 </figure>
 </div>
-</section>
-<section id="model-building" class="level4">
-<h4 class="anchored" data-anchor-id="model-building">4.2 Model Building <br></h4>
-<p>First we performed 10-folds cross-evaluation on four classifier models: DecisionTree, kNN-neighbours, SVC and Logistic Regression.</p>
+<section id="model-building" class="level5">
+<h5 class="anchored" data-anchor-id="model-building">4.2 Model Building <br></h5>
+<p>To decide on the most suitable classification model to build on, we have conducted a 10 fold cross-validation on four different classification models: DecisionTree, kNN-neighbours, SVC and Logistic Regression.</p>
 <div class="cell" data-execution_count="4">
 <div id="tbl-cv_results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -441,7 +457,7 @@ Figure&nbsp;6: Heatmap showing correlation between features for the lending club
 Table&nbsp;2: Cross-validation results of various classification model.
 </figcaption>
 <div aria-describedby="tbl-cv_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="4">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="12">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 23%">
@@ -465,10 +481,15 @@ Table&nbsp;2: Cross-validation results of various classification model.
 <td style="text-align: left;">0.115(+/-0.012)</td>
 <td style="text-align: left;">0.005(+/-0.001)</td>
 <td style="text-align: left;">0.737(+/-0.016)</td>
+<td style="text-align: left;">0.115(+/-0.012)</td>
+<td style="text-align: left;">0.005(+/-0.001)</td>
+<td style="text-align: left;">0.737(+/-0.016)</td>
 <td style="text-align: left;">1.000(+/-0.000)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">kNN</td>
+<td style="text-align: left;">0.016(+/-0.000)</td>
+<td style="text-align: left;">0.026(+/-0.041)</td>
 <td style="text-align: left;">0.016(+/-0.000)</td>
 <td style="text-align: left;">0.026(+/-0.041)</td>
 <td style="text-align: left;">0.823(+/-0.008)</td>
@@ -478,11 +499,15 @@ Table&nbsp;2: Cross-validation results of various classification model.
 <td style="text-align: left;">SVC</td>
 <td style="text-align: left;">1.458(+/-0.024)</td>
 <td style="text-align: left;">0.120(+/-0.001)</td>
+<td style="text-align: left;">1.458(+/-0.024)</td>
+<td style="text-align: left;">0.120(+/-0.001)</td>
 <td style="text-align: left;">0.841(+/-0.002)</td>
 <td style="text-align: left;">0.845(+/-0.000)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Logistic Regression</td>
+<td style="text-align: left;">0.026(+/-0.005)</td>
+<td style="text-align: left;">0.003(+/-0.000)</td>
 <td style="text-align: left;">0.026(+/-0.005)</td>
 <td style="text-align: left;">0.003(+/-0.000)</td>
 <td style="text-align: left;">0.839(+/-0.003)</td>
@@ -495,9 +520,10 @@ Table&nbsp;2: Cross-validation results of various classification model.
 </figure>
 </div>
 </div>
-<p>From the mean validation score and training score, we can see that the decision tree model has a much smaller cross-validation score compared to the other three models.</p>
-<p>While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor.</p>
-<p>The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. While together with the fact that SVC has a significantly longer computation time,</p>
+<p><a href="#tbl-cv_results" class="quarto-xref">Table&nbsp;2</a> shows the mean validation score and training score for each model. We can see that the decision tree model has a much smaller cross-validation score compared to the other three models.</p>
+<p>While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor. The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data.</p>
+<p><em>Hyperparameter Tuning</em></p>
+<p>To find the optimal model for prediction, we used GridSearch to conduct 10-folds cross-validation over different values of C. The results were shown below (<a href="#fig-C_tuning" class="quarto-xref">Figure&nbsp;7</a>), with the optimal C value is 0.000687.</p>
 <div id="fig-C_tuning" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-C_tuning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -508,51 +534,21 @@ Figure&nbsp;7: 10-folds cross-validation results for hyperparameter C tuning. Ac
 </figcaption>
 </figure>
 </div>
+</section>
+</section>
+</section>
+<section id="discussion-and-implications" class="level1">
+<h1>5. Discussion and Implications</h1>
+<p>Our model performs well on the test data, achieving aa test score of 0.8398.</p>
+<p>Here, we identify the top 5 influential features for predicting each class (<a href="#tbl-positive_coef" class="quarto-xref">Table&nbsp;3</a>, <a href="#tbl-negative_coef" class="quarto-xref">Table&nbsp;4</a>,). The Logistic Regression’s coefficients has provided insights into feature importance, highlighting predictors such as higher credit score (<code>fico</code>) and larger income growth(<code>log.annual.inc</code>) to be associated with lower default risk. While borrowers with higher loan-to-income ratios, interest rates, and more inquires in the past 6 months exhibited a greater likelihood of default.</p>
 <div class="cell" data-execution_count="5">
-<div id="tbl-model_results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Best Logistic Regression Model after Hyperparameter Tuning
-</figcaption>
-<div aria-describedby="tbl-model_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: right;"></th>
-<th style="text-align: right;">Best C</th>
-<th style="text-align: right;">Mean Test Score</th>
-<th style="text-align: right;">Mean Train Score</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.000687</td>
-<td style="text-align: right;">0.839989</td>
-<td style="text-align: right;">0.83999</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-<p>Here, we identify the top 5 influential features for predicting each class (<a href="#tbl-positive_coef" class="quarto-xref">Table&nbsp;4</a>, <a href="#tbl-negative_coef" class="quarto-xref">Table&nbsp;5</a>,). The Logistic Regression’s coefficients provide insights into feature importance, highlighting predictors such as:</p>
-<p>fico: Higher credit score were strongly correlated with lower default risk.</p>
-<p>loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.</p>
-<p>log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.</p>
-<p>int.rate: Borrowers with higher interest rates has a greater likelihood of default.</p>
-<p>inq.last.6mths: Borrowers that has more inquires in the past 6 months has a higher default risk.</p>
-<div class="cell" data-execution_count="6">
-<div id="tbl-positive_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
+<div id="tbl-positive_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-positive_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Top 3 influential feature for predicting class <code>Defaulted(1)</code>
+Table&nbsp;3: Top 3 influential feature for predicting class <code>Defaulted(1)</code>
 </figcaption>
 <div aria-describedby="tbl-positive_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="6">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="13">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -584,14 +580,14 @@ Table&nbsp;4: Top 3 influential feature for predicting class <code>Defaulted(1)<
 </figure>
 </div>
 </div>
-<div class="cell" data-execution_count="7">
-<div id="tbl-negative_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="7">
+<div class="cell" data-execution_count="6">
+<div id="tbl-negative_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-negative_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Top 3 influential feature for predicting class <code>Fully Paid(0)</code>
+Table&nbsp;4: Top 3 influential feature for predicting class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-negative_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="7">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="14">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -623,15 +619,15 @@ Table&nbsp;5: Top 3 influential feature for predicting class <code>Fully Paid(0)
 </figure>
 </div>
 </div>
-<p>The model achieved an test score of 0.8398.</p>
-<div class="cell" data-execution_count="8">
-<div id="tbl-confusion_matrix" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
+<p>The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors as shown in <a href="#tbl-confusion_matrix" class="quarto-xref">Table&nbsp;5</a>.</p>
+<div class="cell" data-execution_count="7">
+<div id="tbl-confusion_matrix" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="7">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6: Confusion Matrix of Logistic Regression Model on Test Data
+Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
 </figcaption>
 <div aria-describedby="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="8">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 4%">
@@ -667,24 +663,23 @@ Table&nbsp;6: Confusion Matrix of Logistic Regression Model on Test Data
 </figure>
 </div>
 </div>
-<p>The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors (<a href="#tbl-confusion_matrix" class="quarto-xref">Table&nbsp;6</a>). These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
+<p>These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
 <p>Despite the high accuracy score, our model fails to identify any of the 306 actual default loans. This suggests that the accuracy score cannot fully reflect the model performance. However, our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), and the high false negative limits its real-life application. Further steps are needed to improve the model so that it can also predict defaulted loans well.</p>
 <p>Future work will focus on improving the model’s ability to predict defaults by exploring methods for handling imbalanced datasets. One approach is to experiment with machine learning models designed to manage class imbalance better:</p>
 <ol type="1">
-<li>Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better; and</li>
+<li><p>Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better; and</p></li>
+<li><p>Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling.</p></li>
 </ol>
-<p>(2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling.</p>
-</section>
-<section id="limitations" class="level4">
-<h4 class="anchored" data-anchor-id="limitations">4.3 Limitations</h4>
-<div class="cell" data-execution_count="9">
-<div id="tbl-target_dist" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
+<section id="limitations" class="level5">
+<h5 class="anchored" data-anchor-id="limitations">5.1 Limitations</h5>
+<div class="cell" data-execution_count="8">
+<div id="tbl-target_dist" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
+Table&nbsp;6: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="9">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="16">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -719,7 +714,7 @@ Table&nbsp;7: Target distribution showing class imbalance biased towards class <
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Reference</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">6. Reference</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-cai2016judging" class="csl-entry" role="listitem">
 Cai, Shun, Xi Lin, Di Xu, and Xin Fu. 2016. <span>“Judging Online Peer-to-Peer Lending Behavior: A Comparison of First-Time and Repeated Borrowing Requests.”</span> <em>Information &amp; Management</em> 53 (7): 857–67.
 </div>
@@ -729,11 +724,41 @@ Consumer Financial Protection Bureau. 2024. <em>Borrower Risk Profiles</em>. <a 
 <div id="ref-cocser2019predictive" class="csl-entry" role="listitem">
 Coşer, Alexandru, Monica Mihaela Maer-Matei, and Crişan Albu. 2019. <span>“PREDICTIVE MODELS FOR LOAN DEFAULT RISK ASSESSMENT.”</span> <em>Economic Computation &amp; Economic Cybernetics Studies &amp; Research</em> 53 (2).
 </div>
+<div id="ref-Equifax" class="csl-entry" role="listitem">
+Equifax. 2024. <em>What Are the Different Ranges of Credit</em>. <a href="https://www.equifax.com/personal/education/credit/score/articles/-/learn/credit-score-ranges/">https://www.equifax.com/personal/education/credit/score/articles/-/learn/credit-score-ranges/</a>.
+</div>
+<div id="ref-numpy" class="csl-entry" role="listitem">
+Harris, Charles R, K Jarrod Millman, Stéfan J van der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, et al. 2020. <span>“<span class="nocase">Array programming with NumPy</span>.”</span> <em>Nature</em> 585 (7825): 357–62. <a href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a>.
+</div>
+<div id="ref-matplotlib" class="csl-entry" role="listitem">
+Hunter, J. D. 2007. <span>“Matplotlib: A 2D Graphics Environment.”</span> <em>Computing in Science &amp; Engineering</em> 9 (3): 90–95. <a href="https://doi.org/10.1109/MCSE.2007.55">https://doi.org/10.1109/MCSE.2007.55</a>.
+</div>
+<div id="ref-khandani2010consumer" class="csl-entry" role="listitem">
+Khandani, Amir E, Adlar J Kim, and Andrew W Lo. 2010. <span>“Consumer Credit-Risk Models via Machine-Learning Algorithms.”</span> <em>Journal of Banking &amp; Finance</em> 34 (11): 2767–87.
+</div>
+<div id="ref-lenz2016peer" class="csl-entry" role="listitem">
+Lenz, Rainer. 2016. <span>“Peer-to-Peer Lending: Opportunities and Risks.”</span> <em>European Journal of Risk Regulation</em> 7 (4): 688–700.
+</div>
 <div id="ref-lendingclub" class="csl-entry" role="listitem">
 matmcreative. 2024. <em>Lending-Club-Loan-Analysis</em>. <a href="https://github.com/matmcreative/Lending-Club-Loan-Analysis">https://github.com/matmcreative/Lending-Club-Loan-Analysis</a>.
 </div>
+<div id="ref-myFICO" class="csl-entry" role="listitem">
+myFICO. 2024. <em>What’s in My FICO® Scores?</em> <a href="https://www.myfico.com/credit-education/whats-in-your-credit-score#:~:text=FICO%20Scores%20are%20calculated%20using,and%20credit%20mix%20(10%25">https://www.myfico.com/credit-education/whats-in-your-credit-score#:~:text=FICO%20Scores%20are%20calculated%20using,and%20credit%20mix%20(10%25</a>.
+</div>
+<div id="ref-sklearn" class="csl-entry" role="listitem">
+Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, et al. 2011. <span>“<span class="nocase">Scikit-learn: Machine Learning in Python</span>.”</span> <em>Journal of Machine Learning Research</em> 12: 2825–30.
+</div>
 <div id="ref-sutherland2018sharing" class="csl-entry" role="listitem">
 Sutherland, Will, and Mohammad Hossein Jarrahi. 2018. <span>“The Sharing Economy and Digital Platforms: A Review and Research Agenda.”</span> <em>International Journal of Information Management</em> 43: 328–41.
+</div>
+<div id="ref-pandas" class="csl-entry" role="listitem">
+team, The pandas development. 2020. <span>“Pandas-Dev/Pandas: Pandas.”</span> Zenodo. <a href="https://doi.org/10.5281/zenodo.3509134">https://doi.org/10.5281/zenodo.3509134</a>.
+</div>
+<div id="ref-Python" class="csl-entry" role="listitem">
+Van Rossum, Guido, and Fred L. Drake. 2009. <em>Python 3 Reference Manual</em>. Scotts Valley, CA: CreateSpace.
+</div>
+<div id="ref-altair" class="csl-entry" role="listitem">
+VanderPlas, Jake. 2018. <span>“Altair: Interactive Statistical Visualizations for Python.”</span> <em>Journal of Open Source Software</em> 3 (7825, 32): 1057. <a href="https://doi.org/10.21105/joss.01057">https://doi.org/10.21105/joss.01057</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
