@@ -10,3 +10,4 @@ conda install quarto=1.5.57
 cd reports
 quarto render *qmd* --to pdf
 conda list
+quarto
