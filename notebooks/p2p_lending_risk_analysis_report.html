@@ -66,11 +66,25 @@ div.csl-indent {
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul class="collapse">
-  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link active" data-scroll-target="#exploratory-data-analysis">4.1 Exploratory Data Analysis</a></li>
+  <ul>
+  <li><a href="#summary" id="toc-summary" class="nav-link active" data-scroll-target="#summary">1. Summary<br></a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">2. Introduction <br></a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">3. Methods <br></a>
+  <ul>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">3.1 Data <br></a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">3.2 Analysis <br></a></li>
+  </ul></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">4. Results and Discussion <br></a></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">4.1 Exploratory Data Analysis</a>
+  <ul>
+  <li><a href="#descriptive-analysis" id="toc-descriptive-analysis" class="nav-link" data-scroll-target="#descriptive-analysis">4.1.3 Descriptive Analysis</a></li>
+  <li><a href="#correlation-analysis" id="toc-correlation-analysis" class="nav-link" data-scroll-target="#correlation-analysis">4.1.4 Correlation Analysis</a></li>
+  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">4.2 Model Building <br></a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">4.3 Limitations</a></li>
+  </ul></li>
   <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -216,9 +230,14 @@ div.csl-indent {
 <h2 class="anchored" data-anchor-id="exploratory-data-analysis">4.1 Exploratory Data Analysis</h2>
 <p>In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.</p>
 <div class="cell" data-execution_count="3">
-<div id="info" class="cell-output cell-output-display cell-output-markdown" data-execution_count="46">
-<table class="caption-top table table-sm table-striped small">
-<caption>Information on all numeric columns in training data. {#cell-info}</caption>
+<div id="tbl-info" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-info-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Information on all numeric columns in training data.
+</figcaption>
+<div aria-describedby="tbl-info-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="21">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;"></th>
@@ -314,6 +333,9 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</figure>
 </div>
 </div>
 <p>To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. (<a href="#fig-feature_dist" class="quarto-xref">Figure&nbsp;1</a>) Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default.</p>
@@ -416,10 +438,10 @@ Figure&nbsp;6: Heatmap showing correlation between features for the lending club
 <div id="tbl-cv_results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cv_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Cross-validation results of various classification model.
+Table&nbsp;2: Cross-validation results of various classification model.
 </figcaption>
 <div aria-describedby="tbl-cv_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="47">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="22">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 23%">
@@ -490,10 +512,10 @@ Figure&nbsp;7: 10-folds cross-validation results for hyperparameter C tuning. Ac
 <div id="tbl-model_results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Best Logistic Regression Model after Hyperparameter Tuning
+Table&nbsp;3: Best Logistic Regression Model after Hyperparameter Tuning
 </figcaption>
 <div aria-describedby="tbl-model_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="48">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="23">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -517,7 +539,7 @@ Table&nbsp;2: Best Logistic Regression Model after Hyperparameter Tuning
 </figure>
 </div>
 </div>
-<p>Here, we identify the top 5 influential features for predicting each class (<a href="#tbl-positive_coef" class="quarto-xref">Table&nbsp;3</a>, <a href="#tbl-negative_coef" class="quarto-xref">Table&nbsp;4</a>,). The Logistic Regression’s coefficients provide insights into feature importance, highlighting predictors such as:</p>
+<p>Here, we identify the top 5 influential features for predicting each class (<a href="#tbl-positive_coef" class="quarto-xref">Table&nbsp;4</a>, <a href="#tbl-negative_coef" class="quarto-xref">Table&nbsp;5</a>,). The Logistic Regression’s coefficients provide insights into feature importance, highlighting predictors such as:</p>
 <p>fico: Higher credit score were strongly correlated with lower default risk.</p>
 <p>loan_income_ratio: Borrowers with higher loan-to-income ratios exhibited a greater likelihood of default.</p>
 <p>log.annual.inc: Borrowers with higher log annual income correlates with lower default risk.</p>
@@ -527,10 +549,10 @@ Table&nbsp;2: Best Logistic Regression Model after Hyperparameter Tuning
 <div id="tbl-positive_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-positive_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Top 3 influential feature for predicting class <code>Defaulted(1)</code>
+Table&nbsp;4: Top 3 influential feature for predicting class <code>Defaulted(1)</code>
 </figcaption>
 <div aria-describedby="tbl-positive_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="49">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="24">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -566,10 +588,10 @@ Table&nbsp;3: Top 3 influential feature for predicting class <code>Defaulted(1)<
 <div id="tbl-negative_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="7">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-negative_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Top 3 influential feature for predicting class <code>Fully Paid(0)</code>
+Table&nbsp;5: Top 3 influential feature for predicting class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-negative_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="50">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="25">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -606,10 +628,10 @@ Table&nbsp;4: Top 3 influential feature for predicting class <code>Fully Paid(0)
 <div id="tbl-confusion_matrix" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
+Table&nbsp;6: Confusion Matrix of Logistic Regression Model on Test Data
 </figcaption>
 <div aria-describedby="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="51">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="26">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 4%">
@@ -645,7 +667,7 @@ Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
 </figure>
 </div>
 </div>
-<p>The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors (<a href="#tbl-confusion_matrix" class="quarto-xref">Table&nbsp;5</a>). These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
+<p>The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors (<a href="#tbl-confusion_matrix" class="quarto-xref">Table&nbsp;6</a>). These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.</p>
 <p>Despite the high accuracy score, our model fails to identify any of the 306 actual default loans. This suggests that the accuracy score cannot fully reflect the model performance. However, our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), and the high false negative limits its real-life application. Further steps are needed to improve the model so that it can also predict defaulted loans well.</p>
 <p>Future work will focus on improving the model’s ability to predict defaults by exploring methods for handling imbalanced datasets. One approach is to experiment with machine learning models designed to manage class imbalance better:</p>
 <ol type="1">
@@ -654,15 +676,15 @@ Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
 <p>(2)Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling.</p>
 </section>
 <section id="limitations" class="level4">
-<h4 class="anchored" data-anchor-id="limitations">4.8 Limitations</h4>
+<h4 class="anchored" data-anchor-id="limitations">4.3 Limitations</h4>
 <div class="cell" data-execution_count="9">
 <div id="tbl-target_dist" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
+Table&nbsp;7: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="52">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="27">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">

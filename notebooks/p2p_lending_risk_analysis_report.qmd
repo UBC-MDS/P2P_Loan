@@ -6,10 +6,10 @@ jupyter: python3
 format:
   html:
     toc: true
-    toc-depth: 2
+    toc-depth: 4
   pdf:
     toc: true
-    toc-depth: 2
+    toc-depth: 4
 bibliography: references.bib
 execute:
   echo: false
@@ -106,7 +106,7 @@ Python language was used to conduct this analysis.
 In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.
 
 ```{python}
-#| label: info
+#| label: tbl-info
 #| tbl-cap: Information on all numeric columns in training data.
 
 Markdown(info.to_markdown())
