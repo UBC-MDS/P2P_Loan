@@ -10,9 +10,9 @@ The final model demonstrated strong performance on unseen test data, achieving a
 
 While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model's accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model’s effectiveness in peer-to-peer lending platforms.
 
-Report
-You can acces the final report at [here] (https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/notebooks/p2p_lending_risk_analysis_report.ipynb)
-You can acces the final report at [here] (https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/notebooks/p2p_lending_risk_analysis_report.ipynb)
+# Report
+You can acces the final report at [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/notebooks/p2p_lending_risk_analysis_report.ipynb)
+
 
 
 # How to Run the Analysis
@@ -106,7 +106,7 @@ If you are re-using/re-mixing please provide attribution and link to this webpag
 If you are re-using/re-mixing please provide attribution and link to this webpage. 
  This project uses the MIT License. See the [the license file](LICENSE.md) for details.
 
-## References
+
 ## References
 1. Cai, S., Lin, X., Xu, D., & Fu, X. (2016). Judging online peer-to-peer lending behavior: A comparison of first-time and repeated borrowing requests. Information & Management, 53(7), 857-867.Consumer
 https://www.sciencedirect.com/science/article/abs/pii/S0378720616300805
