@@ -51,6 +51,7 @@ def main(data_from, preprocessor_from, data_to):
    
     np.round(cv_results,decimals=4).to_csv(os.path.join(data_to, "cv_results.csv"))
     print(f"Results successfully saved to {data_to}")
+    pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)).to_csv(os.path.join(data_to, "target_dist.csv"))
 
 
 def model_cross_val(model, preprocessor, X_train, y_train):
@@ -75,7 +76,7 @@ def model_cross_val(model, preprocessor, X_train, y_train):
     
     return result_dict
 
-pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)).to_csv(os.path.join(data_to, "target_dist.csv")
+    
 
 
 if __name__ == '__main__':
