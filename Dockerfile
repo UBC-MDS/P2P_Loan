@@ -8,11 +8,11 @@ USER root
 RUN sudo apt update \
     && sudo apt install -y lmodern
 
-USER jovyan
+USER $NB_UID
 
 RUN mamba update --quiet --file /tmp/conda-linux-64.lock \
     && mamba clean --all -y -f \
     && fix-permissions "${CONDA_DIR}" \
-    && fix-permissions "/home/jovyan"
+    && fix-permissions "/home/${NB_USER}"
 
 RUN pip install pyyaml==6.0.2
