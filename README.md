@@ -16,13 +16,13 @@ You can acces the final report at [here](https://github.com/UBC-MDS/P2P_Loan_Ris
 
 
 # How to Run the Analysis
-1. **Clone the Repository**:
+### Clone the Repository
    ```bash
    git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
    cd p2p-lending-risk-analysis
    ```
 ## OPTION 1
-**Using environment.yml option**
+### Using environment.yml option
 
 This is the recommended method to set up the environment that can allow you run the file
   1. Create the Conda environment:
