@@ -80,7 +80,6 @@ def main(data_from, preprocessor_from,data_to, pipeline_to):
     cv_graph.save(os.path.join(data_to, "..", "figures", "param_C_tuning.png"))
     cv_results.to_csv(os.path.join(data_to, "model_results.csv"))
     
-    pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)).to_csv(os.path.join(data_to, "target_dist.csv"))
 
     
 if __name__ == '__main__':

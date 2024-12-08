@@ -14,21 +14,20 @@ Report
 You can acces the final report at [here] (https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/notebooks/p2p_lending_risk_analysis_report.ipynb)
 
 
-## How to Run the Analysis
+# How to Run the Analysis
 1. **Clone the Repository**:
    ```bash
    git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
    cd p2p-lending-risk-analysis
-
-# OPTION 1
+   ```
+## OPTION 1
 2. **Using environment.yml option**
 
 This is the recommended method to set up the environment that can allow you run the file
   Create the Conda environment:
-
-    bash
+   ```bash
     conda env create -f environment.yml
-    
+   ```
   Activate the environment:
 
     ```bash
@@ -38,9 +37,9 @@ This is the recommended method to set up the environment that can allow you run 
 
  python -c "import pandas as pd; print('Environment set up successfully!')"
 
-# OPTION 2
+## OPTION 2
 
-## Using the Docker Container Image
+### Using the Docker Container Image
 To use the containerized environment for this project follow this steps if it is your first time
 
 1. Ensure you have Docker and Docker Compose installed.
@@ -65,7 +64,8 @@ model_tuning.py
 python scripts/model_tuning.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle" --pipeline_to "results/models"
 model_evaluation.py
 python scripts/model_evaluation.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle" --pipeline_from "results/models/pipeline.pickle"
-
+quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
+quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
 ```
 6. To run the analysis, open src/.ipynb in Jupyter Lab you just launched and under the "Kernel" menu click "Restart Kernel and Run All Cells..."
 
@@ -81,14 +81,13 @@ Python and packages listed in [here](https://github.com/UBC-MDS/P2P_Loan_Risk-An
 
 
 ## Adding a new dependency and Updating Environment
-Add the dependency to the environment.yml file on a new branch. If the package is pip installed, it should also be added to Dockerfile with command RUN pip install <package_name> = <version>
+1. Add the dependency to the environment.yml file on a new branch. If the package is pip installed, it should also be added to Dockerfile with command RUN pip install <package_name> = <version>
 
-Run conda-lock -k explicit --file environment.yml -p linux-64 to update the conda-linux-64.lock file.
+2. Run conda-lock -k explicit --file environment.yml -p linux-64 to update the conda-linux-64.lock file.
 
-Re-run the scripts above using either options above.
+3. Re-run the scripts above using either options above.
 
- # OR 
- If the environment.yml file is updated (e.g., new dependencies are added), you can update your existing environment with:
+4. If the environment.yml file is updated (e.g., new dependencies are added), you can update your existing environment with:
 
  ```conda env update -f environment.yaml --prune```
 
@@ -101,10 +100,15 @@ If you are re-using/re-mixing please provide attribution and link to this webpag
 ## References
 1. Cai, S., Lin, X., Xu, D., & Fu, X. (2016). Judging online peer-to-peer lending behavior: A comparison of first-time and repeated borrowing requests. Information & Management, 53(7), 857-867.Consumer
 https://www.sciencedirect.com/science/article/abs/pii/S0378720616300805
+
 2. Coşer, A., Maer-Matei, M. M., & Albu, C. (2019). PREDICTIVE MODELS FOR LOAN DEFAULT RISK ASSESSMENT. Economic Computation & Economic Cybernetics Studies & Research, 53(2). https://ecocyb.ase.ro/nr2019_2/9.%20Coser%20Al.%20Crisan%20Albu%20(T).pdf
 
 3. Equifax. (n.d.). *Credit score ranges.* Retrieved November 20, 2024, from [https://www.equifax.com/personal/education/credit/score/articles/-/learn/credit-score-ranges/](https://www.equifax.com/personal/education/credit/score/articles/-/learn/credit-score-ranges/)
+
 4. Financial Protection Bureau. (n.d.). *Borrower risk profiles: Student loans*. Retrieved November 20, 2024, from [https://www.consumerfinance.gov/data-research/consumer-credit-trends/student-loans/borrower-risk-profiles/](https://www.consumerfinance.gov/data-research/consumer-credit-trends/student-loans/borrower-risk-profiles/)
+
 5. Khandani, A. E., Kim, A. J., & Lo, A. W. (2010). Consumer credit-risk models via machine-learning algorithms. Journal of Banking & Finance, 34(11), 2767-2787. https://www.sciencedirect.com/science/article/abs/pii/S0378426610002372
-8. Lenz, R. (2016). Peer-to-peer lending: Opportunities and risks. European Journal of Risk Regulation, 7(4), 688-700
-9. myFICO. (n.d.). *What's in my FICO® Scores?* Retrieved November 20, 2024, from [https://www.myfico.com/credit-education/whats-in-your-credit-score](https://www.myfico.com/credit-education/whats-in-your-credit-score#:~:text=FICO%20Scores%20are%20calculated%20using,and%20credit%20mix%20(10%25)
+
+6. Lenz, R. (2016). Peer-to-peer lending: Opportunities and risks. European Journal of Risk Regulation, 7(4), 688-700
+
+7. myFICO. (n.d.). *What's in my FICO® Scores?* Retrieved November 20, 2024, from [https://www.myfico.com/credit-education/whats-in-your-credit-score](https://www.myfico.com/credit-education/whats-in-your-credit-score#:~:text=FICO%20Scores%20are%20calculated%20using,and%20credit%20mix%20(10%25))

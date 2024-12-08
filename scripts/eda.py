@@ -195,11 +195,5 @@ def main(input_csv, output_dir):
         title='Boxplot of DTI by Risk Category'
     )
 
-    # Combine both boxplots
-    combined_boxplots = purpose_fico_boxplot & risk_dti_boxplot
-
-    # Save combined boxplots
-    combined_boxplots.save(os.path.join(output_dir, "combined_boxplots.html"))
-
 if __name__ == '__main__':
     main()
