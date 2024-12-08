@@ -32,12 +32,11 @@ This is the recommended method to set up the environment that can allow you run 
   Activate the environment:
 
     ```bash
-    ```bash
     conda activate loan_risk522
     ```
  Verify the environment setup using this.
 
- python -c "import pandas as pd; print('Environment set up successfully!')"
+`python -c "import pandas as pd; print('Environment set up successfully!')"`
 
 ## OPTION 2
 
