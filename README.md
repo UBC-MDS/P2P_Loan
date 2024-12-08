@@ -12,6 +12,7 @@ While false negatives pose a greater risk in financial decision-making, this mod
 
 Report
 You can acces the final report at [here] (https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/notebooks/p2p_lending_risk_analysis_report.ipynb)
+You can acces the final report at [here] (https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/notebooks/p2p_lending_risk_analysis_report.ipynb)
 
 
 # How to Run the Analysis
@@ -31,6 +32,7 @@ This is the recommended method to set up the environment that can allow you run 
   Activate the environment:
 
     ```bash
+    ```bash
     conda activate loan_risk522
     ```
  Verify the environment setup using this.
@@ -45,29 +47,31 @@ To use the containerized environment for this project follow this steps if it is
 1. Ensure you have Docker and Docker Compose installed.
 2. Clone this repository and navigate to the root directory. [here](git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
    cd p2p-lending-risk-analysis)
+2. Clone this repository and navigate to the root directory. [here](git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
+   cd p2p-lending-risk-analysis)
 3. Run: docker-compose up
 4. Access the Jupyter Notebook interface at http://localhost:8888.
 
 5. To run the analysis, open a terminal on jupyterlab and run the following commands:
 ```bash
-download_data.py
 python scripts/download_data.py --url "https://raw.githubusercontent.com/matmcreative/Lending-Club-Loan-Analysis/refs/heads/main/loan_data.csv" --output_dir "data/raw"
-split_validation.py
+
 python scripts/split_validation.py --data_from "data/raw/loan_data.csv" --data_to "data/processed"
-eda.py
+
 python scripts/eda.py --input_csv "data/processed/loan_train.csv" --output_dir "results"
-preprocessing.py
+
 python scripts/preprocessing.py --data_from "data/processed" --data_to "data/processed" --preprocessor_to "results/models"
-model_training.py
+
 python scripts/model_training.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle"
-model_tuning.py
+
 python scripts/model_tuning.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle" --pipeline_to "results/models"
-model_evaluation.py
+
 python scripts/model_evaluation.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle" --pipeline_from "results/models/pipeline.pickle"
 quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
 quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
 ```
-6. To run the analysis, open src/.ipynb in Jupyter Lab you just launched and under the "Kernel" menu click "Restart Kernel and Run All Cells..."
+6. To shut down the container and clean up the resources, type Cntrl + C in the terminal where you launched the container, and then type docker compose rm
+
 
 
 
@@ -84,9 +88,12 @@ Python and packages listed in [here](https://github.com/UBC-MDS/P2P_Loan_Risk-An
 1. Add the dependency to the environment.yml file on a new branch. If the package is pip installed, it should also be added to Dockerfile with command RUN pip install <package_name> = <version>
 
 2. Run conda-lock -k explicit --file environment.yml -p linux-64 to update the conda-linux-64.lock file.
+2. Run conda-lock -k explicit --file environment.yml -p linux-64 to update the conda-linux-64.lock file.
 
 3. Re-run the scripts above using either options above.
+3. Re-run the scripts above using either options above.
 
+4. If the environment.yml file is updated (e.g., new dependencies are added), you can update your existing environment with:
 4. If the environment.yml file is updated (e.g., new dependencies are added), you can update your existing environment with:
 
  ```conda env update -f environment.yaml --prune```
@@ -96,7 +103,11 @@ Python and packages listed in [here](https://github.com/UBC-MDS/P2P_Loan_Risk-An
 - **Code**:
 If you are re-using/re-mixing please provide attribution and link to this webpage. 
  This project uses the MIT License. See the [the license file](LICENSE.md) for details.
+- **Code**:
+If you are re-using/re-mixing please provide attribution and link to this webpage. 
+ This project uses the MIT License. See the [the license file](LICENSE.md) for details.
 
+## References
 ## References
 1. Cai, S., Lin, X., Xu, D., & Fu, X. (2016). Judging online peer-to-peer lending behavior: A comparison of first-time and repeated borrowing requests. Information & Management, 53(7), 857-867.Consumer
 https://www.sciencedirect.com/science/article/abs/pii/S0378720616300805
