@@ -23,6 +23,7 @@ import os
 import numpy as np
 import pandas as pd
 from IPython.display import Markdown, display
+from tabulate import tabulate
 ```
 ```{python}
 info = pd.read_csv("../results/tables/info.csv", index_col=0)
