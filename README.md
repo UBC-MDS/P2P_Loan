@@ -48,7 +48,10 @@ To use the containerized environment for this project follow this steps if it is
    cd p2p-lending-risk-analysis)
 2. Clone this repository and navigate to the root directory. [here](git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
    cd p2p-lending-risk-analysis)
-3. Run: docker-compose up
+3. Run: ```bash
+   docker-compose up
+   ```
+
 4. Access the Jupyter Notebook interface at http://localhost:8888.
 
 5. To run the analysis, open a terminal on jupyterlab and run the following commands:
@@ -69,17 +72,25 @@ python scripts/model_evaluation.py --data_from "data/processed" --data_to "resul
 quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
 quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
 ```
-6. To shut down the container and clean up the resources, type Cntrl + C in the terminal where you launched the container, and then type docker compose rm
+6. To shut down the container and clean up the resources, type Cntrl + C in the terminal where you launched the container, and then type 
+```bash
+   docker compose rm
+```
 
 
 
 
 ## Dependencies
 [Docker](https://www.docker.com)
+
 conda (version 23.9.0 or higher)
+
 conda-lock (version 2.5.7 or higher)
+
 mamba (version 1.5.8 or higher)
+
 nb_conda_kernels (version 2.3.1 or higher)
+
 Python and packages listed in [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/environment.yml)
 
 
@@ -87,21 +98,15 @@ Python and packages listed in [here](https://github.com/UBC-MDS/P2P_Loan_Risk-An
 1. Add the dependency to the environment.yml file on a new branch. If the package is pip installed, it should also be added to Dockerfile with command RUN pip install <package_name> = <version>
 
 2. Run conda-lock -k explicit --file environment.yml -p linux-64 to update the conda-linux-64.lock file.
-2. Run conda-lock -k explicit --file environment.yml -p linux-64 to update the conda-linux-64.lock file.
 
 3. Re-run the scripts above using either options above.
-3. Re-run the scripts above using either options above.
 
-4. If the environment.yml file is updated (e.g., new dependencies are added), you can update your existing environment with:
 4. If the environment.yml file is updated (e.g., new dependencies are added), you can update your existing environment with:
 
  ```conda env update -f environment.yaml --prune```
 
 
 ## License
-- **Code**:
-If you are re-using/re-mixing please provide attribution and link to this webpage. 
- This project uses the MIT License. See the [the license file](LICENSE.md) for details.
 - **Code**:
 If you are re-using/re-mixing please provide attribution and link to this webpage. 
  This project uses the MIT License. See the [the license file](LICENSE.md) for details.
