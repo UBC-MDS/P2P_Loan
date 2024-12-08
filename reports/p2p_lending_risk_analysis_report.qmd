@@ -87,7 +87,7 @@ All numeric features were standardized using standardscaler, while categorical f
 Python [@Python] language was used to conduct this analysis as well as the following packages: pandas[@pandas], numpy[@numpy], matplotlib[@matplotlib], altair[@altair], sklearn[@sklearn].
 
 
-### 4.1 Exploratory Data Analysis 
+## 4.1 Exploratory Data Analysis 
 
 In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.
 
@@ -156,7 +156,7 @@ We see a higher correlation level between fico and revo.util, and that of fico a
 ![Heatmap showing correlation between features for the lending club data](../results/figures/correlation_heatmap.png){#fig-corr_map width=100%}
 
 
-##### 4.2 Model Building <br>
+## 4.2 Model Building <br>
 
 To decide on the most suitable classification model to build on, we have conducted a 10 fold cross-validation on four different classification models: DecisionTree, kNN-neighbours, SVC and Logistic Regression. 
 
@@ -217,7 +217,7 @@ Future work will focus on improving the model's ability to predict defaults by e
 (2) Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling. 
 
 
-##### 5.1 Limitations
+## 5.1 Limitations
 
 ```{python}
 #| label: tbl-target_dist

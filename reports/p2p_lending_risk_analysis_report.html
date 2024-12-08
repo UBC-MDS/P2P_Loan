@@ -3,7 +3,6 @@
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
-<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -109,10 +108,8 @@ window.Quarto = {
   </ul></li>
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">4. Analysis <br></a>
   <ul>
-  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">4.1 Exploratory Data Analysis</a>
-  <ul>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">4.1 Exploratory Data Analysis</a></li>
   <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">4.2 Model Building <br></a></li>
-  </ul></li>
   </ul></li>
   <li><a href="#discussion-and-implications" id="toc-discussion-and-implications" class="nav-link" data-scroll-target="#discussion-and-implications">5. Discussion and Implications</a>
   <ul>
@@ -120,8 +117,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">6. Reference</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="p2p_lending_risk_analysis_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -251,8 +247,8 @@ window.Quarto = {
 <p>We have choosen the hyperparameter <code>C</code> using a 10-fold cross-validation. The regularization strength C is a hyperparameter that controls the trade-off between bias and variance. A high value of C corresponds to weaker regularization (less penalty on large coefficients), which might lead to overfitting, while a low value of C increases regularization and might underfit the model. We conduct GridSearch on a logarithmic range from <span class="math inline">\(10^{-5}\)</span> to <span class="math inline">\(10^{5}\)</span>. With the range spanning over a few orders of magnitude, this will ensure the model neither overfits nor underfits.</p>
 <p>All numeric features were standardized using standardscaler, while categorical features were preprocessed using one-hot encoding before model fitting. Any missing values were imputed using the median for numeric features or most frequent value for categorical features.</p>
 <p>Python <span class="citation" data-cites="Python">(<a href="#ref-Python" role="doc-biblioref">Van Rossum and Drake 2009</a>)</span> language was used to conduct this analysis as well as the following packages: pandas<span class="citation" data-cites="pandas">(<a href="#ref-pandas" role="doc-biblioref">team 2020</a>)</span>, numpy<span class="citation" data-cites="numpy">(<a href="#ref-numpy" role="doc-biblioref">Harris et al. 2020</a>)</span>, matplotlib<span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter 2007</a>)</span>, altair<span class="citation" data-cites="altair">(<a href="#ref-altair" role="doc-biblioref">VanderPlas 2018</a>)</span>, sklearn<span class="citation" data-cites="sklearn">(<a href="#ref-sklearn" role="doc-biblioref">Pedregosa et al. 2011</a>)</span>.</p>
-<section id="exploratory-data-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="exploratory-data-analysis">4.1 Exploratory Data Analysis</h3>
+<section id="exploratory-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis">4.1 Exploratory Data Analysis</h2>
 <p>In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.</p>
 <div class="cell" data-execution_count="3">
 <div id="tbl-info" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3">
@@ -447,8 +443,9 @@ Figure&nbsp;6: Heatmap showing correlation between features for the lending club
 </figcaption>
 </figure>
 </div>
-<section id="model-building" class="level5">
-<h5 class="anchored" data-anchor-id="model-building">4.2 Model Building <br></h5>
+</section>
+<section id="model-building" class="level2">
+<h2 class="anchored" data-anchor-id="model-building">4.2 Model Building <br></h2>
 <p>To decide on the most suitable classification model to build on, we have conducted a 10 fold cross-validation on four different classification models: DecisionTree, kNN-neighbours, SVC and Logistic Regression.</p>
 <div class="cell" data-execution_count="4">
 <div id="tbl-cv_results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
@@ -478,38 +475,29 @@ Table&nbsp;2: Cross-validation results of various classification model.
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Decision Tree</td>
-<td style="text-align: left;">0.115(+/-0.012)</td>
-<td style="text-align: left;">0.005(+/-0.001)</td>
-<td style="text-align: left;">0.737(+/-0.016)</td>
-<td style="text-align: left;">0.115(+/-0.012)</td>
-<td style="text-align: left;">0.005(+/-0.001)</td>
-<td style="text-align: left;">0.737(+/-0.016)</td>
+<td style="text-align: left;">0.086(+/-0.005)</td>
+<td style="text-align: left;">0.004(+/-0.003)</td>
+<td style="text-align: left;">0.737(+/-0.017)</td>
 <td style="text-align: left;">1.000(+/-0.000)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">kNN</td>
-<td style="text-align: left;">0.016(+/-0.000)</td>
-<td style="text-align: left;">0.026(+/-0.041)</td>
-<td style="text-align: left;">0.016(+/-0.000)</td>
-<td style="text-align: left;">0.026(+/-0.041)</td>
+<td style="text-align: left;">0.012(+/-0.000)</td>
+<td style="text-align: left;">0.014(+/-0.019)</td>
 <td style="text-align: left;">0.823(+/-0.008)</td>
 <td style="text-align: left;">0.855(+/-0.001)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">SVC</td>
-<td style="text-align: left;">1.458(+/-0.024)</td>
-<td style="text-align: left;">0.120(+/-0.001)</td>
-<td style="text-align: left;">1.458(+/-0.024)</td>
-<td style="text-align: left;">0.120(+/-0.001)</td>
+<td style="text-align: left;">0.970(+/-0.020)</td>
+<td style="text-align: left;">0.115(+/-0.001)</td>
 <td style="text-align: left;">0.841(+/-0.002)</td>
 <td style="text-align: left;">0.845(+/-0.000)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Logistic Regression</td>
-<td style="text-align: left;">0.026(+/-0.005)</td>
-<td style="text-align: left;">0.003(+/-0.000)</td>
-<td style="text-align: left;">0.026(+/-0.005)</td>
-<td style="text-align: left;">0.003(+/-0.000)</td>
+<td style="text-align: left;">0.017(+/-0.001)</td>
+<td style="text-align: left;">0.002(+/-0.000)</td>
 <td style="text-align: left;">0.839(+/-0.003)</td>
 <td style="text-align: left;">0.840(+/-0.000)</td>
 </tr>
@@ -534,7 +522,6 @@ Figure&nbsp;7: 10-folds cross-validation results for hyperparameter C tuning. Ac
 </figcaption>
 </figure>
 </div>
-</section>
 </section>
 </section>
 <section id="discussion-and-implications" class="level1">
@@ -670,8 +657,8 @@ Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
 <li><p>Data-level Adjustments: Undersampling to Reduce the number of majority class instances to balance the dataset; Oversampling: Increasing the number of minority class instances to achieve balance; Random Oversampling: Duplicating minority class instances at random; SMOTE: Generating synthetic examples of the minority class to train the model better; and</p></li>
 <li><p>Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling.</p></li>
 </ol>
-<section id="limitations" class="level5">
-<h5 class="anchored" data-anchor-id="limitations">5.1 Limitations</h5>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">5.1 Limitations</h2>
 <div class="cell" data-execution_count="8">
 <div id="tbl-target_dist" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-tbl figure">
