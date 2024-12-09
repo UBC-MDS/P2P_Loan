@@ -44,10 +44,7 @@ This is the recommended method to set up the environment that can allow you run 
 To use the containerized environment for this project follow this steps if it is your first time
 
 1. Ensure you have Docker and Docker Compose installed.
-2. Clone this repository and navigate to the root directory. [here](git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
-   cd p2p-lending-risk-analysis)
-2. Clone this repository and navigate to the root directory. [here](git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
-   cd p2p-lending-risk-analysis)
+2. Clone this repository and navigate to the root directory. [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis)
 3. Run: 
 ```bash
    docker-compose up
