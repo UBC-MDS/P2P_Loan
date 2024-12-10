@@ -53,22 +53,45 @@ To use the containerized environment for this project follow this steps if it is
 
 5. To run the analysis, open a terminal on jupyterlab and run the following commands:
 ```bash
-python scripts/download_data.py --url "https://raw.githubusercontent.com/matmcreative/Lending-Club-Loan-Analysis/refs/heads/main/loan_data.csv" --output_dir "data/raw"
+python scripts/download_data.py 
+	--url "https://raw.githubusercontent.com/matmcreative/Lending-Club-Loan-Analysis/refs/heads/main/loan_data.csv" \
+	--output_dir "data/raw"
 
-python scripts/split_validation.py --data_from "data/raw/loan_data.csv" --data_to "data/processed"
+python scripts/split_validation.py 
+	--data_from "data/raw/loan_data.csv" \
+	--data_to "data/processed"
 
-python scripts/eda.py --input_csv "data/processed/loan_train.csv" --output_dir "results"
+python scripts/eda.py 
+	--input_csv "data/processed/loan_train.csv" \
+	--output_dir "results"
 
-python scripts/preprocessing.py --data_from "data/processed" --data_to "data/processed" --preprocessor_to "results/models"
+python scripts/preprocessing.py 
+   --data_from "data/processed" \
+   --data_to "data/processed" \
+   --preprocessor_to "results/models"
 
-python scripts/model_training.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle"
+python scripts/model_training.py 
+   --data_from "data/processed" \
+   --data_to "results/tables" \
+   --preprocessor_from "results/models/preprocessor.pickle"
 
-python scripts/model_tuning.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle" --pipeline_to "results/models"
+python scripts/model_tuning.py 
+   --data_from "data/processed" \
+   --data_to "results/tables" \
+   --preprocessor_from "results/models/preprocessor.pickle" \
+   --pipeline_to "results/models"
 
-python scripts/model_evaluation.py --data_from "data/processed" --data_to "results/tables" --preprocessor_from "results/models/preprocessor.pickle" --pipeline_from "results/models/pipeline.pickle"
+python scripts/model_evaluation.py 
+   --data_from "data/processed" \
+   --data_to "results/tables" \
+   --preprocessor_from "results/models/preprocessor.pickle" \
+   --pipeline_from "results/models/pipeline.pickle"
+
 quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
+
 quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
 ```
+
 6. To shut down the container and clean up the resources, type Cntrl + C in the terminal where you launched the container, and then type 
 ```bash
    docker compose rm
