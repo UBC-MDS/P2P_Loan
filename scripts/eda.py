@@ -9,6 +9,8 @@ import altair as alt
 import click
 import matplotlib.pyplot as plt
 import io
+from src.data_cleaning import handle_missing_values, add_loan_categories, add_loan_income_ratio, add_risk_categories
+
 
 # Enable the VegaFusion data transformer
 alt.data_transformers.enable("vegafusion")
@@ -51,27 +53,14 @@ def main(input_csv, output_dir):
     train_df['annual.inc'] = np.exp(train_df['log.annual.inc'])
 
     # Loan-to-Income Ratio
-    train_df['loan_income_ratio'] = (train_df['installment'] * 12) / train_df['annual.inc']
+    train_df = add_loan_income_ratio(train_df, installment_column='installment', income_column='annual.inc')
 
     # Creating Loan Categories based on FICO score
-    loan_categories = ['Super-prime', 'Prime', 'Near-prime', 'Subprime', 'Deep subprime']
-    fico_conditions = [
-        (train_df['fico'] >= 720),
-        (train_df['fico'] < 719) & (train_df['fico'] >= 660),
-        (train_df['fico'] < 659) & (train_df['fico'] >= 620),
-        (train_df['fico'] < 619) & (train_df['fico'] >= 580),
-        (train_df['fico'] < 580)
-    ]
-    train_df['loan_categories'] = np.select(fico_conditions, loan_categories, default='Unknown')
+    train_df = add_loan_categories(train_df, fico_column='fico')
+
 
     # Creating Risk Categories based on FICO score
-    conditions = [
-        (train_df['fico'] >= 720),
-        (train_df['fico'] < 720) & (train_df['fico'] >= 650),
-        (train_df['fico'] < 650)
-    ]
-    categories = ['Low Risk', 'Medium Risk', 'High Risk']
-    train_df['risk_category'] = np.select(conditions, categories, default='Unknown')
+    train_df = add_risk_categories(train_df, fico_column='fico')
 
     # SECTION 4: Visualization (Save to output directory)
 

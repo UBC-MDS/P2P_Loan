@@ -1,3 +1,10 @@
+# P2P Loan Risk Analysis Data Analysis Pipe
+# author: Mavis Wong, Yasmin Hassan and Abeba Nigussie Turi
+# date: 2024-12-10
+# - all: Runs the full pipeline from downloading data to generating the final report.
+# - clean: Removes all intermediate and generated files.
+
+
 .PHONY: all clean
 
 all : reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf reports/p2p_lending_risk_analysis_report_files
