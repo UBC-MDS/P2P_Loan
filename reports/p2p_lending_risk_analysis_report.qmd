@@ -46,6 +46,10 @@ Crowd-based business models are one of the last decade’s developments with the
 
 Extensive research has been conducted on borrower risk behavior analysis and trust within P2P online lending systems, highlighting the critical role of trust and predictability in ensuring platform sustainability and mitigating default risks [@cai2016judging]. Building on these, this work focuses on developing a comprehensive risk analysis framework through machine learning models that will help predict borrower behavior.
 
+This work will address the following research questions.
+- How do borrower characteristics influence the probability of default in a P2P online lending settings?
+- What techniques can improve machine learning models for predicting defaults in the presence of class imbalance?
+
 
 # 3. Methods <br>
 

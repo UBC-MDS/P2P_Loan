@@ -5,6 +5,7 @@
 - General language check done with a 95% overall performance score using Grammarly business-expert-formal filters.
 https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/72db1742bcc27cd4480d08d2fbcdef5ccdfce618 
 - Research questions added
+https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/93dfaab377d8f1597f16b1a131e296a49a8435ca 
 
 ## 2. Unit tests added
  https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/tree/main/tests
