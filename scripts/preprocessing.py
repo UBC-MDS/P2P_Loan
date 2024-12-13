@@ -8,6 +8,9 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn import set_config
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.write_csv import write_csv
 
 @click.command()
 @click.option('--data_from', type=str, help="Path to split data")
@@ -69,8 +72,8 @@ def main(data_from, data_to, preprocessor_to):
     scale_test = preprocessor.transform(test_df)
 
     os.makedirs(os.path.join(data_to), exist_ok=True)
-    scale_train.to_csv(os.path.join(data_to, "scaled_loan_train.csv"), index=False)
-    scale_test.to_csv(os.path.join(data_to, "scaled_loan_test.csv"), index=False)
+    write_csv(scale_train, data_to, "scaled_loan_train.csv", index=False)
+    write_csv(scale_test, data_to, "scaled_loan_test.csv", index=False)
 
     print(f"Preprocessor successfully saved to {preprocessor_to}")
     print(f"Scaled data successfully saved to {data_to}")
