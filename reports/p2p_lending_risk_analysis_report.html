@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -257,7 +257,7 @@ window.Quarto = {
 Table&nbsp;1: Information on all numeric columns in training data.
 </figcaption>
 <div aria-describedby="tbl-info-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="51">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="11">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -454,18 +454,16 @@ Figure&nbsp;6: Heatmap showing correlation between features for the lending club
 Table&nbsp;2: Cross-validation results of various classification model.
 </figcaption>
 <div aria-describedby="tbl-cv_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="52">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="12">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 23%">
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 19%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;"></th>
 <th style="text-align: left;">fit_time</th>
 <th style="text-align: left;">score_time</th>
 <th style="text-align: left;">test_score</th>
@@ -474,30 +472,26 @@ Table&nbsp;2: Cross-validation results of various classification model.
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Decision Tree</td>
-<td style="text-align: left;">0.053(+/-0.002)</td>
-<td style="text-align: left;">0.001(+/-0.000)</td>
+<td style="text-align: left;">0.081(+/-0.004)</td>
+<td style="text-align: left;">0.002(+/-0.000)</td>
 <td style="text-align: left;">0.737(+/-0.017)</td>
 <td style="text-align: left;">1.000(+/-0.000)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">kNN</td>
-<td style="text-align: left;">0.008(+/-0.000)</td>
-<td style="text-align: left;">0.007(+/-0.005)</td>
+<td style="text-align: left;">0.011(+/-0.000)</td>
+<td style="text-align: left;">0.013(+/-0.017)</td>
 <td style="text-align: left;">0.823(+/-0.008)</td>
 <td style="text-align: left;">0.855(+/-0.001)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">SVC</td>
-<td style="text-align: left;">0.630(+/-0.012)</td>
-<td style="text-align: left;">0.078(+/-0.002)</td>
+<td style="text-align: left;">0.965(+/-0.013)</td>
+<td style="text-align: left;">0.116(+/-0.001)</td>
 <td style="text-align: left;">0.841(+/-0.002)</td>
 <td style="text-align: left;">0.845(+/-0.000)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Logistic Regression</td>
-<td style="text-align: left;">0.011(+/-0.001)</td>
-<td style="text-align: left;">0.001(+/-0.000)</td>
+<td style="text-align: left;">0.016(+/-0.001)</td>
+<td style="text-align: left;">0.002(+/-0.000)</td>
 <td style="text-align: left;">0.839(+/-0.003)</td>
 <td style="text-align: left;">0.840(+/-0.000)</td>
 </tr>
@@ -511,7 +505,7 @@ Table&nbsp;2: Cross-validation results of various classification model.
 <p><a href="#tbl-cv_results" class="quarto-xref">Table&nbsp;2</a> shows the mean validation score and training score for each model. We can see that the decision tree model has a much smaller cross-validation score compared to the other three models.</p>
 <p>While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor. The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data.</p>
 <p><em>Hyperparameter Tuning</em></p>
-<p>To find the optimal model for prediction, we used GridSearch to conduct 10-folds cross-validation over different values of C. The results were shown below (<a href="#fig-C_tuning" class="quarto-xref">Figure&nbsp;7</a>), with the optimal C value is np.float64(0.000687).</p>
+<p>To find the optimal model for prediction, we used GridSearch to conduct 10-folds cross-validation over different values of C. The results were shown below (<a href="#fig-C_tuning" class="quarto-xref">Figure&nbsp;7</a>), with the optimal C value is 0.000687.</p>
 <div id="fig-C_tuning" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-C_tuning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -526,7 +520,7 @@ Figure&nbsp;7: 10-folds cross-validation results for hyperparameter C tuning. Ac
 </section>
 <section id="discussion-and-implications" class="level1">
 <h1>5. Discussion and Implications</h1>
-<p>Our model performs well on the test data, achieving aa test score of np.float64(0.8398).</p>
+<p>Our model performs well on the test data, achieving aa test score of 0.8398.</p>
 <p>Here, we identify the top 5 influential features for predicting each class (<a href="#tbl-positive_coef" class="quarto-xref">Table&nbsp;3</a>, <a href="#tbl-negative_coef" class="quarto-xref">Table&nbsp;4</a>,). The Logistic Regression’s coefficients has provided insights into feature importance, highlighting predictors such as higher credit score (<code>fico</code>) and larger income growth(<code>log.annual.inc</code>) to be associated with lower default risk. While borrowers with higher loan-to-income ratios, interest rates, and more inquires in the past 6 months exhibited a greater likelihood of default.</p>
 <div class="cell" data-execution_count="5">
 <div id="tbl-positive_coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
@@ -535,28 +529,24 @@ Figure&nbsp;7: 10-folds cross-validation results for hyperparameter C tuning. Ac
 Table&nbsp;3: Top 3 influential feature for predicting class <code>Defaulted(1)</code>
 </figcaption>
 <div aria-describedby="tbl-positive_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="53">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="13">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: right;"></th>
 <th style="text-align: left;">features</th>
 <th style="text-align: right;">positive coefficient</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0</td>
 <td style="text-align: left;">num__fico</td>
 <td style="text-align: right;">-0.1034</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1</td>
 <td style="text-align: left;">num__credit.policy</td>
 <td style="text-align: right;">-0.101</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2</td>
 <td style="text-align: left;">num__log.annual.inc</td>
 <td style="text-align: right;">-0.0533</td>
 </tr>
@@ -574,28 +564,24 @@ Table&nbsp;3: Top 3 influential feature for predicting class <code>Defaulted(1)<
 Table&nbsp;4: Top 3 influential feature for predicting class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-negative_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="54">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="14">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: right;"></th>
 <th style="text-align: left;">features</th>
 <th style="text-align: right;">negative coefficient</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0</td>
 <td style="text-align: left;">num__int.rate</td>
 <td style="text-align: right;">0.1193</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1</td>
 <td style="text-align: left;">num__inq.last.6mths</td>
 <td style="text-align: right;">0.1105</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2</td>
 <td style="text-align: left;">num__installment</td>
 <td style="text-align: right;">0.0621</td>
 </tr>
@@ -614,17 +600,15 @@ Table&nbsp;4: Top 3 influential feature for predicting class <code>Fully Paid(0)
 Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
 </figcaption>
 <div aria-describedby="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="55">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 4%">
-<col style="width: 28%">
-<col style="width: 32%">
+<col style="width: 30%">
 <col style="width: 34%">
+<col style="width: 35%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: right;">Predict Positive (defaulted)</th>
 <th style="text-align: right;">Predict Negative (fully paid)</th>
@@ -632,13 +616,11 @@ Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0</td>
 <td style="text-align: left;">True Positive (defaulted)</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">306</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1</td>
 <td style="text-align: left;">True Negative (fully paid)</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1609</td>
@@ -666,21 +648,18 @@ Table&nbsp;5: Confusion Matrix of Logistic Regression Model on Test Data
 Table&nbsp;6: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="56">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="16">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: right;">not.fully.paid</th>
 <th style="text-align: right;">proportion</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0</td>
 <td style="text-align: right;">0.839859</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1</td>
 <td style="text-align: right;">0.160141</td>
 </tr>
 </tbody>

@@ -1,5 +1,12 @@
-def model_cross_val(model, preprocessor, X_train, y_train):
 
+import numpy as np
+import pandas as pd
+import os
+import pickle
+from sklearn.model_selection import cross_validate
+from sklearn.pipeline import Pipeline
+
+def model_cross_val(model, preprocessor, X_train, y_train):
     '''Perform 10-fold cross-validation on the given machine learning model 
     using a preprocessing pipeline. Returns a dictionary'''
     preprocessor = pickle.load(open(preprocessor, "rb"))

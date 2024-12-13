@@ -9,6 +9,8 @@ import altair as alt
 import click
 import matplotlib.pyplot as plt
 import io
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src.data_cleaning import handle_missing_values, add_loan_categories, add_loan_income_ratio, add_risk_categories
 
 

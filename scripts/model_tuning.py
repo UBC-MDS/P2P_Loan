@@ -13,6 +13,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import fbeta_score, make_scorer
 from joblib import dump
 from sklearn.model_selection import GridSearchCV
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.write_csv import write_csv
 
 
 
@@ -78,9 +81,12 @@ def main(data_from, preprocessor_from,data_to, pipeline_to):
         "Mean Test Score": cv_results.iloc[:,2],
         "Mean Train Score": cv_results.iloc[:,3]}).reset_index(drop=True)
     cv_graph.save(os.path.join(data_to, "..", "figures", "param_C_tuning.png"))
-    cv_results.to_csv(os.path.join(data_to, "model_results.csv"))
-    
 
+    write_csv(cv_results, data_to, "model_results.csv", index=True)
+
+    print(f"Best model saved to {pipeline_to}")
+    print(f"Hyperparameter tuning graph saved to 'results/figures'")
+    print(f"Best model cv results saved to {data_to}")
     
 if __name__ == '__main__':
     main()
