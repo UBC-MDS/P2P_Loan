@@ -35,5 +35,5 @@ def write_csv(dataframe: pd.DataFrame, directory: str, filename: str, index: boo
     if dataframe.empty:
         raise ValueError("DataFrame must contain observations.")
 
-    file_path = os.path.join(directory, "filename")
-    dataframe.to_csv(filepath, index=index)
+    file_path = os.path.join(directory, filename)
+    dataframe.to_csv(file_path, index=index)
