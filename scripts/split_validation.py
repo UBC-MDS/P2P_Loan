@@ -8,8 +8,11 @@ from sklearn.model_selection import train_test_split
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src.data_validation import validate
+from src.write_csv import write_csv
 
-
+@click.command()
+@click.option('--data_from', type=str, help="Path to raw data")
+@click.option('--data_to', type=str, help="Path to directory where processed data will be written to")
 def main(data_from, data_to):
     try:
         p2ploan_df = pd.read_csv(data_from)
@@ -28,8 +31,8 @@ def main(data_from, data_to):
     train_df, test_df = train_test_split(p2ploan_df, test_size=0.2, random_state=522)
  
     # Save train data and test data to csv
-    train_df.to_csv(os.path.join(data_to, "loan_train.csv"), index=False)
-    test_df.to_csv(os.path.join(data_to, "loan_test.csv"), index=False)
+    write_csv(train_df, data_to, "loan_train.csv", index=False)
+    write_csv(test_df, data_to, "loan_test.csv", index=False)
     print(f"Train/Test Data successfully saved to {data_to}")
 
 if __name__ == '__main__':

@@ -13,6 +13,7 @@ from sklearn.pipeline import Pipeline
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src.model_cv import model_cross_val
+from src.write_csv import write_csv
 
 
 @click.command()
@@ -46,12 +47,15 @@ def main(data_from, preprocessor_from, data_to):
     cv_results = pd.DataFrame()
     for (name, model) in models.items():
         cv_results[name] = model_cross_val(model, preprocessor_from, X_train, y_train)
-    cv_results = cv_results.T
-
-    np.round(cv_results,decimals=4).to_csv(os.path.join(data_to, "cv_results.csv"))
-    print(f"Results successfully saved to {data_to}")
-    pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)).to_csv(os.path.join(data_to, "target_dist.csv"))
-
+   
+    write_csv(np.round(cv_results.T, decimals=4), data_to, "cv_results.csv", index=False)
+    write_csv(
+        pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)),
+        data_to,
+        "target_dist.csv",
+        index=False
+    )
+    print(f"Model selection results successfully saved to {data_to}")
 
 if __name__ == '__main__':
     main()

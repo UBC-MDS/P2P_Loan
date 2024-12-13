@@ -7,6 +7,9 @@ import click
 import os
 import requests
 import pandas as pd
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.write_csv import write_csv
 
 
 def download_csv(url, directory):
@@ -41,10 +44,9 @@ def download_csv(url, directory):
         os.makedirs(directory)
 
     # Save the CSV file to the specified directory
-    file_path = os.path.join(directory, "loan_data.csv")
     df = pd.read_csv(url)
-    df.to_csv(file_path, index=False)
-    print(f"Data successfully downloaded and saved to {file_path}")
+    write_csv(df, directory, "loan_data.csv", index=False)
+    print(f"Raw Data successfully downloaded and saved to {directory}")
 
 @click.command()
 @click.option('--url', type=str, help='URL of dataset to be downloaded')

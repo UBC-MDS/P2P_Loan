@@ -8,6 +8,9 @@ from sklearn.metrics import accuracy_score
 from sklearn import set_config
 import click
 import pickle
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.write_csv import write_csv
 
 @click.command()
 @click.option('--data_from', type=str, help="Path to training data")
@@ -32,7 +35,12 @@ def main(data_from, pipeline_from, data_to, preprocessor_from):
     
     y_pred_log_reg = log_reg_search.predict(X_test)
     accuracy_log_reg = round(accuracy_score(y_test, y_pred_log_reg), 4)
-    pd.DataFrame({"Accuracy Score":[accuracy_log_reg]}).to_csv(os.path.join(data_to, "test_results.csv"))
+    write_csv(
+        pd.DataFrame({"Accuracy Score":[accuracy_log_reg]}),
+        data_to,
+        "test_results.csv",
+        index=True
+    )
 
     pred_true = pd.DataFrame({"prediction":y_pred_log_reg, "true":y_test})
     results_log_reg = pd.DataFrame(
@@ -50,7 +58,7 @@ def main(data_from, pipeline_from, data_to, preprocessor_from):
             ]
         }
     )
-    results_log_reg.to_csv(os.path.join(data_to, "confusion_matrix.csv"))
+    write_csv(results_log_reg, data_to, "confusion_matrix.csv", index=False)
     
     preprocessor = pickle.load(open(preprocessor_from, "rb"))
     preprocessor.fit(X_train)
@@ -61,16 +69,17 @@ def main(data_from, pipeline_from, data_to, preprocessor_from):
         "positive coefficient": np.round(coefficients, decimals=4)}
     ).sort_values(by="positive coefficient", ascending=True, ignore_index=True)
     
-    positive_coef.to_csv(os.path.join(data_to, "positive_coef.csv"))
-    
+    write_csv(positive_coef, data_to, "positive_coef.csv", index=False)
+
 
     negative_coef = pd.DataFrame(
         {"features":preprocessor.get_feature_names_out(),
         "negative coefficient": np.round(coefficients,decimals=4)}
     ).sort_values(by="negative coefficient", ascending=False, ignore_index=True)
-    negative_coef.to_csv(os.path.join(data_to, "negative_coef.csv"))
 
-    print(f"Results successfully saved to {data_to}")
+    write_csv(negative_coef, data_to, "negative_coef.csv", index=False)
+
+    print(f"Best model evaluation results successfully saved to {data_to}")
     
 if __name__ == '__main__':
     main()
