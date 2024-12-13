@@ -42,15 +42,16 @@ target_dist = pd.read_csv("../results/tables/target_dist.csv", index_col=0)
 This work intends to leverage machine learning models to predict borrower behavior and, hence, the probability of default. More specifically, the work focuses on predicting loan defaults using historical data from the Lending Club platform. We uncover patterns and trends in borrower risk profiles by applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model. The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included both false positives (predicting a loan default when it didn't occur) and false negatives (failing to predict an actual default). While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model's accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model's effectiveness in peer-to-peer lending platforms
 
 # 2. Introduction <br>
-Crowd-based business models are one of the last decade’s developments with the proliferation of platform economies and web technology applications [@sutherland2018sharing]. One of such developments following the 2007 financial crisis are the P2P online lending platforms. The backbone of the digital economic system built on this is that it relies on trust a currency. Like all other crowd-based business models, P2P online lending heavily relied on trustworthiness of borrowers [@lenz2016peer]. To help with this, online platforms like LendingClub used a number of features to define eligibility and rate of access to loan for potential borrowers.Traditional credit risk analysis often relies on rule-based systems or credit scores, which might not fully capture the complexities of borrower behavior. By applying Logistic Regression, we aim to develop a model that is both interpretable and effective in identifying high-risk loans, see [@khandani2010consumer]. This analysis intends to provide a data-driven approach to improve credit decision-making in a broader context of platform based transactions through machine learning models.
-Extensive research has been conducted on borrower risk behaviour analysis and trust within P2P online lending system, highlighting the critical role trust and predictability holds in ensuring platform sustainability and mitigating default risks [@cai2016judging] . Building on this, this work focuses on developing a comprehensive risk analysis framework through machine hlearning models that will help predict borrower behaviour.
+Crowd-based business models are one of the last decade’s developments with the proliferation of platform economies and web technology applications [@sutherland2018sharing]. One of such developments following the 2007 financial crisis are the P2P online lending platforms. The backbone of the digital economic system built on this relies on trust as a currency. Like all other crowd-based business models, P2P online lending heavily relied on the trustworthiness of borrowers [@lenz2016peer]. To help with this, online platforms like LendingClub used several features to define eligibility and rate of access to loans for potential borrowers. Traditional credit risk analysis often relies on rule-based systems or credit scores, which might not fully capture the complexities of borrower behavior. By applying Logistic Regression, we aim to develop a model that is both interpretable and effective in identifying high-risk loans, see [@khandani2010consumer]. This analysis intends to provide a data-driven approach to improve credit decision-making in a broader context of platform-based transactions through machine learning models.
+
+Extensive research has been conducted on borrower risk behavior analysis and trust within P2P online lending systems, highlighting the critical role of trust and predictability in ensuring platform sustainability and mitigating default risks [@cai2016judging]. Building on these, this work focuses on developing a comprehensive risk analysis framework through machine learning models that will help predict borrower behavior.
 
 
 # 3. Methods <br>
 
 ## 3.1 Data <br>
 ### Data Source
-This analysis is based on the historic loan data from LendingClub [@lendingclub].
+This analysis is based on the historical loan data from LendingClub [@lendingclub].
 It contains various borrower and loan features, such as interest rates, annual income, debt-to-income ratio (DTI), and credit history. The target variable, not.fully.paid, indicates whether the borrower defaulted on the loan (1) or successfully repaid it (0).
 
 ## Feature Description
@@ -76,20 +77,20 @@ The key features taken into account for this analysis are:
 
 # 4. Analysis <br>
 The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set.
-Logistic Regression Model was selected as the final model to predict loan default risk due to its simplicity, slightly higher accuracy, and interpretability. All variables included in the original data set were used in model fitting. 
+The logistic Regression Model was selected as the final model to predict loan default risk due to its simplicity, slightly higher accuracy, and interpretability. All variables included in the original data set were used in model fitting. 
 
-We decided to use accuracy score as the classification metrics. In financial decision-making, while false negative impose greater financial risk to the platform, false positive  can impose great financial strain on the borrower. Therefore, it is important to correctly identifying both defaulted and fully paid loans. 
+We decided to use the accuracy score as the classification metric. In financial decision-making, while false negatives impose greater financial risk to the platform, false positives can impose great financial strain on the borrower. Therefore, it is essential to identify defaulted and fully paid loans correctly. 
  
- We have choosen the hyperparameter `C` using a 10-fold cross-validation. The regularization strength C is a hyperparameter that controls the trade-off between bias and variance. A high value of C corresponds to weaker regularization (less penalty on large coefficients), which might lead to overfitting, while a low value of C increases regularization and might underfit the model. We conduct GridSearch on a logarithmic range from $10^{-5}$ to $10^{5}$. With the range spanning over a few orders of magnitude, this will ensure the model neither overfits nor underfits.
+ We have chosen the hyperparameter `C` using a 10-fold cross-validation. The regularization strength C is a hyperparameter that controls the trade-off between bias and variance. A high value of C corresponds to weaker regularization (less penalty on large coefficients), which might lead to overfitting, while a low value of C increases regularization and might underfit the model. We conduct GridSearch on a logarithmic range from $10^{-5}$ to $10^{5}$. The range spanning a few orders of magnitude will ensure the model neither overfits nor underfits.
 
-All numeric features were standardized using standardscaler, while categorical features were preprocessed using one-hot encoding before model fitting. Any missing values were imputed using the median for numeric features or most frequent value for categorical features.
+All numeric features were standardized using standardscaler, while categorical features were preprocessed using one-hot encoding before model fitting. Any missing values were imputed using the median for numeric features or the most frequent value for categorical features.
 
 Python [@Python] language was used to conduct this analysis as well as the following packages: pandas[@pandas], numpy[@numpy], matplotlib[@matplotlib], altair[@altair], sklearn[@sklearn].
 
 
 ## 4.1 Exploratory Data Analysis 
 
-In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistis.
+In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistics.
 
 ```{python}
 #| label: tbl-info
@@ -104,7 +105,7 @@ To evaluate the usefulness of predictors for identifying loan defaults, we condu
 
 Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization [@cocser2019predictive].
 
-Key metrix and considerations:
+Key metrics and considerations:
 - Debt-to-Income Ratio 
 
 - Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain.
@@ -130,17 +131,17 @@ Categorical features like purpose also provided significant insights; loans cate
 
 * Risk categories*
 Let us explore the data further with specific borrower risk profile categories. 
-Based on the above 5 loan categories, we framed three main risk categories as high, medium and low risk profile with: 
-fico score of at least 720 (Low Risk), 'fico' score between 650 and 720 ('Medium Risk') and 'fico' score of 650 as 'High Risk'. 
+Based on the above five loan categories, we framed three main risk categories as high, medium and low-risk profiles with:  
+fico score of at least 720 (Low Risk), 'fico' score between 650 and 720 ('Medium Risk'), and 'fico' score of 650 as 'High Risk'. 
 
-We have a high concentration of loans in the medium risk category and significant number low risk borrowers as compared to the high risk borrowers(@fig-risk_dist).
+We have a high concentration of loans in the medium-risk category and a significant number of low-risk borrowers compared to the high-risk borrowers(@fig-risk_dist).
 
 ![Bar Chart showing the distribution of borrower's risk level](../results/figures/risk_categories_distribution.png){#fig-risk_dist width=100%}
 
 
 *Descriptive Analysis*
 
-From the boxplot below (@fig-fico_purpose), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
+From the boxplot below (@fig-fico_purpose), we see that the low-risk borrowers have a lower average debt-to-income ratio as compared to the borrowers with medium and high-risk profiles, based on their fico score.  Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
 
 ![Boxplot comparing borrower's credit score by their loan purpose](../results/figures/boxplot_purpose.png){#fig-fico_purpose width=100%}
 
@@ -150,7 +151,7 @@ From the boxplot above (@fig-dti_risk), we see that the low risk borrowers have 
 
 
 *Correlation Analysis*
-The EDA for most of the numerical columns produce no strong general trends. 
+The EDA for most of the numerical columns produces no strong general trends. 
 We see a higher correlation level between fico and revo.util, and that of fico and interest rate. (@fig-corr_map)
 
 ![Heatmap showing correlation between features for the lending club data](../results/figures/correlation_heatmap.png){#fig-corr_map width=100%}
@@ -158,7 +159,7 @@ We see a higher correlation level between fico and revo.util, and that of fico a
 
 ## 4.2 Model Building <br>
 
-To decide on the most suitable classification model to build on, we have conducted a 10 fold cross-validation on four different classification models: DecisionTree, kNN-neighbours, SVC and Logistic Regression. 
+To decide on the most suitable classification model to build on, we have conducted a 10-fold cross-validation on four different classification models: DecisionTree, kNN-neighbours, SVC, and Logistic Regression. 
 
 ```{python}
 #| label: tbl-cv_results
@@ -169,20 +170,22 @@ Markdown(cv_results.to_markdown())
 
 @tbl-cv_results shows the mean validation score and training score for each model. We can see that the decision tree model has a much smaller cross-validation score compared to the other three models. 
 
-While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opt for the logistic regression model as our predictor. The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. 
+While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opted for the logistic regression model as our predictor. The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. 
 
 *Hyperparameter Tuning*
 
-To find the optimal model for prediction, we used GridSearch to conduct 10-folds cross-validation over different values of C. The results were shown below (@fig-C_tuning), with the optimal C value is `{python} model_results["Best C"][0]`.
+To find the optimal model for prediction, we used GridSearch to conduct 10-fold cross-validation over different values of C. The results were shown below (@fig-C_tuning), with the optimal C value is `{python} model_results["Best C"][0]`.
 
 ![10-folds cross-validation results for hyperparameter C tuning. Accuracy score was used as the classification metric.](../results/figures/param_C_tuning.png){#fig-C_tuning width=100%}
 
 
 # 5. Discussion and Implications
 
-Our model performs well on the test data, achieving aa test score of `{python} test_results["Accuracy Score"][0]`.
+Our model performs well on the test data, achieving a test score of `{python} test_results["Accuracy Score"][0]`.
 
-Here, we identify the top 5 influential features for predicting each class (@tbl-positive_coef, @tbl-negative_coef,). The Logistic Regression's coefficients has provided insights into feature importance, highlighting predictors such as higher credit score (`fico`) and larger income growth(`log.annual.inc`) to be associated with lower default risk. While borrowers with higher loan-to-income ratios, interest rates, and more inquires in the past 6 months exhibited a greater likelihood of default.
+Here, we identify the top 5 influential features for predicting each class (@tbl-positive_coef, @tbl-negative_coef,). The Logistic Regression's coefficients have provided insights into feature importance, highlighting predictors such as higher credit score (`fico`) and larger income growth(`log.annual.inc`) to be associated with lower default risk. 
+
+Meanwhile, borrowers with higher loan-to-income ratios, interest rates, and more inquiries in the past 6 months exhibited a greater likelihood of default.
 
 ```{python}
 #| label: tbl-positive_coef
@@ -226,14 +229,14 @@ Future work will focus on improving the model's ability to predict defaults by e
 Markdown(target_dist.to_markdown())
 ```
 
-As we check the distribution of the target, we can see that the proportion of borrowers that has repayed their loans is significantly higher than those who defaulted their loans. 
+As we check the distribution of the target, we can see that the proportion of borrowers who have repaid their loans is significantly higher than those who defaulted on their loans. 
 The class imbalance of the target results in the model predicting most cases as "negative" (fully paid). 
 
-Possible solutions to the high false negtative include adjusting the `class_weight` hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaulating model performance. 
+Possible solutions to the high false negtative include adjusting the `class_weight` hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaluating model performance. 
 
-Also, based on the feature importances obtained, additional feature engineering or feature selection can potentially improve model performance. 
+Also, based on the feature importance obtained, additional feature engineering or feature selection can potentially improve model performance. 
 
-To account for possible non-linear decision boundary, another alternative is to use a non-linear classification model, for example a decision tree, which can model complex non-linear decision boundaries better.
+Another alternative is to use a non-linear classification model to account for possible non-linear decision boundaries. An example is a decision tree, which can better model complex non-linear decision boundaries.
 
 # 6. Reference
 
