@@ -1,6 +1,6 @@
 services:
   jupyter-notebook:
-    image: abeba/p2p_loan_risk-analysis
+    image: abeba/p2p_loan_risk-analysis:4e81403
     ports:
       - "8888:8888"
     volumes:

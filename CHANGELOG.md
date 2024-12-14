@@ -51,5 +51,5 @@
 - Added details on running the tests.
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/25a865977779f53ccc49860fa3fa3c2e53724f19
 
-## 10. updated the docker image to our image hash
-- https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/0829dd35513ce0121831df59f9d232a395ea878b
+## 10. updated the docker image to our image hash pointing to the latest hash of the image
+- https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/1329e9fbeb0d5129f23b3a3750a0d2f630a6ce02
