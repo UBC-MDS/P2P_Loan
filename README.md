@@ -30,28 +30,29 @@ You can access the final report at [here](https://github.com/UBC-MDS/P2P_Loan_Ri
    cd p2p-lending-risk-analysis
  ```
 
-#### OPTION 1: Using environment.yml option
+#### Option 1: Using environment.yml option
 
 This is the recommended method to set up the environment that can allow you to run the file
-  1. Create the Conda environment:
+  
+1. Create the Conda environment:
 
  ```bash
     conda env create -f environment.yml
  ```
 
-  2. Activate the environment:
+2. Activate the environment:
 
  ```bash
     conda activate loan_risk522
  ```
 
- 3. Verify the environment setup using this.
+3. Verify the environment setup using this.
 
 ```bash
 python -c "import pandas as pd; print('Environment set up successfully!')"
 ```
 
-#### OPTION 2: Using the Docker Container Image
+#### Option 2: Using the Docker Container Image
 
 To use the containerized environment for this project, follow these steps if it is your first time.
 
@@ -66,6 +67,8 @@ To use the containerized environment for this project, follow these steps if it 
 ```
 
 4. Access the Jupyter Notebook interface by copying the URL that starts with `http://127.0.0.1:8888/lab?token=` in your terminal
+
+<br>
 
 ### Running the Analysis
 
@@ -82,6 +85,8 @@ make clean
 ```bash
 make all
 ```
+
+<br>
 
 ### Clean Up - Docker Option
 
