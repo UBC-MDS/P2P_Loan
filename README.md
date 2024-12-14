@@ -88,7 +88,7 @@ make all
 
 <br>
 
-### Clean Up - Docker Option
+### Clean Up - Docker
 
 To shut down the container and clean up the resources, type Ctrl + C in the terminal where you launched the container, and then type:
 
