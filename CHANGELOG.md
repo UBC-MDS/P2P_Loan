@@ -45,3 +45,6 @@
 - Added cross-reference to Table 1: Feature Description
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/b623e4060706f6e94c2e5093d495b7f2f80482f0
 
+## 9. Added README.md to tests/ folder
+- Added details on running the tests.
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/25a865977779f53ccc49860fa3fa3c2e53724f19
