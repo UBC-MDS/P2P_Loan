@@ -19,6 +19,7 @@
 ## 2. Unit tests added
  - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/tree/main/tests
  - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/pull/56
+ - Unit tests for the write_csv.py https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/3b11db8ac1750fb16905e510ea92968b7d1e694c
 
 ## 3. Final language check for the entire report done
 - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/74c3ba02e9259e37acdd86b51ee16841c2579ccb
@@ -29,6 +30,7 @@
 
 ## 5. Modularize code into functions
 - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/pull/56
+- Function for the write_csv.py https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/3b11db8ac1750fb16905e510ea92968b7d1e694c
 
 ## 6. Update environment.yml
 - pip now has explicit version listed
@@ -48,3 +50,6 @@
 ## 9. Added README.md to tests/ folder
 - Added details on running the tests.
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/25a865977779f53ccc49860fa3fa3c2e53724f19
+
+## 10. updated the docker image to our image hash
+- https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/0829dd35513ce0121831df59f9d232a395ea878b
