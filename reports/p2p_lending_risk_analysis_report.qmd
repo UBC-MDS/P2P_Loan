@@ -38,6 +38,7 @@ test_results = pd.read_csv("../results/tables/test_results.csv", index_col=0)
 target_dist = pd.read_csv("../results/tables/target_dist.csv", index_col=0)
 ```
 
+\newpage
 # 1. Summary<br>
 This work intends to leverage machine learning models to predict borrower behavior and, hence, the probability of default. More specifically, the work focuses on predicting loan defaults using historical data from the Lending Club platform. We uncover patterns and trends in borrower risk profiles by applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model. The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included both false positives (predicting a loan default when it didn't occur) and false negatives (failing to predict an actual default). While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model's accuracy and better understand the characteristics of misclassified loans. Such improvements could play a crucial role in minimizing financial risks and maximizing the model's effectiveness in peer-to-peer lending platforms
 
@@ -50,16 +51,17 @@ This work will address the following research questions.
 - How do borrower characteristics influence the probability of default in a P2P online lending settings?
 - What techniques can improve machine learning models for predicting defaults in the presence of class imbalance?
 
-
 # 3. Methods <br>
 
-## 3.1 Data <br>
-### Data Source
+## 3.1 Data Source
+
 This analysis is based on the historical loan data from LendingClub [@lendingclub].
 It contains various borrower and loan features, such as interest rates, annual income, debt-to-income ratio (DTI), and credit history. The target variable, not.fully.paid, indicates whether the borrower defaulted on the loan (1) or successfully repaid it (0).
 
-## Feature Description
-The key features taken into account for this analysis are:
+## 3.2 Feature Description
+
+The key features taken into account for this analysis are shown below (See @tbl-feat_describ):
+
 
 | **Variable**         | **Description**                                                             |
 |----------------------|-----------------------------------------------------------------------------|
@@ -76,25 +78,13 @@ The key features taken into account for this analysis are:
 | `fico`               | FICO credit score                                                            |
 | `days.with.cr.line`  | Days with Credit Line                                                       |
 | `not.fully.paid`     | Binary response on whether the loan is paid or not                           |
-
-
+: Feature Descriptions {#tbl-feat_describ}
 
 # 4. Analysis <br>
-The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set.
-The logistic Regression Model was selected as the final model to predict loan default risk due to its simplicity, slightly higher accuracy, and interpretability. All variables included in the original data set were used in model fitting. 
-
-We decided to use the accuracy score as the classification metric. In financial decision-making, while false negatives impose greater financial risk to the platform, false positives can impose great financial strain on the borrower. Therefore, it is essential to identify defaulted and fully paid loans correctly. 
- 
- We have chosen the hyperparameter `C` using a 10-fold cross-validation. The regularization strength C is a hyperparameter that controls the trade-off between bias and variance. A high value of C corresponds to weaker regularization (less penalty on large coefficients), which might lead to overfitting, while a low value of C increases regularization and might underfit the model. We conduct GridSearch on a logarithmic range from $10^{-5}$ to $10^{5}$. The range spanning a few orders of magnitude will ensure the model neither overfits nor underfits.
-
-All numeric features were standardized using standardscaler, while categorical features were preprocessed using one-hot encoding before model fitting. Any missing values were imputed using the median for numeric features or the most frequent value for categorical features.
-
 Python [@Python] language was used to conduct this analysis as well as the following packages: pandas[@pandas], numpy[@numpy], matplotlib[@matplotlib], altair[@altair], sklearn[@sklearn].
 
-
 ## 4.1 Exploratory Data Analysis 
-
-In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values; and summary statistics.
+In order for us to draw context about the data, let us have a look at the first few rows of the data; check the info about all columns, data types, and number of NaN values (@tbl-info).
 
 ```{python}
 #| label: tbl-info
@@ -103,20 +93,26 @@ In order for us to draw context about the data, let us have a look at the first 
 Markdown(info.to_markdown())
 ```
 
-To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. (@fig-feature_dist) Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. 
+To evaluate the usefulness of predictors for identifying loan defaults, we conducted an exploratory data analysis. (@fig-feature_dist) 
 
-![Empirical distributions of numerical features between class `Defaulted(1)` and `Fully Paid(0)`](../results/figures/histograms_grid.png){#fig-feature_dist width=100%}
+Features such as int.rate (interest rate) and dti (debt-to-income ratio) displayed notable differences between borrowers who fully paid their loans and those who defaulted. For example, loans with higher interest rates (int.rate) were associated with a greater likelihood of default, while borrowers with lower debt-to-income ratios (dti) were less likely to default. 
 
 Here, from a business perspective, we need to identify high-risk and low-risk loan profiles to improve lending profitability while minimizing default rates. This includes assessing borrower behavior, income stability, and loan utilization to create a predictive model for effective risk categorization [@cocser2019predictive].
 
-Key metrics and considerations:
+![Empirical distributions of numerical features between class `Defaulted(1)` and `Fully Paid(0)`](../results/figures/histograms_grid.png){#fig-feature_dist width=120%}
+
+Here are some key metrics and considerations:
+
 - Debt-to-Income Ratio 
 
-- Credit Utilization Ratio( revol.util)_ how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain.
+- Credit Utilization Ratio( revol.util): how much of their revolving credit borrowers are using relative to their limit with higher values indicating possible financial strain.
 
 - Loan Duration vs. Risk: If longer-term loans are associated with higher default rate (days.with.cr.line).
 
-*Loan categories*
+
+
+### 4.1.1 Loan categories 
+
 Below, to help us create the loan categories, we are using the FICO risk profile categories [@ConsumerBureau] See also [@myFICO] and [@Equifax] for details on different ranges of credit.
 
 - Deep subprime (credit scores below 580)
@@ -129,40 +125,70 @@ Below, to help us create the loan categories, we are using the FICO risk profile
 
 - Super-prime (credit scores of 720 or above)
 
-Categorical features like purpose also provided significant insights; loans categorized under "small business" and "credit card" showed higher default rates compared to others, such as "home improvement." (@fig-purpose_risk)
+
+Categorical features like purpose also provided significant insights (@fig-purpose_risk): loans categorized under "small business" and "credit card" showed higher default rates compared to others, such as "home improvement." 
 
 ![Distribution of borrower's loan purpose by their risk profile category](../results/figures/loan_category_vs_purpose.png){#fig-purpose_risk width=100%}
 
-* Risk categories*
+
+### 4.1.2 Risk categories
+
 Let us explore the data further with specific borrower risk profile categories. 
 Based on the above five loan categories, we framed three main risk categories as high, medium and low-risk profiles with:  
-fico score of at least 720 (Low Risk), 'fico' score between 650 and 720 ('Medium Risk'), and 'fico' score of 650 as 'High Risk'. 
 
-We have a high concentration of loans in the medium-risk category and a significant number of low-risk borrowers compared to the high-risk borrowers(@fig-risk_dist).
+- Low Risk: credit score of at least 720
 
-![Bar Chart showing the distribution of borrower's risk level](../results/figures/risk_categories_distribution.png){#fig-risk_dist width=100%}
+- Medium Risk: credit score between 650 and 720
+
+- High Risk: credit score of 650. 
+
+<pre>
+
+</pre>
+
+![Bar Chart showing the distribution of borrower's risk level](../results/figures/risk_categories_distribution.png){#fig-risk_dist width=60%}
+
+From @fig-risk_dist, we observed a high concentration of loans in the medium-risk category and a significant number of low-risk borrowers compared to the high-risk borrowers. <br>
+
+\newpage
+
+### 4.1.3 Descriptive Analysis
+
+&nbsp;
+
+![Boxplot comparing borrower's credit score by their loan purpose](../results/figures/boxplot_purpose.png){#fig-fico_purpose width=80%}
+
+From @fig-fico_purpose, we see that the low-risk borrowers have a lower average debt-to-income ratio as compared to the borrowers with medium and high-risk profiles, based on their fico score.  Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
 
 
-*Descriptive Analysis*
+![Boxplot comparing borrower's debt-to-income ratio by their risk level](../results/figures/boxplot_risk.png){#fig-dti_risk width=70%}
 
-From the boxplot below (@fig-fico_purpose), we see that the low-risk borrowers have a lower average debt-to-income ratio as compared to the borrowers with medium and high-risk profiles, based on their fico score.  Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
+From @fig-dti_risk, we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
 
-![Boxplot comparing borrower's credit score by their loan purpose](../results/figures/boxplot_purpose.png){#fig-fico_purpose width=100%}
+\newpage
 
-![Boxplot comparing borrower's debt-to-income ratio by their risk level](../results/figures/boxplot_risk.png){#fig-dti_risk width=100%}
+### 4.1.4 Correlation Analysis
 
-From the boxplot above (@fig-dti_risk), we see that the low risk borrowers have lower average debt-to-income-ratio as compared to the borrowers with medium and high risk profile, based on their fico score. Note also the outliers in FICO scores for the loan purpose of debt consolidation type.
-
-
-*Correlation Analysis*
 The EDA for most of the numerical columns produces no strong general trends. 
 We see a higher correlation level between fico and revo.util, and that of fico and interest rate. (@fig-corr_map)
 
+<pre>
+
+</pre>
+
 ![Heatmap showing correlation between features for the lending club data](../results/figures/correlation_heatmap.png){#fig-corr_map width=100%}
 
+<br/>
 
 ## 4.2 Model Building <br>
 
+### 4.2.1 Data Splitting
+The dataset was split into training (80%) and test (20%) sets, resulting in 1916 observations in the test set. All numeric features were standardized using standardscaler, while categorical features were preprocessed using one-hot encoding before model fitting. Any missing values were imputed using the median for numeric features or the most frequent value for categorical features.
+
+### 4.2.2 Classification Metrics
+We decided to use the accuracy score as the classification metric. In financial decision-making, while false negatives impose greater financial risk to the platform, false positives can impose great financial strain on the borrower. Therefore, it is essential to identify both defaulted and fully paid loans correctly. 
+
+### 4.2.3 Model Selection
 To decide on the most suitable classification model to build on, we have conducted a 10-fold cross-validation on four different classification models: DecisionTree, kNN-neighbours, SVC, and Logistic Regression. 
 
 ```{python}
@@ -176,20 +202,27 @@ Markdown(cv_results.to_markdown())
 
 While the SVC model has a slightly larger test score than the logistic model, it requires a significantly longer computation time. Since the test score for SVC and Logistic Regression is very similar (both being ~0.84), We have opted for the logistic regression model as our predictor. The train score of the Logistic Regression is the same as the validation score, suggesting that the model is likely not overfitted and will be able to generalize well to unseen data. 
 
-*Hyperparameter Tuning*
+The logistic Regression Model was selected as the final model to predict loan default risk due to its simplicity, slightly higher accuracy, and interpretability. All variables included in the original data set were used in model fitting. 
 
-To find the optimal model for prediction, we used GridSearch to conduct 10-fold cross-validation over different values of C. The results were shown below (@fig-C_tuning), with the optimal C value is `{python} model_results["Best C"][0]`.
+&nbsp;
+&nbsp;
 
-![10-folds cross-validation results for hyperparameter C tuning. Accuracy score was used as the classification metric.](../results/figures/param_C_tuning.png){#fig-C_tuning width=100%}
+### 4.2.4 Hyperparameter Optimization
+To find the optimal model for prediction, we used GridSearch to conduct 10-fold cross-validation over different values of the hyperparameter C. The regularization strength C is a hyperparameter that controls the trade-off between bias and variance. A high value of C corresponds to weaker regularization (less penalty on large coefficients), which might lead to overfitting, while a low value of C increases regularization and might underfit the model. We conduct GridSearch on a logarithmic range from $10^{-5}$ to $10^{5}$. The range spanning a few orders of magnitude will ensure the model neither overfits nor underfits.
 
+The results from the GridSearch were shown below (@fig-C_tuning), with the optimal C value of `{python} model_results["Best C"][0]`.
 
+![10-folds cross-validation results for hyperparameter C tuning. Accuracy score was used as the classification metric.](../results/figures/param_C_tuning.png){#fig-C_tuning width=70%}
+
+\newpage
 # 5. Discussion and Implications
-
+## 5.1 Model Evaluation
 Our model performs well on the test data, achieving a test score of `{python} test_results["Accuracy Score"][0]`.
 
-Here, we identify the top 5 influential features for predicting each class (@tbl-positive_coef, @tbl-negative_coef,). The Logistic Regression's coefficients have provided insights into feature importance, highlighting predictors such as higher credit score (`fico`) and larger income growth(`log.annual.inc`) to be associated with lower default risk. 
+Here, we identify the top 5 influential features for predicting each class (@tbl-positive_coef, @tbl-negative_coef,). The Logistic Regression's coefficients have provided insights into feature importance, highlighting predictors such as higher credit score (`fico`) and larger income growth(`log.annual.inc`) to be associated with lower default risk. Meanwhile, borrowers with higher loan-to-income ratios, interest rates, and more inquiries in the past 6 months exhibited a greater likelihood of default.
 
-Meanwhile, borrowers with higher loan-to-income ratios, interest rates, and more inquiries in the past 6 months exhibited a greater likelihood of default.
+&nbsp;
+&nbsp;
 
 ```{python}
 #| label: tbl-positive_coef
@@ -198,6 +231,9 @@ Meanwhile, borrowers with higher loan-to-income ratios, interest rates, and more
 Markdown(positive_coef[:3].to_markdown())
 ```
 
+&nbsp;
+&nbsp;
+
 ```{python}
 #| label: tbl-negative_coef
 #| tbl-cap: Top 3 influential feature for predicting class `Fully Paid(0)`
@@ -205,7 +241,16 @@ Markdown(positive_coef[:3].to_markdown())
 Markdown(negative_coef[:3].to_markdown())
 ```
 
+&nbsp;
+&nbsp;
+
 The model correctly predicted 1608 cases out of 1916 on the test set, with 308 errors as shown in @tbl-confusion_matrix. 
+
+These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.
+
+&nbsp;
+&nbsp;
+
 ```{python}
 #| label: tbl-confusion_matrix
 #| tbl-cap: Confusion Matrix of Logistic Regression Model on Test Data
@@ -213,7 +258,8 @@ The model correctly predicted 1608 cases out of 1916 on the test set, with 308 e
 Markdown(confusion_matrix.to_markdown())
 ```
 
-These errors were distributed across false positives and false negatives. False negatives, representing cases where a defaulted loan was not flagged, pose a greater financial risk, as these borrowers are likely to incur losses. False positives, on the other hand, might result in stricter lending requirements for borrowers who would have successfully repaid their loans.
+&nbsp;
+&nbsp;
 
 Despite the high accuracy score, our model fails to identify any of the 306 actual default loans. This suggests that the accuracy score cannot fully reflect the model performance. However, our model is a great predictor in identifying negative loan defaults (over 99% of the fully paid cases identified), and the high false negative limits its real-life application. Further steps are needed to improve the model so that it can also predict defaulted loans well.
 
@@ -224,7 +270,7 @@ Future work will focus on improving the model's ability to predict defaults by e
 (2) Training Procedure Adjustments like Stratified Splits, Class Weight Adjustment and Dynamic Resampling. 
 
 
-## 5.1 Limitations
+## 5.2 Limitations
 
 ```{python}
 #| label: tbl-target_dist
@@ -236,7 +282,7 @@ Markdown(target_dist.to_markdown())
 As we check the distribution of the target, we can see that the proportion of borrowers who have repaid their loans is significantly higher than those who defaulted on their loans. 
 The class imbalance of the target results in the model predicting most cases as "negative" (fully paid). 
 
-Possible solutions to the high false negtative include adjusting the `class_weight` hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaluating model performance. 
+Possible solutions to the high false negtative include adjusting the `class_weight` hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaluating model performance. A good alternative classification metrics would be the F1 score, as it minimises false positive and false negative while balancing the precision and recall. 
 
 Also, based on the feature importance obtained, additional feature engineering or feature selection can potentially improve model performance. 
 
