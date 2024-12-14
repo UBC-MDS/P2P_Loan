@@ -1,0 +1,3 @@
+pytest
+make all
+pytest
