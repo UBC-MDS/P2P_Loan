@@ -4,10 +4,17 @@
 - Brocken hyperlink fixed
 - General language check done with a 95% overall performance score using Grammarly business-expert-formal filters. <br>
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/72db1742bcc27cd4480d08d2fbcdef5ccdfce618
-<br><br>
+<br>
 
 - Research questions added <br>
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/93dfaab377d8f1597f16b1a131e296a49a8435ca
+
+<br>
+
+- Include link to raw data source in README
+- Improve readability 
+- Add more instructions for using environment.yml a user to compile the report locall
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/6a22f1d3b83a3107e419e75e7f6ec04c682b8088
 
 ## 2. Unit tests added
  - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/tree/main/tests
@@ -26,3 +33,15 @@
 ## 6. Update environment.yml
 - pip now has explicit version listed
 - added pytest into environment.yml
+
+## 7. Update CONTRIBUTING.md 
+- Clarify steps to contribute or report issues
+- Added links to contributing guidelines and PEP8 stype guide
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/29f6365a653b9471c00659d85733e54c73035247
+
+## 8. Update report.qmd
+- Discuss the possiblity of using F1 score as classification metrics for further improvement of the model.
+- Update Project structure for easy navigation
+- Added cross-reference to Table 1: Feature Description
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/b623e4060706f6e94c2e5093d495b7f2f80482f0
+
