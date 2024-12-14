@@ -4,136 +4,142 @@
 #### Contributors: Mavis Wong, Yasmin Hassan, and Abeba Nigussie Turi
 
 ## About the Project
-This work intends to leverage machine learning models to predict borrower behavior and, hence, the probability of default. More specifically, the work focuses on predicting loan defaults using historical data from the Lending Club platform. We uncover patterns and trends in borrower risk profiles by applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model. 
+This work intends to leverage machine learning models to predict borrower behavior and, hence, the probability of default. More specifically, the work focuses on predicting loan defaults using historical data from the [Lending Club platform](https://github.com/matmcreative/Lending-Club-Loan-Analysis), specifically [this file](https://raw.githubusercontent.com/matmcreative/Lending-Club-Loan-Analysis/refs/heads/main/loan_data.csv). We uncover patterns and trends in borrower risk profiles by applying advanced preprocessing techniques, exploratory data analysis (EDA), and a Logistic Regression model. 
 
 The final model demonstrated strong performance on unseen test data, achieving an accuracy of 84.0%. Out of 1,916 test cases, the model correctly predicted 1,608 cases, with 308 incorrect predictions. These errors included false positives (predicting a loan default when it didn't occur) and false negatives (failing to predict an actual default).
 
 While false negatives pose a greater risk in financial decision-making, this model provides actionable insights to improve risk management and reduce potential financial losses for the platform. Despite its promising predictive capabilities, further research is needed to enhance the model's accuracy and better understand the characteristics of misclassified loans. Such improvements could be crucial in minimizing financial risks and maximizing the model's effectiveness in peer-to-peer lending platforms.
 
-# Research Questions
-How do borrower characteristics influence the probability of default in a P2P online lending settings?
-What techniques can improve machine learning models for predicting defaults in the presence of class imbalance?
+## Research Questions
+1. How do borrower characteristics influence the probability of default in a P2P online lending settings?
 
-# Report
+2. What techniques can improve machine learning models for predicting defaults in the presence of class imbalance?
+
+## Report
 You can access the final report at [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/reports/p2p_lending_risk_analysis_report.pdf)
 
 
+## Usage
 
-# How to Run the Analysis
-### Clone the Repository
- "`bash
+### Set Up
+
+1. Clone the Repository
+
+ ```bash
    git clone git@github.com:UBC-MDS/P2P_Loan_Risk-Analysis.git
    cd p2p-lending-risk-analysis
  ```
-## OPTION 1
-### Using environment.yml option
+
+#### OPTION 1: Using environment.yml option
 
 This is the recommended method to set up the environment that can allow you to run the file
   1. Create the Conda environment:
- "`bash
+
+ ```bash
     conda env create -f environment.yml
  ```
+
   2. Activate the environment:
 
- "`bash
+ ```bash
     conda activate loan_risk522
  ```
+
  3. Verify the environment setup using this.
 
-`python -c "import pandas as pd; print('Environment set up successfully!')"`
+```bash
+python -c "import pandas as pd; print('Environment set up successfully!')"
+```
 
-## OPTION 2
+#### OPTION 2: Using the Docker Container Image
 
-### Using the Docker Container Image
 To use the containerized environment for this project, follow these steps if it is your first time.
 
 1. Ensure you have Docker and Docker Compose installed.
-2. Clone this repository and navigate to the root directory. [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis)
-3. Run: 
-"`bash
+
+2. Clone this repository and navigate to the root directory. 
+
+3. Run in your terminal: 
+
+```bash
    docker-compose up
- ```
-4. Access the Jupyter Notebook interface at http://localhost:8888.
-
-5. To run the analysis, open a terminal on jupyterlab and run the following commands:
-"`bash
-python scripts/download_data.py 
-   --url "https://raw.githubusercontent.com/matmcreative/Lending-Club-Loan-Analysis/refs/heads/main/loan_data.csv" \
- --output_dir "data/raw"
-
-python scripts/split_validation.py 
-   --data_from "data/raw/loan_data.csv" \
- --data_to "data/processed"
-
-python scripts/eda.py 
-   --input_csv "data/processed/loan_train.csv" \
- --output_dir "results"
-
-python scripts/preprocessing.py 
-   --data_from "data/processed" \
- --data_to "data/processed" \
-   --preprocessor_to "results/models"
-
-python scripts/model_training.py 
-   --data_from "data/processed" \
- --data_to "results/tables" \
-   --preprocessor_from "results/models/preprocessor.pickle"
-
-python scripts/model_tuning.py 
-   --data_from "data/processed" \
- --data_to "results/tables" \
-   --preprocessor_from "results/models/preprocessor.pickle" \
- --pipeline_to "results/models"
-
-python scripts/model_evaluation.py 
-   --data_from "data/processed" \
- --data_to "results/tables" \
-   --preprocessor_from "results/models/preprocessor.pickle" \
- --pipeline_from "results/models/pipeline.pickle"
-
-quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
-
-quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
 ```
 
-6. To shut down the container and clean up the resources, type Cntrl + C in the terminal where you launched the container, and then type 
-"`bash
+4. Access the Jupyter Notebook interface by copying the URL that starts with `http://127.0.0.1:8888/lab?token=` in your terminal
+
+### Running the Analysis
+
+1. Open a terminal in Jupyter Lab or on your computer.
+2. Navigate to the root directory of this project.
+3. Run the following command to reset the project to a clean state:
+
+```bash
+make clean
+```
+
+4. Run the following commands in the terminal to recreate the entire analysis:
+
+```bash
+make all
+```
+
+### Clean Up - Docker Option
+
+To shut down the container and clean up the resources, type Ctrl + C in the terminal where you launched the container, and then type:
+
+```bash
    docker compose rm
 ```
 
+## Developer notes
+### Dependencies
+- [Docker](https://www.docker.com)
+
+- conda (version 23.9.0 or higher)
+
+- conda-lock (version 2.5.7 or higher)
+
+- mamba (version 1.5.8 or higher)
+
+- nb_conda_kernels (version 2.3.1 or higher)
+
+ - Python and packages listed in [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/environment.yml)
 
 
+### Adding a new dependency and Updating Environment
+1. Add the dependency to the environment.yml file on a new branch. If the package is pip installed, it should also be added to Dockerfile with the command:
 
-## Dependencies
-[Docker](https://www.docker.com)
+`RUN pip install <package_name> = <version>`
 
-conda (version 23.9.0 or higher)
+2.  To update the `conda-linux-64.lock` file, run:
 
-conda-lock (version 2.5.7 or higher)
-
-mamba (version 1.5.8 or higher)
-
-nb_conda_kernels (version 2.3.1 or higher)
-
-Python and packages listed in [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/environment.yml)
-
-
-## Adding a new dependency and Updating Environment
-1. Add the dependency to the environment.yml file on a new branch. If the package is pip installed, it should also be added to Dockerfile with command RUN pip install <package_name> = <version>
-
-2. Run conda-lock -k explicit --file environment.yml -p linux-64 to update the conda-linux-64.lock file.
+```bash
+conda-lock -k explicit --file environment.yml -p linux-64
+```
 
 3. Re-run the scripts above using either option above.
 
 4. If the environment.yml file is updated (e.g., new dependencies are added), you can update your existing environment with:
 
- "`conda env update -f environment.yaml --prune` "
+```bash
+conda env update -f environment.yaml --prune
+```
 
+### Running the test suite
+1. Run the analysis by following the instructions listed above. 
+2. Open a terminal and navigate to the root directory of this project. 
+3. Run the tests with the following command:
+
+```bash
+pytest
+```
+
+*More details about the test suite can be found in the [tests](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/tree/main/tests) directory.*
 
 ## License
 - **Code**:
 If you are re-using/re-mixing, please provide attribution and link to this webpage. 
- This project uses the MIT License. See the [the license file](LICENSE.md) for details.
+This project uses the MIT License. See the [the license file](LICENSE.md) for details.
 
 
 ## References
