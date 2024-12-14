@@ -53,7 +53,7 @@ def main(data_from, preprocessor_from, data_to):
         pd.DataFrame(train_df["not.fully.paid"].value_counts(normalize=True)),
         data_to,
         "target_dist.csv",
-        index=False
+        index=True
     )
     print(f"Model selection results successfully saved to {data_to}")
 

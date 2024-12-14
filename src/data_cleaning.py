@@ -53,9 +53,6 @@ def add_risk_categories(df, fico_column):
     
     df['risk_category'] = np.select(conditions, categories, default='Unknown')
     
-    # Debugging: Print the categories assigned
-    print(df[['fico_score', 'risk_category']])
-    
     return df
 
 

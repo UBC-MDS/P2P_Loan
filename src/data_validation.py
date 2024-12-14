@@ -8,6 +8,38 @@ from sklearn.model_selection import train_test_split
 
 
 def validate(data):
+    """
+    Validate the input DataFrame to ensure data integrity and quality.
+    
+    This function performs a series of validation checks to ensure the data:
+    - Is a valid pandas DataFrame.
+    - Contains no missing values (greater than 5% missing data per column).
+    - Contains the expected columns with proper data types and constraints.
+    - Does not contain duplicate rows or empty rows.
+    - Has a similar target distribution in both the training and testing datasets (within 5% tolerance).
+    - Does not have anomalous correlations between numeric features (correlations outside the range of [-0.9, 0.9]).
+    
+    Parameters:
+    -----------
+    data : pd.DataFrame
+        The input DataFrame to be validated. It must contain the following columns:
+        "credit.policy", "purpose", "int.rate", "installment", "log.annual.inc", 
+        "dti", "fico", "days.with.cr.line", "revol.bal", "revol.util", "inq.last.6mths", 
+        "delinq.2yrs", "pub.rec", "not.fully.paid".
+        
+    Raises:
+    -------
+    TypeError : If the input is not a pandas DataFrame.
+    ValueError : If the DataFrame is empty, or if any of the following checks fail:
+        - Too many null values in any column.
+        - Duplicate or empty rows.
+        - Target distribution mismatch between training and testing sets.
+        - Anomalous correlations between numeric columns.
+        
+    Example:
+    --------
+    validate(df)
+    """
     # Check if correct data type is passed
     if not isinstance(data, pd.DataFrame):
         raise TypeError("Input is not a pandas DataFrame")    
