@@ -16,7 +16,7 @@ While false negatives pose a greater risk in financial decision-making, this mod
 2. What techniques can improve machine learning models for predicting defaults in the presence of class imbalance?
 
 ## Report
-You can access the final report at [here](https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/blob/main/reports/p2p_lending_risk_analysis_report.pdf)
+You can access the final report at [here](https://ubc-mds.github.io/P2P_Loan_Risk-Analysis/reports/p2p_lending_risk_analysis_report.html)
 
 
 ## Usage
