@@ -1,12 +1,26 @@
+# services:
+#   jupyter-notebook:
+#     image: abeba/p2p_loan_risk-analysis:4e81403
+#     ports:
+#       - "8888:8888"
+#     volumes:
+#       - .:/home/jovyan
+#     deploy:
+#       resources:
+#         limits:
+#           memory: 5G
+#     platform: linux/amd64
+
 services:
   jupyter-notebook:
-    image: abeba/p2p_loan_risk-analysis:4e81403
+    image: abeba/p2p_loan_risk-analysis:latest # Use the Docker Hub image
     ports:
-      - "8888:8888"
+      - "8888:8888" # Map container's port 8888 to local port 8888
     volumes:
-      - .:/home/jovyan
+      - .:/home/jovyan # Mounts the current directory to /home/jovyan in the container
     deploy:
       resources:
         limits:
-          memory: 5G
-    platform: linux/amd64
+          memory: 5G # Limit memory usage to 5GB
+    platform: linux/amd64 # Ensure compatibility with the target architecture
+    command: ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--allow-root"]

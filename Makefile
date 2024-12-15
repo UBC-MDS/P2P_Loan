@@ -7,7 +7,7 @@
 
 .PHONY: all clean
 
-all : reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf reports/p2p_lending_risk_analysis_report_files
+all : reports/p2p_lending_risk_analysis_report.html  reports/p2p_lending_risk_analysis_report_files
 
 # download data
 data/raw/loan_data.csv : scripts/download_data.py
@@ -76,7 +76,6 @@ reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_
 	results/tables/negative_coef.csv \
 	results/tables/positive_coef.csv 
 		quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
-		quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
 
 
 
@@ -111,5 +110,4 @@ clean :
 		results/tables/positive_coef.csv 
 
 	rm -rf reports/p2p_lending_risk_analysis_report.html \
-	    reports/p2p_lending_risk_analysis_report.pdf \
-		reports/p2p_lending_risk_analysis_report_files 
+	    reports/p2p_lending_risk_analysis_report_files 

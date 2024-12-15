@@ -271,7 +271,7 @@ Table&nbsp;1: Feature Descriptions
 Table&nbsp;2: Information on all numeric columns in training data.
 </figcaption>
 <div aria-describedby="tbl-info-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="243">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="19">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -488,7 +488,7 @@ Figure&nbsp;6: Heatmap showing correlation between features for the lending club
 </section>
 <section id="classification-metrics" class="level3">
 <h3 class="anchored" data-anchor-id="classification-metrics">4.2.2 Classification Metrics</h3>
-<p>We decided to use the accuracy score as the classification metric. In financial decision-making, while false negatives impose greater financial risk to the platform, false positives can impose great financial strain on the borrower. Therefore, it is essential to identify defaulted and fully paid loans correctly.</p>
+<p>We decided to use the accuracy score as the classification metric. In financial decision-making, while false negatives impose greater financial risk to the platform, false positives can impose great financial strain on the borrower. Therefore, it is essential to identify both defaulted and fully paid loans correctly.</p>
 </section>
 <section id="model-selection" class="level3">
 <h3 class="anchored" data-anchor-id="model-selection">4.2.3 Model Selection</h3>
@@ -500,7 +500,7 @@ Figure&nbsp;6: Heatmap showing correlation between features for the lending club
 Table&nbsp;3: Cross-validation results of various classification model.
 </figcaption>
 <div aria-describedby="tbl-cv_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="244">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="20">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 25%">
@@ -518,26 +518,26 @@ Table&nbsp;3: Cross-validation results of various classification model.
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">0.081(+/-0.004)</td>
-<td style="text-align: left;">0.003(+/-0.000)</td>
-<td style="text-align: left;">0.737(+/-0.017)</td>
+<td style="text-align: left;">0.072(+/-0.006)</td>
+<td style="text-align: left;">0.003(+/-0.001)</td>
+<td style="text-align: left;">0.737(+/-0.016)</td>
 <td style="text-align: left;">1.000(+/-0.000)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">0.012(+/-0.000)</td>
-<td style="text-align: left;">0.014(+/-0.019)</td>
+<td style="text-align: left;">0.010(+/-0.000)</td>
+<td style="text-align: left;">0.020(+/-0.026)</td>
 <td style="text-align: left;">0.823(+/-0.008)</td>
 <td style="text-align: left;">0.855(+/-0.001)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">0.969(+/-0.023)</td>
-<td style="text-align: left;">0.117(+/-0.004)</td>
+<td style="text-align: left;">1.008(+/-0.015)</td>
+<td style="text-align: left;">0.090(+/-0.001)</td>
 <td style="text-align: left;">0.841(+/-0.002)</td>
 <td style="text-align: left;">0.845(+/-0.000)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">0.016(+/-0.001)</td>
-<td style="text-align: left;">0.002(+/-0.000)</td>
+<td style="text-align: left;">0.018(+/-0.003)</td>
+<td style="text-align: left;">0.002(+/-0.001)</td>
 <td style="text-align: left;">0.839(+/-0.003)</td>
 <td style="text-align: left;">0.840(+/-0.000)</td>
 </tr>
@@ -584,7 +584,7 @@ Figure&nbsp;7: 10-folds cross-validation results for hyperparameter C tuning. Ac
 Table&nbsp;4: Top 3 influential feature for predicting class <code>Defaulted(1)</code>
 </figcaption>
 <div aria-describedby="tbl-positive_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="245">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="21">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -620,7 +620,7 @@ Table&nbsp;4: Top 3 influential feature for predicting class <code>Defaulted(1)<
 Table&nbsp;5: Top 3 influential feature for predicting class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-negative_coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="246">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="22">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -659,7 +659,7 @@ Table&nbsp;5: Top 3 influential feature for predicting class <code>Fully Paid(0)
 Table&nbsp;6: Confusion Matrix of Logistic Regression Model on Test Data
 </figcaption>
 <div aria-describedby="tbl-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="247">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="23">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 30%">
@@ -708,7 +708,7 @@ Table&nbsp;6: Confusion Matrix of Logistic Regression Model on Test Data
 Table&nbsp;7: Target distribution showing class imbalance biased towards class <code>Fully Paid(0)</code>
 </figcaption>
 <div aria-describedby="tbl-target_dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="248">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="24">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -733,7 +733,7 @@ Table&nbsp;7: Target distribution showing class imbalance biased towards class <
 </div>
 </div>
 <p>As we check the distribution of the target, we can see that the proportion of borrowers who have repaid their loans is significantly higher than those who defaulted on their loans. The class imbalance of the target results in the model predicting most cases as “negative” (fully paid).</p>
-<p>Possible solutions to the high false negtative include adjusting the <code>class_weight</code> hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaluating model performance.</p>
+<p>Possible solutions to the high false negtative include adjusting the <code>class_weight</code> hyperparameter or adjusting the decision threshold of the logistic model. Since accuracy might not fully reflect the model performance in the case of class imbalance, it would be good to include other evaluation metrics when evaluating model performance. A good alternative classification metrics would be the F1 score, as it minimises false positive and false negative while balancing the precision and recall.</p>
 <p>Also, based on the feature importance obtained, additional feature engineering or feature selection can potentially improve model performance.</p>
 <p>Another alternative is to use a non-linear classification model to account for possible non-linear decision boundaries. An example is a decision tree, which can better model complex non-linear decision boundaries.</p>
 </section>
