@@ -4,8 +4,7 @@
 
 .PHONY: all clean
 
-# Default target: run the entire pipeline
-all: reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf
+all : reports/p2p_lending_risk_analysis_report.html  reports/p2p_lending_risk_analysis_report_files
 
 # Download data
 data/raw/loan_data.csv: scripts/download_data.py
@@ -62,13 +61,57 @@ results/models/preprocessor.pickle results/models/pipeline.pickle scripts/model_
 		--preprocessor_from=results/models/preprocessor.pickle \
 		--pipeline_from=results/models/pipeline.pickle
 
-# Generate reports
-reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf: \
-reports/p2p_lending_risk_analysis_report.qmd reports/references.bib \
-results/figures/* results/tables/*
-	quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
-	quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
+# build HTML report and copy build to docs folder
+reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf: reports/p2p_lending_risk_analysis_report.qmd \
+	reports/references.bib \
+	results/figures/boxplot_purpose.png \
+	results/figures/boxplot_risk.png \
+	results/figures/correlation_heatmap.png \
+	results/figures/histograms_grid.png \
+	results/figures/loan_category_vs_purpose.png \
+	results/figures/risk_categories_distribution.png \
+	results/figures/param_C_tuning.png \
+	results/tables/info.csv \
+	results/tables/cv_results.csv \
+	results/tables/target_dist.csv \
+	results/tables/model_results.csv \
+	results/tables/test_results.csv \
+	results/tables/confusion_matrix.csv \
+	results/tables/negative_coef.csv \
+	results/tables/positive_coef.csv 
+		quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
 
-# Clean up intermediate and output files
-clean:
-	rm -rf data/raw/* data/processed/* results/* reports/p2p_lending_risk_analysis_report.*
+
+
+# clean up analysis
+clean :
+	rm -rf data/raw/*
+
+	rm -f  results/models/pipeline.pickle \
+	    results/models/preprocessor.pickle 
+
+	rm -f data/processed/loan_test.csv \
+	    data/processed/loan_train.csv \
+	    data/processed/scaled_loan_test.csv \
+		data/processed/scaled_loan_train.csv
+
+
+#delete images and figures
+	rm -f results/figures/boxplot_purpose.png \
+		results/figures/boxplot_risk.png \
+		results/figures/correlation_heatmap.png \
+		results/figures/histograms_grid.png \
+		results/figures/loan_category_vs_purpose.png \
+		results/figures/risk_categories_distribution.png \
+		results/figures/param_C_tuning.png \
+	rm -f results/tables/info.csv \
+		results/tables/cv_results.csv \
+		results/tables/target_dist.csv \
+		results/tables/model_results.csv \
+		results/tables/test_results.csv\
+		results/tables/confusion_matrix.csv \
+		results/tables/negative_coef.csv \
+		results/tables/positive_coef.csv 
+
+	rm -rf reports/p2p_lending_risk_analysis_report.html \
+	    reports/p2p_lending_risk_analysis_report_files 
