@@ -32,3 +32,6 @@ conda init
 source ~/.bashrc
 conda activate loan_risk522
 conda env list
+conda activate loan_risk522
+source ~/.bashrc
+conda activate loan_risk522

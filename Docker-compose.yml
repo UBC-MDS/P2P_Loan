@@ -1,6 +1,6 @@
 # services:
 #   jupyter-notebook:
-#     image: abeba/p2p_loan_risk-analysis:4e81403
+#     image: abeba/p2p_loan_risk-analysis:9585abf
 #     ports:
 #       - "8888:8888"
 #     volumes:
@@ -13,7 +13,7 @@
 
 services:
   jupyter-notebook:
-    image: abeba/p2p_loan_risk-analysis:latest # Use the Docker Hub image
+    image: abeba/p2p_loan_risk-analysis:9585abf # Use the Docker Hub image
     ports:
       - "8888:8888" # Map container's port 8888 to local port 8888
     volumes:

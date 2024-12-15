@@ -61,7 +61,6 @@ results/models/preprocessor.pickle results/models/pipeline.pickle scripts/model_
 		--preprocessor_from=results/models/preprocessor.pickle \
 		--pipeline_from=results/models/pipeline.pickle
 
-<<<<<<< HEAD
 # build HTML report and copy build to docs folder
 reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf: reports/p2p_lending_risk_analysis_report.qmd \
 	reports/references.bib \
@@ -116,15 +115,3 @@ clean :
 
 	rm -rf reports/p2p_lending_risk_analysis_report.html \
 	    reports/p2p_lending_risk_analysis_report_files 
-=======
-# Generate reports
-reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf: \
-reports/p2p_lending_risk_analysis_report.qmd reports/references.bib \
-results/figures/* results/tables/*
-	quarto render reports/p2p_lending_risk_analysis_report.qmd --to html
-	quarto render reports/p2p_lending_risk_analysis_report.qmd --to pdf
-
-# Clean up intermediate and output files
-clean:
-	rm -rf data/raw/* data/processed/* results/* reports/p2p_lending_risk_analysis_report.*
->>>>>>> 00cd4fb76da2d5406a913660d47c1c52c1564e35
