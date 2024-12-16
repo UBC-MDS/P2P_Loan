@@ -2,24 +2,21 @@
 
 ## 1. README.md updated based on the peer review:
 - Brocken hyperlink fixed
-- General language check done with a 95% overall performance score using Grammarly business-expert-formal filters. <br>
+- General language check done with a 95% overall performance score using Grammarly business-expert-formal filters.
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/72db1742bcc27cd4480d08d2fbcdef5ccdfce618
-<br>
-
-- Research questions added <br>
+- Research questions added 
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/93dfaab377d8f1597f16b1a131e296a49a8435ca
-
-<br>
-
 - Include link to raw data source in README
 - Improve readability 
 - Add more instructions for using environment.yml a user to compile the report locall
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/6a22f1d3b83a3107e419e75e7f6ec04c682b8088
 
 ## 2. Unit tests added
- - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/tree/main/tests
- - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/pull/56
- - Unit tests for the write_csv.py https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/3b11db8ac1750fb16905e510ea92968b7d1e694c
+- https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/tree/main/tests
+- Unit tests for data validation and model cross-evaluation
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/pull/56
+- Unit tests for the write_csv.py 
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/3b11db8ac1750fb16905e510ea92968b7d1e694c
 
 ## 3. Final language check for the entire report done
 - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/74c3ba02e9259e37acdd86b51ee16841c2579ccb
@@ -29,12 +26,15 @@
     - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/204f466316415fce0f1d8d53fa5203ff543c9f9a
 
 ## 5. Modularize code into functions
-- https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/pull/56
-- Function for the write_csv.py https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/3b11db8ac1750fb16905e510ea92968b7d1e694c
+- Function for data validation and model cross-evaluation
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/pull/56
+- Function for the write_csv.py 
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/3b11db8ac1750fb16905e510ea92968b7d1e694c
 
 ## 6. Update environment.yml
 - pip now has explicit version listed
 - added pytest into environment.yml
+    - https://github.com/UBC-MDS/P2P_Loan_Risk-Analysis/commit/efaeb4301d0fe3bd10cd3f390da141a02477d527
 
 ## 7. Update CONTRIBUTING.md 
 - Clarify steps to contribute or report issues
