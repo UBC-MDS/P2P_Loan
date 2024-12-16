@@ -62,7 +62,7 @@ results/models/preprocessor.pickle results/models/pipeline.pickle scripts/model_
 		--pipeline_from=results/models/pipeline.pickle
 
 # build HTML report and copy build to docs folder
-reports/p2p_lending_risk_analysis_report.html reports/p2p_lending_risk_analysis_report.pdf: reports/p2p_lending_risk_analysis_report.qmd \
+reports/p2p_lending_risk_analysis_report.html: reports/p2p_lending_risk_analysis_report.qmd \
 	reports/references.bib \
 	results/figures/boxplot_purpose.png \
 	results/figures/boxplot_risk.png \
