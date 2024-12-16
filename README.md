@@ -68,6 +68,13 @@ To use the containerized environment for this project, follow these steps if it 
 
 4. Access the Jupyter Notebook interface by copying the URL that starts with `http://127.0.0.1:8888/lab?token=` in your terminal
 
+5. In the terminal, run the following code:
+
+```bash
+source ~/.bashrc
+conda activate loan_risk522
+```
+
 <br>
 
 ### Running the Analysis
